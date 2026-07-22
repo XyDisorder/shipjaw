@@ -10,12 +10,14 @@ rules. Agents must follow them; do not re-litigate mid-task.
    bootstrap only (prompt → docs + scaffold + v1). `shipjaw-adopt` =
    bring an **existing** non-Shipjaw TS/Next app under the contract
    (docs + AGENTS/rule + idempotent gaps — **no** rewrite).
-   `shipjaw-ask` = every later session. Continuation never reloads
-   bootstrap discovery/architecture docs or re-derives the stack. If KB
-   exists → hand off to ask; if INDEX missing but docs exist → repair,
-   don't bootstrap. Prompt and entrypoint must **never** create
-   `knowledge-base/`. Adopt creates KB only when the app already exists
-   and KB is absent.
+   `shipjaw-upgrade` = refresh docs/contract/stamps to current VERSION
+   (migration table; **no** product rewrite). `shipjaw-ask` = every
+   later product session. Continuation never reloads bootstrap
+   discovery/architecture docs or re-derives the stack. If KB exists →
+   hand off to ask (or upgrade if only stamps/docs lag); if INDEX
+   missing but docs exist → repair, don't bootstrap. Prompt and
+   entrypoint must **never** create `knowledge-base/`. Adopt creates KB
+   only when the app already exists and KB is absent.
 
 
 2. **State lives in the repo, not the transcript.** Anything needed to
@@ -51,8 +53,10 @@ rules. Agents must follow them; do not re-litigate mid-task.
 7. **Hard stop budgets.** Discovery: max **2 rounds**, ~**8** questions
    total, then default and record. Clarification in continuation: **1**
    short question. Verification: **1** gate per task/phase, max **2**
-   fix attempts, then stop and ask the human. No third blind retry. No
-   unbounded "read the whole repo."
+   fix attempts — on the **second** failure open
+   `references/gate-failure-modes.md` for one focused fix; if still red,
+   stop and ask the human. No third blind retry. No unbounded "read the
+   whole repo."
 
 8. **No contradictory product defaults.** Docs are **committed** (not
    gitignored) so continuation works cross-machine. `packages/contracts/`

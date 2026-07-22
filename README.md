@@ -126,13 +126,19 @@ for existing apps).
 /shipjaw-adopt
 ```
 
+**2c. Upgrade** — Shipjaw app, skill/docs stamps lag (no feature work):
+
+```text
+/shipjaw-upgrade
+```
+
 **3. Continue** — same repo, later:
 
 ```text
 /shipjaw-ask Add a done/active filter and the matching e2e
 ```
 
-Compact between tasks (`/compact` on Claude, or a fresh chat on Cursor): resume from `documentation/`.
+Compact between tasks (`/compact` on Claude, or a fresh chat on Cursor): resume from `documentation/INDEX.md` then `documentation/handoff.md`.
 
 ### When to slash
 
@@ -142,6 +148,7 @@ Compact between tasks (`/compact` on Claude, or a fresh chat on Cursor): resume 
 | Rough idea → dense prompt only | `/shipjaw-prompt` |
 | Build-ready prompt → docs + app + v1 | `/shipjaw-build` |
 | Existing app, no Shipjaw KB | `/shipjaw-adopt` |
+| Refresh stamps / AGENTS / migration gaps only | `/shipjaw-upgrade` |
 | Feature / fix / continue in a Shipjaw app | `/shipjaw-ask` |
 
 Scaffolded apps also get `AGENTS.md` + `.cursor/rules/shipjaw.mdc` so the
@@ -163,30 +170,32 @@ cd shipjaw
 
 mkdir -p ~/.claude/skills ~/.cursor/skills
 
-ln -s "$(pwd)/.claude/skills/shipjaw"        ~/.claude/skills/shipjaw
-ln -s "$(pwd)/.claude/skills/shipjaw-prompt" ~/.claude/skills/shipjaw-prompt
-ln -s "$(pwd)/.claude/skills/shipjaw-build"  ~/.claude/skills/shipjaw-build
-ln -s "$(pwd)/.claude/skills/shipjaw-adopt"  ~/.claude/skills/shipjaw-adopt
-ln -s "$(pwd)/.claude/skills/shipjaw-ask"    ~/.claude/skills/shipjaw-ask
+ln -s "$(pwd)/.claude/skills/shipjaw"         ~/.claude/skills/shipjaw
+ln -s "$(pwd)/.claude/skills/shipjaw-prompt"  ~/.claude/skills/shipjaw-prompt
+ln -s "$(pwd)/.claude/skills/shipjaw-build"   ~/.claude/skills/shipjaw-build
+ln -s "$(pwd)/.claude/skills/shipjaw-adopt"   ~/.claude/skills/shipjaw-adopt
+ln -s "$(pwd)/.claude/skills/shipjaw-upgrade" ~/.claude/skills/shipjaw-upgrade
+ln -s "$(pwd)/.claude/skills/shipjaw-ask"     ~/.claude/skills/shipjaw-ask
 
-ln -s "$(pwd)/.claude/skills/shipjaw"        ~/.cursor/skills/shipjaw
-ln -s "$(pwd)/.claude/skills/shipjaw-prompt" ~/.cursor/skills/shipjaw-prompt
-ln -s "$(pwd)/.claude/skills/shipjaw-build"  ~/.cursor/skills/shipjaw-build
-ln -s "$(pwd)/.claude/skills/shipjaw-adopt"  ~/.cursor/skills/shipjaw-adopt
-ln -s "$(pwd)/.claude/skills/shipjaw-ask"    ~/.cursor/skills/shipjaw-ask
+ln -s "$(pwd)/.claude/skills/shipjaw"         ~/.cursor/skills/shipjaw
+ln -s "$(pwd)/.claude/skills/shipjaw-prompt"  ~/.cursor/skills/shipjaw-prompt
+ln -s "$(pwd)/.claude/skills/shipjaw-build"   ~/.cursor/skills/shipjaw-build
+ln -s "$(pwd)/.claude/skills/shipjaw-adopt"   ~/.cursor/skills/shipjaw-adopt
+ln -s "$(pwd)/.claude/skills/shipjaw-upgrade" ~/.cursor/skills/shipjaw-upgrade
+ln -s "$(pwd)/.claude/skills/shipjaw-ask"     ~/.cursor/skills/shipjaw-ask
 ```
 
 Keep the skills as **siblings** so relative `../shipjaw-build/references/` paths resolve.
 
-> Migrating from `skill-my-app` / old single `shipjaw` bootstrap: remove old symlinks, link the five skills above. Legacy `scaffolded-with: skill-my-app@…` / `shipjaw@…` stamps still work. Bootstrap is now **`shipjaw-build`**; existing foreign apps use **`shipjaw-adopt`**.
+> Migrating from `skill-my-app` / old single `shipjaw` bootstrap: remove old symlinks, link the six skills above. Legacy stamps still work. Bootstrap = **`shipjaw-build`**; foreign apps = **`shipjaw-adopt`**; stamp refresh = **`shipjaw-upgrade`**.
 
 ## Why it’s different
 
 | Typical agent approach | Shipjaw |
 |---|---|
 | Jump straight into code from vibes | Optional **prompt craft** before scaffold |
-| Everything in the transcript | Versioned state in `documentation/` |
-| One mega catch-all prompt | Express ≠ build ≠ adopt ≠ continue |
+| Everything in the transcript | Versioned state + **handoff.md** |
+| One mega catch-all prompt | Express ≠ build ≠ adopt ≠ upgrade ≠ continue |
 | “No `any`” as forgettable prose | Encoded in tsconfig / eslint / CI |
 | Gitignored docs → amnesiac clones | **Committed** docs |
 | Fixes that quietly regress | Bug ⇒ failing-then-passing test |
@@ -196,9 +205,10 @@ Keep the skills as **siblings** so relative `../shipjaw-build/references/` paths
 - Bare start / need a project folder → **`/shipjaw`**  
 - Vague idea, no prompt yet → **`shipjaw-prompt`**, not build  
 - Existing app without Shipjaw docs → **`shipjaw-adopt`**, not build  
+- Only bump skill docs/stamps → **`shipjaw-upgrade`**, not ask  
 - One-off CSS / copy tweak → normal edit  
 - Non-TypeScript repo → refuse  
-- KB already exists → **`shipjaw-ask`**, not build  
+- KB already exists + product work → **`shipjaw-ask`**, not build  
 
 ## Maintainers
 

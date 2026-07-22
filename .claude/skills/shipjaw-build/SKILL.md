@@ -45,8 +45,12 @@ runs.
    re-check session; middleware; CSP via scaffold `next.config.ts`.
 6. **Documentation** — committed `documentation/`. No app code before
    `INDEX.md` + phase-01. Stamp via `scripts/stamp-provenance.sh`.
-7. **Verify** — one gate/phase; **stop after 2 failed attempts**.
+7. **Verify** — one gate/phase; **stop after 2 failed attempts**. On the
+   second failure read `references/gate-failure-modes.md` before one
+   last focused fix; then ask the human if still red.
 8. **KB current** — update before done; state not only in chat.
+9. **UI floor** — when shipping visible UI, obey
+   `references/design-constraints.md` (+ product design-brief).
 
 ## Checklist
 
@@ -100,9 +104,10 @@ From this skill directory:
   `regression-and-business-rules.md`
 - `discovery-questions.md` · `stack-shape.md` · `tech-choices.md`
 - `project-structure.md` · `code-standards.md` · `testing-and-ci.md` ·
-  `security.md`
+  `security.md` · `gate-failure-modes.md` (2nd gate fail) ·
+  `design-constraints.md` (UI)
 - `monorepo-and-nestjs.md` — Nest only
 - `modern-extras.md` — only if discovery activated
 - `doc-structure.md` · `workflow.md`
 - `templates/` · `templates/scaffold/` · `templates/business-rule.md` ·
-  `VERSION` · `scripts/`
+  `templates/handoff.md` · `VERSION` · `scripts/`

@@ -19,3 +19,7 @@
 <List anything defaulted instead of asked, so it's visible and correctable.
 Include at least: motion (subtle / reduced-motion respected), focus-visible
 styles, and contrast target (e.g. WCAG AA intent).>
+
+## Hard floor
+Agents must also obey `../references/design-constraints.md` (anti AI-slop).
+If this brief conflicts, follow the brief and record the deviation.

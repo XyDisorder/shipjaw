@@ -1,6 +1,6 @@
 ---
 name: shipjaw-ask
-description: Continues, extends, fixes, or resumes work on a Shipjaw-scaffolded or Shipjaw-adopted TypeScript/Next app that already has documentation/knowledge-base/ and INDEX.md. Token-cheap: read INDEX.md first, then at most 1–2 relevant docs. Use when adding features, fixing bugs, refactors, implementing the next phase, continue this repo, resume after compact, fresh chat on this app, reprendre le projet, continuer cette app, corriger un bug, ajouter une feature, or when AGENTS.md / .cursor/rules/shipjaw.mdc say to follow shipjaw-ask. Do not use for greenfield bootstrap (shipjaw-build), adopting a foreign app with no KB (shipjaw-adopt), polishing a vague product idea (shipjaw-prompt), pure one-line CSS/copy tweaks, or non-TypeScript repos.
+description: Continues, extends, fixes, or resumes work on a Shipjaw-scaffolded or Shipjaw-adopted TypeScript/Next app that already has documentation/knowledge-base/ and INDEX.md. Token-cheap: read INDEX.md first, then at most 1–2 relevant docs. Use when adding features, fixing bugs, refactors, implementing the next phase, continue this repo, resume after compact, fresh chat on this app, reprendre le projet, continuer cette app, corriger un bug, ajouter une feature, or when AGENTS.md / .cursor/rules/shipjaw.mdc say to follow shipjaw-ask. Do not use for greenfield bootstrap (shipjaw-build), adopting a foreign app with no KB (shipjaw-adopt), skill-only doc upgrades (shipjaw-upgrade), polishing a vague product idea (shipjaw-prompt), pure one-line CSS/copy tweaks, or non-TypeScript repos.
 ---
 
 # shipjaw-ask
@@ -22,14 +22,17 @@ the full `shipjaw-build` SKILL body. Trust project tooling + docs.
 8. Gate once; **stop after 2** failed fix attempts; ask the human.
 9. End every run by overwriting `documentation/handoff.md` (template
    `../shipjaw-build/templates/handoff.md`) with next slash command.
+10. On **doc↔code drift**, stop and resolve (see below) — don’t invent.
 
-**Old repos only:** `../shipjaw-build/references/migration.md`.
+**Old repos / stamp lag:** `../shipjaw-build/references/migration.md` or
+`/shipjaw-upgrade` when only docs/contract need bumping.
 
 ## Anti-triggers
 
 - No app yet / no KB → if only a rough idea, `shipjaw-prompt`; if a
   build-ready prompt exists (message or `source-prompt.md`),
   `shipjaw-build`; if an **existing** TS app has no KB → `shipjaw-adopt`
+- User only wants skill/docs stamp refresh → `shipjaw-upgrade`
 - Task is a one-line copy/CSS change → normal edit, don't load the whole
   continuation protocol beyond a quick INDEX peek if unsure
 
@@ -38,37 +41,64 @@ the full `shipjaw-build` SKILL body. Trust project tooling + docs.
 1. `documentation/INDEX.md` first. **Open when** = hard filter.
    - Missing INDEX but docs/app exist → repair INDEX (migration-aware).
    - Nothing there → stop; suggest `shipjaw-build` or `shipjaw-adopt`.
-2. Only the KB file(s) the task touches (1–2). No archives unless auditing.
-3. Active phase file only if needed.
-4. At most **one** reference under `../shipjaw-build/references/`, usually
+2. `documentation/handoff.md` if present.
+3. Only the KB file(s) the task touches (1–2). No archives unless auditing.
+4. Active phase file only if needed.
+5. At most **one** reference under `../shipjaw-build/references/`, usually
    **zero**. Never open `discovery-questions.md` / `stack-shape.md` /
    `skill-principles.md` here by default.
+   - 2nd gate failure → `gate-failure-modes.md`
+   - UI/landing touch → `design-constraints.md`
 
 Never preload `product/` or the full KB. Broad scope → new phase.
 
 **Code reads:** Grep first; offset/limit on large files.
 **Narration:** act; don't dump docs into chat.
 
+## Drift protocol (docs ↔ code)
+
+Before implementing, if anything below is inconsistent with the repo,
+**stop and choose explicitly** (ask once if unclear):
+
+| Signal | Example |
+|---|---|
+| INDEX/features-index lists a feature as shipped but routes/files missing | Docs ahead of code |
+| Routes/features exist but INDEX/features-index omit them | Code ahead of docs |
+| `scaffolded-with` missing / far behind installed skill | Offer `/shipjaw-upgrade` |
+| Phase status `done` but *User can…* e2e absent for a critical journey | Tests/docs debt |
+| Architecture “practice gaps” P0 still open on the path you must touch | Prefer converge slice first or include in this task |
+
+Resolution (pick one, don’t silently invent):
+
+1. **Repair docs** to match code (usual for drift found mid-feature), or
+2. **Fix code** to match docs (when docs are the agreed source), or
+3. **Defer** with a changelog/roadmap note + handoff next command
+
+Never leave INDEX/features-index lying after you ship a path change.
+
 ## Checklist
 
 ```
-- [ ] Read / repair INDEX
-- [ ] Read handoff.md if present (after INDEX)
+- [ ] Read / repair INDEX + handoff
+- [ ] Drift check (table above) on touched area
 - [ ] ≤1 clarifying Q; stop if core behavior still ambiguous
 - [ ] Implement (journey-first; domain tests; e2e edges if critical)
+- [ ] UI touch → design-constraints.md floor
 - [ ] ../shipjaw-build/scripts/run-gate.sh <root> [--with-e2e]
-- [ ] ≤2 fix attempts; then ask human
+- [ ] On 2nd fail → gate-failure-modes.md then one focused fix; else ask human
 - [ ] Surgical doc updates; optional validate-docs.sh
-- [ ] Overwrite documentation/handoff.md (next command + files touched)
+- [ ] Overwrite documentation/handoff.md
 - [ ] Suggest /compact or fresh chat
 ```
 
 ## Workflow
 
-1. Read / repair INDEX (check `scaffolded-with`; migrate lightly if needed).
-2. ≤1 clarifying question. If the **core behavior** is still ambiguous
+1. Read / repair INDEX (check `scaffolded-with`; migrate lightly if needed
+   or suggest `shipjaw-upgrade`). Read handoff.
+2. Drift check on the area the task touches.
+3. ≤1 clarifying question. If the **core behavior** is still ambiguous
    after that → **stop** and ask the human; do not invent the business rule.
-3. Implement via project config as source of truth:
+4. Implement via project config as source of truth:
    - prefer the active phase's *User can…* / journey over drive-by polish
    - do not implement Out-of-v1 / out-of-phase scope "while we're here"
    - place new types/constants/helpers per
@@ -79,23 +109,16 @@ Never preload `product/` or the full KB. Broad scope → new phase.
    - domain/application → Vitest; invariants owned there (not UI-only)
    - bug fix → regression test (fail before / pass after)
    - never weaken/skip existing tests just to green
-   - critical flow → Playwright golden path + e2e edges (empty / form
-     error / unauthorized / not-found as applicable) + axe + keyboard/focus
-   - unit edges for new domain/application behavior (see
-     `../shipjaw-build/references/testing-and-ci.md` tables) — don't
-     duplicate pure validation in e2e
+   - critical flow → Playwright golden path + e2e edges + axe + keyboard/focus
+   - unit edges per `testing-and-ci.md` — don’t duplicate pure validation in e2e
+   - marketing/primary UI → obey `design-constraints.md` (+ design-brief)
    - critical auth/money/state/multi-client → slim BR +
-     `../shipjaw-build/references/regression-and-business-rules.md` if needed
+     `regression-and-business-rules.md` if needed
    - contracts consumers only if package exists
    - actions/endpoints → authz + session + middleware as needed
-4. One gate via `../shipjaw-build/scripts/run-gate.sh <root> [--with-e2e]`;
-   ≤2 fix attempts; then ask human.
-5. Surgical KB / product updates (paths/signatures only); rotate logs;
-   archive done phases. Idempotent: don't rewrite unrelated docs.
-   Optional: `../shipjaw-build/scripts/validate-docs.sh <root>` after
-   doc repairs.
-6. **Handoff (mandatory):** overwrite `documentation/handoff.md` from
-   `../shipjaw-build/templates/handoff.md` — done bullets, files touched,
-   gate status, concrete next `/shipjaw-ask …` command.
-7. Suggest `/compact` (Claude) or fresh chat (Cursor); point at INDEX +
-   handoff.
+5. Gate via `run-gate.sh`; on **second** failure open
+   `../shipjaw-build/references/gate-failure-modes.md`, apply one matching
+   fix; if still red → stop and ask human.
+6. Surgical KB / product updates; validate-docs optional.
+7. **Handoff (mandatory):** overwrite `documentation/handoff.md`.
+8. Suggest `/compact` or fresh chat; point at INDEX + handoff.

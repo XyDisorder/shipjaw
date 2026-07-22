@@ -62,3 +62,12 @@
   anti_needles:
     - knowledge-base
     - already exists
+
+- id: upgrade-stamps
+  expected: shipjaw-upgrade
+  triggers:
+    - upgrade Shipjaw
+    - scaffolded-with
+  anti_skill: shipjaw-ask
+  anti_needles:
+    - shipjaw-upgrade

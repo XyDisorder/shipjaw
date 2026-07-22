@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Structural smoke check for shipjaw / shipjaw-prompt / shipjaw-build /
-# shipjaw-adopt / shipjaw-ask.
+# shipjaw-adopt / shipjaw-upgrade / shipjaw-ask.
 # Run from repo root: ./scripts/smoke-check.sh
 set -euo pipefail
 
@@ -9,6 +9,7 @@ SKILL="$ROOT/.claude/skills/shipjaw-build"
 ASK="$ROOT/.claude/skills/shipjaw-ask"
 PROMPT="$ROOT/.claude/skills/shipjaw-prompt"
 ADOPT="$ROOT/.claude/skills/shipjaw-adopt"
+UPGRADE="$ROOT/.claude/skills/shipjaw-upgrade"
 ENTRY="$ROOT/.claude/skills/shipjaw"
 FAIL=0
 
@@ -23,12 +24,15 @@ for f in \
   "$PROMPT/templates/source-prompt.md" \
   "$ASK/SKILL.md" \
   "$ADOPT/SKILL.md" \
+  "$UPGRADE/SKILL.md" \
   "$SKILL/SKILL.md" \
   "$SKILL/VERSION" \
   "$SKILL/references/skill-principles.md" \
   "$SKILL/references/migration.md" \
   "$SKILL/references/tech-choices.md" \
   "$SKILL/references/regression-and-business-rules.md" \
+  "$SKILL/references/gate-failure-modes.md" \
+  "$SKILL/references/design-constraints.md" \
   "$SKILL/references/workflow.md" \
   "$SKILL/references/doc-structure.md" \
   "$SKILL/references/project-structure.md" \
@@ -59,6 +63,7 @@ for f in \
   "$ROOT/.cursor/skills/shipjaw-prompt" \
   "$ROOT/.cursor/skills/shipjaw-build" \
   "$ROOT/.cursor/skills/shipjaw-adopt" \
+  "$ROOT/.cursor/skills/shipjaw-upgrade" \
   "$ROOT/.cursor/skills/shipjaw-ask" \
   "$ROOT/scripts/smoke-check.sh"
 do
@@ -74,7 +79,7 @@ else bad "VERSION must be YYYY.MM.DD or YYYY.MM.DDb (got: ${VER:-empty})"
 fi
 
 echo "== frontmatter descriptions =="
-for skill_md in "$ENTRY/SKILL.md" "$PROMPT/SKILL.md" "$SKILL/SKILL.md" "$ADOPT/SKILL.md" "$ASK/SKILL.md"; do
+for skill_md in "$ENTRY/SKILL.md" "$PROMPT/SKILL.md" "$SKILL/SKILL.md" "$ADOPT/SKILL.md" "$UPGRADE/SKILL.md" "$ASK/SKILL.md"; do
   name="$(basename "$(dirname "$skill_md")")"
   desc="$(grep -E '^description:' "$skill_md" | sed 's/^description:[[:space:]]*//' | head -n1)"
   if [[ -z "$desc" ]]; then bad "$name missing description"
@@ -97,17 +102,17 @@ done
 
 echo "== bilingual discovery cues =="
 FR_HITS=0
-for skill_md in "$ENTRY/SKILL.md" "$PROMPT/SKILL.md" "$SKILL/SKILL.md" "$ADOPT/SKILL.md" "$ASK/SKILL.md"; do
+for skill_md in "$ENTRY/SKILL.md" "$PROMPT/SKILL.md" "$SKILL/SKILL.md" "$ADOPT/SKILL.md" "$UPGRADE/SKILL.md" "$ASK/SKILL.md"; do
   desc="$(grep -E '^description:' "$skill_md" | sed 's/^description:[[:space:]]*//' | head -n1)"
-  if grep -qiE 'projet|idée|reprendre|continuer|adopter|après|prêt|créer|nouveau|corriger|ajouter|ramener|notes produit' <<<"$desc"; then
+  if grep -qiE 'projet|idée|reprendre|continuer|adopter|après|prêt|créer|nouveau|corriger|ajouter|ramener|notes produit|upgrade' <<<"$desc"; then
     FR_HITS=$((FR_HITS + 1))
     ok "$(basename "$(dirname "$skill_md")") FR trigger cue"
   else
     bad "$(basename "$(dirname "$skill_md")") missing FR discovery cue in description"
   fi
 done
-if [[ "$FR_HITS" -ge 5 ]]; then ok "all skills carry FR discovery cues"
-else bad "expected FR cues on all 5 skills (got $FR_HITS)"
+if [[ "$FR_HITS" -ge 6 ]]; then ok "all skills carry FR discovery cues"
+else bad "expected FR cues on all 6 skills (got $FR_HITS)"
 fi
 
 echo "== invocation control =="
@@ -133,7 +138,7 @@ else
 fi
 
 echo "== checklists =="
-for skill_md in "$ENTRY/SKILL.md" "$PROMPT/SKILL.md" "$SKILL/SKILL.md" "$ADOPT/SKILL.md" "$ASK/SKILL.md"; do
+for skill_md in "$ENTRY/SKILL.md" "$PROMPT/SKILL.md" "$SKILL/SKILL.md" "$ADOPT/SKILL.md" "$UPGRADE/SKILL.md" "$ASK/SKILL.md"; do
   name="$(basename "$(dirname "$skill_md")")"
   if grep -q '\- \[ \]' "$skill_md"; then ok "$name has checklist"
   else bad "$name missing copiable checklist (- [ ])"
@@ -185,6 +190,7 @@ for phrase in \
   "shipjaw-prompt" \
   "shipjaw-build" \
   "shipjaw-adopt" \
+  "shipjaw-upgrade" \
   "shipjaw-ask" \
   "Dogfood" \
   "Migration" \
@@ -231,10 +237,11 @@ if grep -qi 'mkdir' "$ENTRY/SKILL.md" \
   && grep -q 'shipjaw-prompt' "$ENTRY/SKILL.md" \
   && grep -q 'shipjaw-build' "$ENTRY/SKILL.md" \
   && grep -q 'shipjaw-adopt' "$ENTRY/SKILL.md" \
+  && grep -q 'shipjaw-upgrade' "$ENTRY/SKILL.md" \
   && grep -q 'shipjaw-ask' "$ENTRY/SKILL.md"; then
   ok "shipjaw entrypoint: folder + explains work skills"
 else
-  bad "shipjaw entrypoint must mkdir/cd and explain prompt/build/adopt/ask"
+  bad "shipjaw entrypoint must mkdir/cd and explain prompt/build/adopt/upgrade/ask"
 fi
 if grep -qi 'create-next-app\|knowledge-base' "$ENTRY/SKILL.md" \
   && grep -qi 'No `create-next-app`\|never\|Do \*\*not\*\*' "$ENTRY/SKILL.md"; then
@@ -243,7 +250,39 @@ else
   bad "shipjaw entrypoint must forbid scaffold/KB"
 fi
 
-echo "== adopt survey wired =="
+echo "== ROI refs (failure modes, design, drift, upgrade) =="
+if grep -qi 'Drift protocol' "$ASK/SKILL.md" \
+  && grep -qi 'gate-failure-modes' "$ASK/SKILL.md" \
+  && grep -qi 'design-constraints' "$ASK/SKILL.md"; then
+  ok "shipjaw-ask: drift + failure modes + design constraints"
+else
+  bad "shipjaw-ask missing drift / gate-failure-modes / design-constraints"
+fi
+if [[ -f "$SKILL/references/gate-failure-modes.md" ]] \
+  && grep -qi 'EADDRINUSE\|force-dynamic\|2nd' "$SKILL/references/gate-failure-modes.md"; then
+  ok "gate-failure-modes.md"
+else
+  bad "missing gate-failure-modes.md"
+fi
+if [[ -f "$SKILL/references/design-constraints.md" ]] \
+  && grep -qi 'AI-slop\|purple\|cards' "$SKILL/references/design-constraints.md"; then
+  ok "design-constraints.md"
+else
+  bad "missing design-constraints.md"
+fi
+if [[ -f "$UPGRADE/SKILL.md" ]] \
+  && grep -qi 'disable-model-invocation: true' "$UPGRADE/SKILL.md" \
+  && grep -qi 'migration.md' "$UPGRADE/SKILL.md" \
+  && grep -qi 'Do not rewrite\|no product rewrite\|Do not rewrite product' "$UPGRADE/SKILL.md"; then
+  ok "shipjaw-upgrade skill"
+else
+  bad "shipjaw-upgrade missing or incomplete"
+fi
+if grep -q 'disable-model-invocation: true' "$UPGRADE/SKILL.md"; then
+  ok "shipjaw-upgrade slash-only"
+else
+  bad "shipjaw-upgrade should be slash-only"
+fi
 if grep -q 'survey-adopt-state' "$ADOPT/SKILL.md" \
   && grep -qi 'PARTIAL_DOCS\|FULL_SHIPJAW_KB\|Status snapshot\|where we are' "$ADOPT/SKILL.md"; then
   ok "shipjaw-adopt surveys docs/plans and reports status"

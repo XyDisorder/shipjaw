@@ -1,6 +1,6 @@
 ---
 name: shipjaw
-description: Creates a named Shipjaw project folder, switches the working directory into it, and explains which skill to run next (shipjaw-prompt → shipjaw-build → shipjaw-ask; shipjaw-adopt for existing apps). Slash-only onboarding. Use when the user runs /shipjaw, start a Shipjaw project, nouveau projet Shipjaw, créer un dossier projet, need a clean project home before coding, or bootstrap workspace folder setup. Do not scaffold Next, write source-prompt.md, or create knowledge-base/ here. If documentation/knowledge-base/ already exists → shipjaw-ask; existing app without KB → shipjaw-adopt; idea polishing → shipjaw-prompt; ready prompt → shipjaw-build.
+description: Creates a named Shipjaw project folder, switches the working directory into it, and explains which skill to run next (shipjaw-prompt → shipjaw-build → shipjaw-ask; shipjaw-adopt for existing apps; shipjaw-upgrade for stamp/docs refresh). Slash-only onboarding. Use when the user runs /shipjaw, start a Shipjaw project, nouveau projet Shipjaw, créer un dossier projet, need a clean project home before coding, or bootstrap workspace folder setup. Do not scaffold Next, write source-prompt.md, or create knowledge-base/ here. If documentation/knowledge-base/ already exists → shipjaw-ask (or shipjaw-upgrade for docs-only bump); existing app without KB → shipjaw-adopt; idea polishing → shipjaw-prompt; ready prompt → shipjaw-build.
 disable-model-invocation: true
 ---
 
@@ -69,6 +69,7 @@ After the folder exists, reply in the user's language with this map
 | `/shipjaw-prompt` | Idea still rough | Turns notes into a dense build-ready prompt → `documentation/product/source-prompt.md` (no app code) |
 | `/shipjaw-build` | Prompt ready (file or paste) | Docs + TypeScript/Next scaffold + v1 + gate |
 | `/shipjaw-adopt` | Existing TS/Next app, no Shipjaw KB | Docs + continuation contract + tooling gaps — **no** rewrite |
+| `/shipjaw-upgrade` | Shipjaw app, skill/docs stamps lag | Migration gaps + refresh AGENTS/rule/stamps — **no** product rewrite |
 | `/shipjaw-ask` | App already has `documentation/knowledge-base/` | Features / fixes — reads `INDEX.md` + 1–2 files |
 
 Recommended next step for a greenfield folder:
@@ -95,9 +96,15 @@ Later sessions:
 /shipjaw-ask <feature or fix>
 ```
 
+Docs/contract only (skill VERSION moved):
+
+```text
+/shipjaw-upgrade
+```
+
 ### 3. Stop
 
-Do **not** start prompt-craft, build, or adopt unless the user
+Do **not** start prompt-craft, build, adopt, or upgrade unless the user
 explicitly asks in the same message after onboarding. Hand off cleanly.
 
 ## Hard rules
@@ -109,5 +116,5 @@ explicitly asks in the same message after onboarding. Hand off cleanly.
 
 ## Related skills
 
-- `shipjaw-prompt` · `shipjaw-build` · `shipjaw-adopt` · `shipjaw-ask`
+- `shipjaw-prompt` · `shipjaw-build` · `shipjaw-adopt` · `shipjaw-upgrade` · `shipjaw-ask`
 - Principles: `../shipjaw-build/references/skill-principles.md`

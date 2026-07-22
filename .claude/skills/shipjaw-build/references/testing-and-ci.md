@@ -24,6 +24,7 @@
   e2e port default **3005**, `webServer`, limited CI retries). Avoid
   port **3000** for e2e so a stray `next dev` does not fail the gate.
   Flakes: fix the race; don't raise retries above 1 in CI.
+- **2nd gate failure:** open `gate-failure-modes.md` before another retry.
 - Scaffold tooling **day one** — phase 1 can add a test the same way
   phase 10 will.
 - **Bug fix ⇒ regression test** that reproduces the bug (fails before,

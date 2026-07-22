@@ -1,5 +1,13 @@
 # skill-my-website changelog
 
+## 2026-07-22r
+
+- Complete high-ROI skill loop: **gate-failure-modes** (open on 2nd gate
+  fail), **drift protocol** in shipjaw-ask, **design-constraints** (anti
+  AI-slop), and new **`shipjaw-upgrade`** skill for stamp/docs/contract
+  refresh without product rewrite. Wired into entrypoint, principles,
+  migration, eval routing, and smoke.
+
 ## 2026-07-22q
 
 - Product-quality loop for the skills themselves: **golden fixture**
