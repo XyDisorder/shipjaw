@@ -83,7 +83,7 @@ else bad "VERSION must be YYYY.MM.DD or YYYY.MM.DDb (got: ${VER:-empty})"
 fi
 
 echo "== frontmatter descriptions =="
-for skill_md in "$ENTRY/SKILL.md" "$PROMPT/SKILL.md" "$SKILL/SKILL.md" "$ADOPT/SKILL.md" "$UPGRADE/SKILL.md" "$ASK/SKILL.md"; do
+for skill_md in "$ENTRY/SKILL.md" "$PROMPT/SKILL.md" "$SKILL/SKILL.md" "$ADOPT/SKILL.md" "$UPGRADE/SKILL.md" "$CHALLENGE/SKILL.md" "$ASK/SKILL.md"; do
   name="$(basename "$(dirname "$skill_md")")"
   desc="$(grep -E '^description:' "$skill_md" | sed 's/^description:[[:space:]]*//' | head -n1)"
   if [[ -z "$desc" ]]; then bad "$name missing description"
@@ -106,17 +106,17 @@ done
 
 echo "== bilingual discovery cues =="
 FR_HITS=0
-for skill_md in "$ENTRY/SKILL.md" "$PROMPT/SKILL.md" "$SKILL/SKILL.md" "$ADOPT/SKILL.md" "$UPGRADE/SKILL.md" "$ASK/SKILL.md"; do
+for skill_md in "$ENTRY/SKILL.md" "$PROMPT/SKILL.md" "$SKILL/SKILL.md" "$ADOPT/SKILL.md" "$UPGRADE/SKILL.md" "$CHALLENGE/SKILL.md" "$ASK/SKILL.md"; do
   desc="$(grep -E '^description:' "$skill_md" | sed 's/^description:[[:space:]]*//' | head -n1)"
-  if grep -qiE 'projet|idée|reprendre|continuer|adopter|après|prêt|créer|nouveau|corriger|ajouter|ramener|notes produit|upgrade' <<<"$desc"; then
+  if grep -qiE 'projet|idée|reprendre|continuer|adopter|après|prêt|créer|nouveau|corriger|ajouter|ramener|notes produit|upgrade|contester' <<<"$desc"; then
     FR_HITS=$((FR_HITS + 1))
     ok "$(basename "$(dirname "$skill_md")") FR trigger cue"
   else
     bad "$(basename "$(dirname "$skill_md")") missing FR discovery cue in description"
   fi
 done
-if [[ "$FR_HITS" -ge 6 ]]; then ok "all skills carry FR discovery cues"
-else bad "expected FR cues on all 6 skills (got $FR_HITS)"
+if [[ "$FR_HITS" -ge 7 ]]; then ok "all skills carry FR discovery cues"
+else bad "expected FR cues on all 7 skills (got $FR_HITS)"
 fi
 
 echo "== invocation control =="

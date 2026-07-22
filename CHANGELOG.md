@@ -1,5 +1,10 @@
 # skill-my-website changelog
 
+## 2026-07-22t
+
+- Smoke: frontmatter + FR discovery loops cover all **7** skills
+  (including `shipjaw-challenge` / `contester`).
+
 ## 2026-07-22s
 
 - **`shipjaw-challenge`**: real proposer vs challenger split (prefer a
