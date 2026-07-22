@@ -1,17 +1,23 @@
 ---
 name: shipjaw-ask
-description: Continue, extend, fix, or resume a Shipjaw app in this repo (has documentation/knowledge-base/ + INDEX.md). Use for features, bugs, refactors, and next-session work — token-cheap INDEX + 1–2 files. Prefer /shipjaw-ask; project rule AGENTS.md / .cursor/rules/shipjaw.mdc apply the same contract. Do not use for greenfield (shipjaw-build), vague idea polishing (shipjaw-prompt), pure one-line CSS/copy, or non-TS repos.
+description: Continues, extends, fixes, or resumes a Shipjaw app that already has documentation/knowledge-base/ + INDEX.md. Use for features, bugs, refactors, next-session work, "continue this repo", or when AGENTS.md / .cursor/rules/shipjaw.mdc apply. Token-cheap — INDEX then 1–2 files. Do not use for greenfield (shipjaw-build), adopting a foreign app with no KB (shipjaw-adopt), vague idea polishing (shipjaw-prompt), pure one-line CSS/copy, or non-TS repos.
 ---
 
 # shipjaw-ask
 
 Continuation-only. Do **not** reload bootstrap discovery/architecture or
 the full `shipjaw-build` SKILL body. Trust project tooling + docs.
-Project owns conventions after bootstrap (principle 16).
 
-**Principles:** `../shipjaw-build/references/skill-principles.md`.
-**Old repos:** `../shipjaw-build/references/migration.md` if
-`scaffolded-with` missing or docs look legacy.
+## Binding defaults (do not open principles unless conflict)
+
+1. State lives in committed `documentation/` — update before done.
+2. Progressive disclosure — INDEX → ≤2 files; Grep + offset reads.
+3. Project owns conventions after bootstrap (tsconfig/eslint/CI/docs).
+4. Core *User can…* first; no Out-of-v1 / drive-by scope.
+5. Bug ⇒ failing-then-passing regression test; never weaken tests to green.
+6. Gate once; **stop after 2** failed fix attempts; ask the human.
+
+**Old repos only:** `../shipjaw-build/references/migration.md`.
 
 ## Anti-triggers
 
@@ -25,24 +31,34 @@ Project owns conventions after bootstrap (principle 16).
 
 1. `documentation/INDEX.md` first. **Open when** = hard filter.
    - Missing INDEX but docs/app exist → repair INDEX (migration-aware).
-   - Nothing there → stop; suggest `shipjaw-build`.
+   - Nothing there → stop; suggest `shipjaw-build` or `shipjaw-adopt`.
 2. Only the KB file(s) the task touches (1–2). No archives unless auditing.
 3. Active phase file only if needed.
 4. At most **one** reference under `../shipjaw-build/references/`, usually
-   zero. Never open `discovery-questions.md` / `stack-shape.md` here.
-   Prefer `migration.md` when upgrading legacy docs.
+   **zero**. Never open `discovery-questions.md` / `stack-shape.md` /
+   `skill-principles.md` here by default.
 
 Never preload `product/` or the full KB. Broad scope → new phase.
 
 **Code reads:** Grep first; offset/limit on large files.
 **Narration:** act; don't dump docs into chat.
 
+## Checklist
+
+```
+- [ ] Read / repair INDEX
+- [ ] ≤1 clarifying Q; stop if core behavior still ambiguous
+- [ ] Implement (journey-first; domain tests; e2e edges if critical)
+- [ ] One gate; ≤2 fix attempts
+- [ ] Surgical doc updates
+- [ ] Suggest /compact or fresh chat
+```
+
 ## Workflow
 
 1. Read / repair INDEX (check `scaffolded-with`; migrate lightly if needed).
 2. ≤1 clarifying question. If the **core behavior** is still ambiguous
-   after that → **stop** and ask the human (principle 18); do not invent
-   the business rule.
+   after that → **stop** and ask the human; do not invent the business rule.
 3. Implement via project config as source of truth:
    - prefer the active phase's *User can…* / journey over drive-by polish
    - do not implement Out-of-v1 / out-of-phase scope "while we're here"

@@ -27,7 +27,10 @@ rules. Agents must follow them; do not re-litigate mid-task.
 3. **Progressive disclosure.** SKILL.md stays thin. Rare detail lives in
    `references/*` and is opened **only when the current step needs it**
    — never "just in case." `shipjaw-ask`: at most **one** reference file
-   per task, and usually zero. Same idea as `INDEX.md` → one/two KB files.
+   per task, and usually zero — **never** preload `skill-principles.md`
+   (binding defaults are inlined in the ask SKILL). Same idea as
+   `INDEX.md` → one/two KB files. Prefer `scripts/` for fragile
+   idempotent ops (continuation contract, provenance stamps).
 
 4. **Compile rules into tooling.** Bootstrap is incomplete until typing /
    lint / headers / CI / scripts actually encode the hard rules

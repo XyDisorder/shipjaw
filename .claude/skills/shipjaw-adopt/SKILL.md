@@ -1,6 +1,6 @@
 ---
 name: shipjaw-adopt
-description: Adopt Shipjaw on an existing TypeScript/Next app that was not scaffolded with Shipjaw — add documentation/, INDEX, AGENTS.md, Cursor rule, and idempotent tooling gaps. Do not use for greenfield (shipjaw-build), vague idea polishing (shipjaw-prompt), or when knowledge-base/ already exists (shipjaw-ask / migration upgrades). Do not rewrite the app.
+description: Adopts Shipjaw on an existing TypeScript/Next app that was never scaffolded with it — adds documentation/, INDEX.md, AGENTS.md, Cursor rule, provenance stamps, and idempotent tooling gaps. Use for legacy Next apps, foreign repos, or "bring this project under Shipjaw" with no knowledge-base/. Do not use for greenfield (shipjaw-build), vague idea polishing (shipjaw-prompt), or when knowledge-base/ already exists (shipjaw-ask). Do not rewrite the app.
 ---
 
 # shipjaw-adopt
@@ -11,12 +11,10 @@ contract **without** re-scaffolding or rewriting the product.
 After adopt → use **`shipjaw-ask`**. Never run `shipjaw-build` on a
 non-empty app that already has product code.
 
-**Principles:** `../shipjaw-build/references/skill-principles.md`.
 **Templates / kit:** `../shipjaw-build/templates/` ·
 `../shipjaw-build/templates/scaffold/`.
-**Old Shipjaw eras** (KB exists but legacy): use
-`../shipjaw-build/references/migration.md` via `shipjaw-ask`, not this
-skill.
+**Old Shipjaw eras** (KB exists but legacy): `shipjaw-ask` +
+`../shipjaw-build/references/migration.md` — not this skill.
 
 ## Anti-triggers
 
@@ -27,6 +25,19 @@ skill.
 - Non-TypeScript repo → refuse
 - User wants a full rewrite / new Next app → `shipjaw-build` in a
   **new** folder, not adopt-in-place
+
+## Checklist
+
+```
+- [ ] Detect TS/Next app; abort if KB exists
+- [ ] ≤2 clarify Q (vision + core User can…) if needed
+- [ ] Create documentation/ from templates (as-is reality)
+- [ ] ../shipjaw-build/scripts/copy-continuation-contract.sh <root>
+- [ ] ../shipjaw-build/scripts/stamp-provenance.sh <root> --adopted
+- [ ] Idempotent tooling gaps only (no wholesale config overwrite)
+- [ ] Cheap gate if scripts exist; record remaining gaps
+- [ ] Hand off: /shipjaw-ask <next task>
+```
 
 ## Workflow
 
@@ -56,9 +67,7 @@ deps) — paths/signatures only, no pasted code.
 Minimum set:
 
 - `INDEX.md` (with continuation banner)
-- `knowledge-base/architecture.md` — real layout; stamp
-  `scaffolded-with: shipjaw-build@<VERSION>` and note
-  `adopted-with: shipjaw-adopt@<VERSION>` (docs + contract; code pre-existed)
+- `knowledge-base/architecture.md` — real layout
 - `domain-model.md`, `features-index.md`, `decisions.md`, `changelog.md`
 - `api-reference.md` only if an API/Route Handlers surface exists
 - `product/overview.md` (+ design-brief only if design is already clear)
@@ -67,12 +76,14 @@ Minimum set:
 
 Do not invent features that are not in the code. Mark gaps honestly.
 
-### 4. Continuation contract
+### 4. Continuation contract + provenance
 
-Idempotent copy from scaffold kit:
+Execute (from `shipjaw-build`):
 
-- `AGENTS.md` → repo root
-- `shipjaw.cursor-rule.mdc` → `.cursor/rules/shipjaw.mdc`
+```bash
+../shipjaw-build/scripts/copy-continuation-contract.sh <project-root>
+../shipjaw-build/scripts/stamp-provenance.sh <project-root> --adopted
+```
 
 ### 5. Tooling gaps (idempotent, opt-in per file)
 

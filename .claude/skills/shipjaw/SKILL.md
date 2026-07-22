@@ -1,6 +1,7 @@
 ---
 name: shipjaw
-description: Shipjaw entrypoint — create a named project folder, cd into it, and explain the pipeline (shipjaw-prompt → shipjaw-build → shipjaw-ask; shipjaw-adopt for existing apps). Trigger on bare /shipjaw or "start a Shipjaw project". Do not scaffold here (use shipjaw-build). Do not craft the product prompt here (use shipjaw-prompt). If documentation/knowledge-base/ already exists, use shipjaw-ask instead.
+description: Creates a named Shipjaw project folder, switches into it, and explains the pipeline (prompt → build → ask; adopt for existing apps). Use when the user runs /shipjaw, starts a new Shipjaw project, or needs a clean project home. Do not scaffold code or write source-prompt here — use shipjaw-build / shipjaw-prompt. If documentation/knowledge-base/ exists, use shipjaw-ask instead.
+disable-model-invocation: true
 ---
 
 # shipjaw (entrypoint)
@@ -8,6 +9,9 @@ description: Shipjaw entrypoint — create a named project folder, cd into it, a
 **Onboarding only.** Does not scaffold code and does not write
 `source-prompt.md`. It prepares a clean working directory, then routes
 the user to the right next skill.
+
+Slash-only (`disable-model-invocation`) — do not auto-run from ambient
+chat.
 
 ## Anti-triggers
 
@@ -21,6 +25,16 @@ the user to the right next skill.
 - User already named a folder and only wants prompt craft →
   `/shipjaw-prompt`
 - User already has a build-ready prompt → `/shipjaw-build`
+
+## Checklist
+
+```
+- [ ] Resolve folder name (ask once if missing)
+- [ ] mkdir if needed; refuse silent overwrite of non-empty unknown dir
+- [ ] Switch subsequent commands into that folder
+- [ ] Show pipeline table + one recommended next command
+- [ ] Stop (no prompt/build/adopt unless user asked in-message)
+```
 
 ## Workflow
 

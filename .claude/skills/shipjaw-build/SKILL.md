@@ -1,21 +1,20 @@
 ---
 name: shipjaw-build
-description: Scaffold a brand-new TypeScript/Next.js site/app (NestJS only when needed) from a product prompt (pasted or documentation/product/source-prompt.md) — docs-first, tests, security, clean architecture. Trigger for initial build only. Do not use to polish a vague idea first (shipjaw-prompt), to adopt an existing app (shipjaw-adopt), for small CSS tweaks, non-TS repos, or when documentation/knowledge-base/ already exists (shipjaw-ask).
+description: Scaffolds a brand-new TypeScript/Next.js site/app (NestJS only when needed) from a build-ready product prompt — docs-first, tests, security, clean architecture, committed documentation/. Use for initial bootstrap, create-next-app greenfield, or when the user pastes a dense prompt / has documentation/product/source-prompt.md. Do not use to polish a vague idea (shipjaw-prompt), adopt an existing app (shipjaw-adopt), tweak CSS, or when documentation/knowledge-base/ already exists (shipjaw-ask).
+disable-model-invocation: true
 ---
 
 # shipjaw-build
 
 Bootstrap-only. Turns a **build-ready product prompt** into a scaffolded
 TypeScript site and a committed `documentation/` map. Later sessions use
-`shipjaw-ask`. Prefer running `shipjaw-prompt` first when the idea is
-still vague.
+`shipjaw-ask`. Prefer `shipjaw-prompt` first when the idea is still vague.
 
-**Operating principles:** `references/skill-principles.md` (1–18).
-Highlights: entrypoint + prompt/build/adopt/ask; state in repo; progressive
-disclosure; compile into tooling; templates > prose; host fallbacks;
-stop budgets; docs committed; anti-triggers; narration budget;
-`scaffolded-with`; project owns conventions; tiered regression /
-business-rule safety; **core journey first**.
+Slash-preferred (`disable-model-invocation`) — avoid ambient auto-scaffold.
+
+**Operating principles:** `references/skill-principles.md` (1–18) — open
+only if a principle conflict arises; hard rules below are enough for most
+runs.
 
 ## Anti-triggers (stop — don't run bootstrap)
 
@@ -42,20 +41,41 @@ business-rule safety; **core journey first**.
 5. **Security** — secrets out of git; authz in `application/`; actions
    re-check session; middleware; CSP via scaffold `next.config.ts`.
 6. **Documentation** — committed `documentation/`. No app code before
-   `INDEX.md` + phase-01. Stamp `scaffolded-with: shipjaw-build@VERSION`.
+   `INDEX.md` + phase-01. Stamp via `scripts/stamp-provenance.sh`.
 7. **Verify** — one gate/phase; **stop after 2 failed attempts**.
 8. **KB current** — update before done; state not only in chat.
 
+## Checklist
+
+```
+- [ ] Intake prompt (message or product/source-prompt.md)
+- [ ] Clarify gaps only (≤2 rounds / ~8 Q) or skip if dense
+- [ ] Stack via stack-shape + tech-choices (read on demand)
+- [ ] Write documentation/ (INDEX + phase-01) before feature code
+- [ ] Scaffold Next (temp-dir merge if docs already present)
+- [ ] Copy scaffold kit idempotently (see templates/scaffold/README)
+- [ ] Run scripts/copy-continuation-contract.sh <project-root>
+- [ ] Run scripts/stamp-provenance.sh <project-root>
+- [ ] Implement core *User can…* + tests; gate; ≤2 fix attempts
+- [ ] Update KB surgically; hand off to shipjaw-ask
+```
+
 ## Workflow (summary — `references/workflow.md`)
 
-1. Intake prompt (message **or** `documentation/product/source-prompt.md`)
-   → 2. Clarify only remaining gaps (≤2 rounds / ~8 Q; skip if prompt
-   already dense) → 3. Stack via `stack-shape.md` + `tech-choices.md` →
-4. Docs before feature code → 5. Scaffold → 6. Implement + gate →
-7. KB update + suggest compact.
+1. Intake → 2. Clarify → 3. Stack → 4. Docs → 5. Scaffold + kit +
+   continuation scripts → 6. Implement + gate → 7. KB + compact.
 
 If the repo looks like an older Shipjaw / skill-my-app project, read
 `references/migration.md` instead of re-bootstrapping.
+
+## Scripts (execute, don't reinvent)
+
+From this skill directory:
+
+```bash
+./scripts/copy-continuation-contract.sh <project-root>
+./scripts/stamp-provenance.sh <project-root>
+```
 
 ## Cost / narration
 
@@ -74,4 +94,4 @@ If the repo looks like an older Shipjaw / skill-my-app project, read
 - `modern-extras.md` — only if discovery activated
 - `doc-structure.md` · `workflow.md`
 - `templates/` · `templates/scaffold/` · `templates/business-rule.md` ·
-  `VERSION`
+  `VERSION` · `scripts/`

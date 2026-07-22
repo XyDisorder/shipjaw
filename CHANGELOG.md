@@ -1,5 +1,12 @@
 # skill-my-website changelog
 
+## 2026-07-22k
+
+- Skill hygiene: `disable-model-invocation` on `/shipjaw` + `/shipjaw-build`;
+  copiable checklists; richer third-person descriptions; `shipjaw-ask`
+  inlines binding defaults (no principles preload); utility scripts
+  `copy-continuation-contract.sh` + `stamp-provenance.sh`.
+
 ## 2026-07-22j
 
 - New **`shipjaw-adopt`**: bring an existing TS/Next app under the

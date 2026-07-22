@@ -29,6 +29,15 @@ configs when these exist.
 | `AGENTS.md` | repo root | always (Shipjaw continuation pointer) |
 | `shipjaw.cursor-rule.mdc` | `.cursor/rules/shipjaw.mdc` | always (Cursor alwaysApply contract) |
 
+Prefer the skill scripts (idempotent) instead of hand-copying those two:
+
+```bash
+# from shipjaw-build skill dir
+./scripts/copy-continuation-contract.sh <project-root>
+./scripts/stamp-provenance.sh <project-root>            # build
+./scripts/stamp-provenance.sh <project-root> --adopted  # adopt
+```
+
 **Pages that read a local DB:** add `export const dynamic = "force-dynamic"`
 on the route module (see `project-structure.md`).
 

@@ -1,6 +1,6 @@
 ---
 name: shipjaw-prompt
-description: Turn a rough project idea into a dense, build-ready product prompt for Shipjaw. Trigger when the user wants to express/clarify a product before scaffolding. Do not scaffold code or create knowledge-base/ (use shipjaw-build for that). Do not use when documentation/knowledge-base/ already exists (use shipjaw-ask).
+description: Turns a rough project idea into a dense, build-ready product prompt and writes documentation/product/source-prompt.md. Use when the user wants to express, clarify, or polish a product before scaffolding, or mentions a vague app idea. Do not scaffold code or create knowledge-base/ (shipjaw-build). Do not use when documentation/knowledge-base/ already exists (shipjaw-ask).
 ---
 
 # shipjaw-prompt
@@ -16,6 +16,16 @@ almost no rediscovery. Does **not** scaffold an app, does **not** create
   bootstrapped)
 - User already has a polished prompt and wants code now → `shipjaw-build`
 - Pure CSS/copy tweak / non-TypeScript → refuse
+
+## Checklist
+
+```
+- [ ] Intake raw idea
+- [ ] Clarify gaps only (≤2 rounds / ~8 Q); default the rest
+- [ ] Craft dense prompt (references/prompt-craft.md)
+- [ ] Write documentation/product/source-prompt.md (never KB)
+- [ ] Hand off: /shipjaw-build
+```
 
 ## Workflow
 
@@ -50,4 +60,4 @@ almost no rediscovery. Does **not** scaffold an app, does **not** create
 - `references/prompt-craft.md`
 - `templates/source-prompt.md`
 - `../shipjaw-build/references/discovery-questions.md` (questions only)
-- Principles: `../shipjaw-build/references/skill-principles.md` (1–17)
+- Principles: `../shipjaw-build/references/skill-principles.md` (on conflict only)

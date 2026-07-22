@@ -47,6 +47,8 @@ for f in \
   "$SKILL/templates/scaffold/AGENTS.md" \
   "$SKILL/templates/scaffold/shipjaw.cursor-rule.mdc" \
   "$SKILL/templates/business-rule.md" \
+  "$SKILL/scripts/copy-continuation-contract.sh" \
+  "$SKILL/scripts/stamp-provenance.sh" \
   "$ROOT/.cursor/skills/shipjaw" \
   "$ROOT/.cursor/skills/shipjaw-prompt" \
   "$ROOT/.cursor/skills/shipjaw-build" \
@@ -79,6 +81,44 @@ for skill_md in "$ENTRY/SKILL.md" "$PROMPT/SKILL.md" "$SKILL/SKILL.md" "$ADOPT/S
     bad "$name description needs anti-trigger (do not use / not for / instead)"
   fi
 done
+
+echo "== invocation control =="
+if grep -q 'disable-model-invocation: true' "$ENTRY/SKILL.md"; then
+  ok "shipjaw slash-only invocation"
+else
+  bad "shipjaw should set disable-model-invocation: true"
+fi
+if grep -q 'disable-model-invocation: true' "$SKILL/SKILL.md"; then
+  ok "shipjaw-build slash-only invocation"
+else
+  bad "shipjaw-build should set disable-model-invocation: true"
+fi
+if grep -q 'disable-model-invocation: true' "$ASK/SKILL.md"; then
+  bad "shipjaw-ask should stay auto-invokable (no disable-model-invocation)"
+else
+  ok "shipjaw-ask auto-invokable"
+fi
+if grep -q 'disable-model-invocation: true' "$ADOPT/SKILL.md"; then
+  bad "shipjaw-adopt should stay auto-invokable (no disable-model-invocation)"
+else
+  ok "shipjaw-adopt auto-invokable"
+fi
+
+echo "== checklists =="
+for skill_md in "$ENTRY/SKILL.md" "$PROMPT/SKILL.md" "$SKILL/SKILL.md" "$ADOPT/SKILL.md" "$ASK/SKILL.md"; do
+  name="$(basename "$(dirname "$skill_md")")"
+  if grep -q '\- \[ \]' "$skill_md"; then ok "$name has checklist"
+  else bad "$name missing copiable checklist (- [ ])"
+  fi
+done
+
+echo "== ask stays cheap =="
+if grep -qi 'Binding defaults' "$ASK/SKILL.md" \
+  && grep -qi 'never.*skill-principles\|skill-principles.md.*default' "$ASK/SKILL.md"; then
+  ok "shipjaw-ask inlines defaults / avoids principles preload"
+else
+  bad "shipjaw-ask should inline binding defaults and avoid principles preload"
+fi
 
 echo "== pipeline phrases =="
 PRINCIPLES="$SKILL/references/skill-principles.md"
