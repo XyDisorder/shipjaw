@@ -1,0 +1,56 @@
+# Copy to .github/workflows/ci.yml at scaffold time. Adapt package
+# manager (pnpm/npm), turbo vs not, and monorepo filters. Keep the shape:
+# install → typecheck → lint → audit → unit → build → e2e.
+# Playwright uses a dedicated port (default 3005) — see
+# templates/scaffold/playwright.config.ts. Pass secrets via GitHub
+# Actions secrets (PLAYWRIGHT_*, DATABASE_URL, AUTH_*), never commit them.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Dependency audit
+        run: pnpm audit --audit-level=high
+
+      - name: Unit tests
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: E2E tests
+        run: pnpm e2e
+        env:
+          CI: "true"
+          PLAYWRIGHT_PORT: "3005"
+          # PLAYWRIGHT_BASE_URL: http://127.0.0.1:3005
+          # AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
