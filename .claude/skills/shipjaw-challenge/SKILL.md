@@ -1,13 +1,15 @@
 ---
 name: shipjaw-challenge
-description: Adversarially challenges a Shipjaw phase plan, ADR, or tech/product decision using a proposer vs challenger split (prefer a separate subagent for the challenger). Scores product, business, tech, pragmatism, and design fit; writes a challenge report and updates the plan. Use when locking a non-trivial phase, reviewing an ADR, before implementing a big slice, challenge this plan, or contester ce plan. Do not implement product code here. Do not use for greenfield scaffold (shipjaw-build), adopt, or routine tiny CSS/copy (shipjaw-ask). Do not rubber-stamp.
+description: Optional full adversarial ritual for locking a Shipjaw phase plan, ADR, or tech/product decision — durable challenge-report.md via proposer vs challenger (prefer a separate subagent). Use when the user runs /shipjaw-challenge, challenge this plan, wants a written challenge report, locking a meaty phase, contester ce plan en profondeur, or a built-in pass left the plan unstable. Do not implement product code. Do not use as the only place challenge happens — ask/build already challenge plans inline. Do not use for greenfield scaffold, adopt, or tiny CSS/copy. Do not rubber-stamp.
 disable-model-invocation: true
 ---
 
 # shipjaw-challenge
 
-**Challenge only.** Two roles must disagree usefully before a plan is
-locked. Does **not** scaffold, adopt, or implement features.
+**Full challenge ritual only** (durable report + lock). Everyday plan/
+choice pushback is **built-in** in `shipjaw-ask` / `shipjaw-build` —
+see `../shipjaw-build/references/challenge-built-in.md`. This slash skill
+escalates that into a repo artifact. Does **not** scaffold or implement.
 
 **Axes** (score each Keep / Change / Defer + one sharp reason):
 
@@ -18,6 +20,7 @@ locked. Does **not** scaffold, adopt, or implement features.
 5. **Design** — fit `design-brief` + `design-constraints.md` (not AI chrome)?
 
 **References (on demand):**
+`../shipjaw-build/references/challenge-built-in.md` ·
 `../shipjaw-build/references/design-constraints.md` ·
 `../shipjaw-build/references/tech-choices.md` ·
 `../shipjaw-build/references/project-structure.md` ·
@@ -28,6 +31,7 @@ locked. Does **not** scaffold, adopt, or implement features.
 - No target plan/ADR/phase → ask once what to challenge, or stop
 - One-line CSS/copy → refuse
 - User wants code now with no plan → `shipjaw-ask` / `shipjaw-build`
+  (those skills still run built-in challenge first)
 - Complete rubber-stamp (“looks good”) with no Change/Defer and no
   rejected alternative → **invalid**; force at least one substantive pushback
   or an explicit “no viable alternative; here’s why”
@@ -67,12 +71,11 @@ least one concrete alternative you would ship instead.
    if still unstable).
 4. Stop. Do not code in this skill.
 
-## When build/ask must invoke this
+## Relation to built-in challenge
 
-Non-trivial work (new phase, new persistence/auth, new primary UI surface,
-money/authz, or any ADR that isn’t forced by `tech-choices.md`) →
-**challenge before implement**. Trivial bugfix inside an already-challenged
-phase may skip.
+`ask` / `build` already run a minimum challenger pass on plans and
+non-forced choices. Use **this** skill when you want the full written
+report, the user invoked the slash, or built-in left the plan soft.
 
 ## Checklist
 

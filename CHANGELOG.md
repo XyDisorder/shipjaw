@@ -1,5 +1,11 @@
 # skill-my-website changelog
 
+## 2026-07-22u
+
+- Challenge is **built-in** for plans/choices in ask/build (prefer a
+  second agent) — `/shipjaw-challenge` is the optional full report ritual,
+  not the only gate. New `challenge-built-in.md`.
+
 ## 2026-07-22t
 
 - Smoke: frontmatter + FR discovery loops cover all **7** skills

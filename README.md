@@ -149,7 +149,7 @@ Compact between tasks (`/compact` on Claude, or a fresh chat on Cursor): resume 
 | Build-ready prompt → docs + app + v1 | `/shipjaw-build` |
 | Existing app, no Shipjaw KB | `/shipjaw-adopt` |
 | Refresh stamps / AGENTS / migration gaps only | `/shipjaw-upgrade` |
-| Challenge a phase/ADR before coding | `/shipjaw-challenge` |
+| Challenge plans/choices (built-in in ask/build; optional full report) | `/shipjaw-ask` / `/shipjaw-build` · optional `/shipjaw-challenge` |
 | Feature / fix / continue in a Shipjaw app | `/shipjaw-ask` |
 
 Scaffolded apps also get `AGENTS.md` + `.cursor/rules/shipjaw.mdc` so the
@@ -190,7 +190,7 @@ ln -s "$(pwd)/.claude/skills/shipjaw-ask"     ~/.cursor/skills/shipjaw-ask
 
 Keep the skills as **siblings** so relative `../shipjaw-build/references/` paths resolve.
 
-> Migrating from older installs: link **all seven** skills above. Legacy stamps still work. Non-trivial phases should run **`/shipjaw-challenge`** before implement.
+> Migrating from older installs: link **all seven** skills above. Legacy stamps still work. Agents **challenge plans/choices by default** in ask/build; `/shipjaw-challenge` is the optional full report ritual.
 
 ## Why it’s different
 
@@ -198,7 +198,8 @@ Keep the skills as **siblings** so relative `../shipjaw-build/references/` paths
 |---|---|
 | Jump straight into code from vibes | Optional **prompt craft** before scaffold |
 | Everything in the transcript | Versioned state + **handoff.md** |
-| One mega catch-all prompt | Express ≠ build ≠ adopt ≠ upgrade ≠ **challenge** ≠ continue |
+| One mega catch-all prompt | Express ≠ build ≠ adopt ≠ upgrade ≠ continue (+ optional full **challenge** ritual) |
+| Plans rubber-stamped | **Built-in** challenger pass on plans/choices (prefer 2nd agent) |
 | “No `any`” as forgettable prose | Encoded in tsconfig / eslint / CI |
 | Gitignored docs → amnesiac clones | **Committed** docs |
 | Fixes that quietly regress | Bug ⇒ failing-then-passing test |
@@ -209,7 +210,7 @@ Keep the skills as **siblings** so relative `../shipjaw-build/references/` paths
 - Vague idea, no prompt yet → **`shipjaw-prompt`**, not build  
 - Existing app without Shipjaw docs → **`shipjaw-adopt`**, not build  
 - Only bump skill docs/stamps → **`shipjaw-upgrade`**, not ask  
-- Challenge a plan before coding → **`shipjaw-challenge`**  
+- Challenge a plan (full durable report) → **`shipjaw-challenge`** (ask/build already challenge inline)  
 - One-off CSS / copy tweak → normal edit  
 - Non-TypeScript repo → refuse  
 - KB already exists + product work → **`shipjaw-ask`**, not build  

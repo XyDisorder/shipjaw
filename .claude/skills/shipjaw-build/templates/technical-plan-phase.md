@@ -40,10 +40,11 @@
 <!-- Do not start implementation while expected behavior is ambiguous. -->
 
 ## Challenge (required for non-trivial phases)
-<!-- Run /shipjaw-challenge (proposer vs challenger) before coding.
+<!-- Built-in challenger pass (prefer subagent) before coding — not
+     slash-gated. Optional /shipjaw-challenge for a durable report.
      Trivial follow-ups inside an already-challenged phase may note
      "covered by challenge on phase-0N <date>". -->
-- **Report:** `documentation/technical-plan/challenge-phase-0N-….md` (or path)
+- **Report:** `built-in <date>` | `documentation/technical-plan/challenge-phase-0N-….md`
 - **Verdict:** proceed | revise-then-proceed | defer | split-phase
 - **Axis calls:** Product __ · Business __ · Tech __ · Pragmatism __ · Design __
 - **Plan changes applied after challenge:** <none | bullets>

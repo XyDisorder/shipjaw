@@ -35,6 +35,7 @@ for f in \
   "$SKILL/references/regression-and-business-rules.md" \
   "$SKILL/references/gate-failure-modes.md" \
   "$SKILL/references/design-constraints.md" \
+  "$SKILL/references/challenge-built-in.md" \
   "$SKILL/references/workflow.md" \
   "$SKILL/references/doc-structure.md" \
   "$SKILL/references/project-structure.md" \
@@ -296,11 +297,13 @@ if [[ -f "$CHALLENGE/SKILL.md" ]] \
 else
   bad "shipjaw-challenge missing dual-agent / slash-only / anti-rubber-stamp"
 fi
-if grep -qi 'shipjaw-challenge\|Challenge before implement' "$ASK/SKILL.md" \
-  && grep -qi 'Challenge (required' "$SKILL/templates/technical-plan-phase.md"; then
-  ok "ask + phase template require challenge for non-trivial work"
+if grep -qi 'built-in\|Challenge plans' "$ASK/SKILL.md" \
+  && grep -qi 'Challenge (required' "$SKILL/templates/technical-plan-phase.md" \
+  && [[ -f "$SKILL/references/challenge-built-in.md" ]] \
+  && grep -qi 'not only when\|not slash\|built-in' "$SKILL/references/challenge-built-in.md"; then
+  ok "ask + phase template require built-in challenge for non-trivial work"
 else
-  bad "challenge not wired into ask / phase template"
+  bad "built-in challenge not wired into ask / phase template / challenge-built-in.md"
 fi
 if grep -q 'survey-adopt-state' "$ADOPT/SKILL.md" \
   && grep -qi 'PARTIAL_DOCS\|FULL_SHIPJAW_KB\|Status snapshot\|where we are' "$ADOPT/SKILL.md"; then

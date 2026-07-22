@@ -11,16 +11,18 @@ rules. Agents must follow them; do not re-litigate mid-task.
    bring an **existing** non-Shipjaw TS/Next app under the contract
    (docs + AGENTS/rule + idempotent gaps — **no** rewrite).
    `shipjaw-upgrade` = refresh docs/contract/stamps to current VERSION
-   (migration table; **no** product rewrite). `shipjaw-challenge` =
-   adversarial proposer vs challenger on a phase/ADR **before** implement
-   (prefer a real second agent for the challenger). `shipjaw-ask` = every
-   later product session. Continuation never reloads bootstrap
-   discovery/architecture docs or re-derives the stack. If KB exists →
-   hand off to ask (or upgrade if only stamps/docs lag); if INDEX
-   missing but docs exist → repair, don't bootstrap. Prompt and
-   entrypoint must **never** create `knowledge-base/`. Adopt creates KB
-   only when the app already exists and KB is absent. Non-trivial phases
-   must pass **challenge** before code.
+   (migration table; **no** product rewrite). **Built-in challenge** =
+   every work skill adversarially pushes plans/choices (prefer a second
+   agent/subagent; see `challenge-built-in.md`) — not slash-gated.
+   `/shipjaw-challenge` = optional **full** ritual + durable report when
+   locking a meaty phase/ADR. `shipjaw-ask` = every later product session.
+   Continuation never reloads bootstrap discovery/architecture docs or
+   re-derives the stack. If KB exists → hand off to ask (or upgrade if
+   only stamps/docs lag); if INDEX missing but docs exist → repair, don't
+   bootstrap. Prompt and entrypoint must **never** create
+   `knowledge-base/`. Adopt creates KB only when the app already exists
+   and KB is absent. Non-trivial phases must pass **challenge** (built-in
+   or full) before code.
 
 
 2. **State lives in the repo, not the transcript.** Anything needed to

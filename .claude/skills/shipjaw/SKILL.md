@@ -70,8 +70,8 @@ After the folder exists, reply in the user's language with this map
 | `/shipjaw-build` | Prompt ready (file or paste) | Docs + TypeScript/Next scaffold + v1 + gate |
 | `/shipjaw-adopt` | Existing TS/Next app, no Shipjaw KB | Docs + continuation contract + tooling gaps — **no** rewrite |
 | `/shipjaw-upgrade` | Shipjaw app, skill/docs stamps lag | Migration gaps + refresh AGENTS/rule/stamps — **no** product rewrite |
-| `/shipjaw-challenge` | Locking a non-trivial phase / ADR | Proposer vs challenger review (prefer 2nd agent) — **no** code |
-| `/shipjaw-ask` | App already has `documentation/knowledge-base/` | Features / fixes — reads `INDEX.md` + 1–2 files |
+| `/shipjaw-challenge` | Optional full lock ritual | Durable challenge report (agents already challenge plans inline in ask/build) |
+| `/shipjaw-ask` | App already has `documentation/knowledge-base/` | Features / fixes — reads `INDEX.md` + 1–2 files; **challenges plans by default** |
 
 Recommended next step for a greenfield folder:
 
@@ -103,7 +103,7 @@ Docs/contract only (skill VERSION moved):
 /shipjaw-upgrade
 ```
 
-Before a meaty phase:
+Before a meaty phase (optional full report — ask/build already challenge inline):
 
 ```text
 /shipjaw-challenge

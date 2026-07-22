@@ -109,10 +109,12 @@ Still "docs only" → not done.
 
 ## 6. Implement phase by phase
 
-**Before coding a non-trivial phase:** run `/shipjaw-challenge`
-(proposer vs challenger — prefer a separate subagent for the challenger).
-Fill the phase **Challenge** section from the report; revise the plan if
-needed. Skip only for trivial follow-ups inside an already-challenged phase.
+**Before coding a non-trivial phase:** run a **built-in** challenger pass
+(proposer vs challenger — prefer a separate subagent). See
+`challenge-built-in.md`. Fill the phase **Challenge** section; revise the
+plan if needed. Escalate to `/shipjaw-challenge` only for a durable report
+or when the plan stays soft. Skip only for trivial follow-ups inside an
+already-challenged phase.
 
 Implement + tests + security together. Cap 500 lines/file.
 On behavior changes: short pre-change bullets in the phase file; follow

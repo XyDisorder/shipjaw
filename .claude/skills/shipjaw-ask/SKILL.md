@@ -8,20 +8,29 @@ description: Continues, extends, fixes, or resumes work on a Shipjaw-scaffolded 
 Continuation-only. Do **not** reload bootstrap discovery/architecture or
 the full `shipjaw-build` SKILL body. Trust project tooling + docs.
 
-## Challenge before implement (non-trivial)
+## Challenge plans/choices (built-in — not slash-only)
 
-Before coding a **new phase**, new auth/persistence, primary UI surface,
-money/authz, or an ADR not forced by `tech-choices.md`:
+Agents **must** challenge non-trivial plans and choices **in this session**
+(prefer a separate Task/subagent as Challenger). Do **not** wait for the
+user to type `/shipjaw-challenge`.
 
-1. Ensure the phase file exists (from template).
-2. Run **`/shipjaw-challenge`** (or follow that skill in-session): real
-   **proposer vs challenger** split — prefer a **subagent/Task** for the
-   challenger; fallback = same-session challenger mode only.
-3. Apply plan edits from the challenge report.
+Before coding a **new phase**, new auth/persistence, primary UI, money/
+authz, or any ADR/stack fork not forced by `tech-choices.md`:
+
+1. Ensure the phase (or ADR) exists.
+2. **Built-in pass:** Proposer ≤8 bullets → Challenger attacks (5 axes:
+   product / business / tech / pragmatism / design). Prefer subagent;
+   else same-session hard role flip. ≥1 Change/Defer **or** “no
+   alternative + why”. No rubber-stamp.
+3. Apply plan edits; note pass in the phase **Challenge** section
+   (`built-in <date>` is enough unless escalating).
 4. Only then implement.
 
-Skip only for tiny fixes inside an already-challenged phase (note the
-prior challenge path in the phase Challenge section).
+**Escalate** to `/shipjaw-challenge` when the user asks, the plan stays
+unstable, or you want a durable `challenge-report.md`. Detail:
+`../shipjaw-build/references/challenge-built-in.md` (open only if unsure).
+
+Skip only for tiny fixes inside an already-challenged phase (cite prior).
 
 ## Binding defaults (do not open principles unless conflict)
 
@@ -38,6 +47,8 @@ prior challenge path in the phase Challenge section).
 9. End every run by overwriting `documentation/handoff.md` (template
    `../shipjaw-build/templates/handoff.md`) with next slash command.
 10. On **doc↔code drift**, stop and resolve (see below) — don’t invent.
+11. **Challenge** non-trivial plans/choices **in-session** (prefer
+    Task/subagent); `/shipjaw-challenge` only for full report / escalate.
 
 **Old repos / stamp lag:** `../shipjaw-build/references/migration.md` or
 `/shipjaw-upgrade` when only docs/contract need bumping.
@@ -96,7 +107,7 @@ Never leave INDEX/features-index lying after you ship a path change.
 ```
 - [ ] Read / repair INDEX + handoff
 - [ ] Drift check (table above) on touched area
-- [ ] Non-trivial work → /shipjaw-challenge before code
+- [ ] Non-trivial work → built-in challenge (subagent preferred) before code
 - [ ] ≤1 clarifying Q; stop if core behavior still ambiguous
 - [ ] Implement (journey-first; domain tests; e2e edges if critical)
 - [ ] UI touch → design-constraints.md floor
@@ -112,8 +123,9 @@ Never leave INDEX/features-index lying after you ship a path change.
 1. Read / repair INDEX (check `scaffolded-with`; migrate lightly if needed
    or suggest `shipjaw-upgrade`). Read handoff.
 2. Drift check on the area the task touches.
-3. If non-trivial (new phase / auth / data / primary UI / money) → run
-   `shipjaw-challenge` and apply plan edits **before** coding.
+3. If non-trivial (new phase / auth / data / primary UI / money) →
+   **built-in** challenger pass (prefer Task/subagent); escalate to
+   `/shipjaw-challenge` only if needed; apply plan edits **before** coding.
 4. ≤1 clarifying question. If the **core behavior** is still ambiguous
    after that → **stop** and ask the human; do not invent the business rule.
 5. Implement via project config as source of truth:

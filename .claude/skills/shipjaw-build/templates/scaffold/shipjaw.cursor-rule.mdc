@@ -9,6 +9,10 @@ This app was scaffolded with **Shipjaw**. For features, fixes, refactors, and
 resumed work, follow the **`shipjaw-ask`** contract (prefer invoking
 `/shipjaw-ask`; if not invoked, still obey this rule).
 
+Before non-trivial plans/choices (new phase, auth, data, primary UI, ADR):
+run a **built-in challenger pass** (prefer a separate Task/subagent). Optional
+`/shipjaw-challenge` only for a durable written report.
+
 ## Do
 
 1. Read `documentation/INDEX.md` first. Use **Open when** as a hard filter.
