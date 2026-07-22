@@ -1,5 +1,12 @@
 # skill-my-website changelog
 
+## 2026-07-22s
+
+- **`shipjaw-challenge`**: real proposer vs challenger split (prefer a
+  separate subagent) on phase/ADR plans before non-trivial implement.
+  Challenge report template + phase Challenge section; wired into ask,
+  build workflow, entrypoint, principles, eval, and smoke.
+
 ## 2026-07-22r
 
 - Complete high-ROI skill loop: **gate-failure-modes** (open on 2nd gate

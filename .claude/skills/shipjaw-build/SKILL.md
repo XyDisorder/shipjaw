@@ -69,7 +69,8 @@ runs.
 - [ ] ./scripts/run-gate.sh <project-root> --with-e2e
 - [ ] Fix ≤2 attempts; update KB surgically
 - [ ] Write documentation/handoff.md (next /shipjaw-ask …)
-- [ ] Hand off to shipjaw-ask
+- [ ] For non-trivial phase-01+: note challenge required before heavy UI/auth/data
+- [ ] Hand off to shipjaw-ask (or /shipjaw-challenge first if plan still soft)
 ```
 
 ## Workflow (summary — `references/workflow.md`)

@@ -1,12 +1,27 @@
 ---
 name: shipjaw-ask
-description: Continues, extends, fixes, or resumes work on a Shipjaw-scaffolded or Shipjaw-adopted TypeScript/Next app that already has documentation/knowledge-base/ and INDEX.md. Token-cheap: read INDEX.md first, then at most 1–2 relevant docs. Use when adding features, fixing bugs, refactors, implementing the next phase, continue this repo, resume after compact, fresh chat on this app, reprendre le projet, continuer cette app, corriger un bug, ajouter une feature, or when AGENTS.md / .cursor/rules/shipjaw.mdc say to follow shipjaw-ask. Do not use for greenfield bootstrap (shipjaw-build), adopting a foreign app with no KB (shipjaw-adopt), skill-only doc upgrades (shipjaw-upgrade), polishing a vague product idea (shipjaw-prompt), pure one-line CSS/copy tweaks, or non-TypeScript repos.
+description: Continues, extends, fixes, or resumes work on a Shipjaw-scaffolded or Shipjaw-adopted TypeScript/Next app that already has documentation/knowledge-base/ and INDEX.md. Token-cheap: read INDEX.md first, then at most 1–2 relevant docs. Use when adding features, fixing bugs, refactors, implementing the next phase, continue this repo, resume after compact, fresh chat on this app, reprendre le projet, continuer cette app, corriger un bug, ajouter une feature, or when AGENTS.md / .cursor/rules/shipjaw.mdc say to follow shipjaw-ask. Do not use for greenfield bootstrap (shipjaw-build), adopting a foreign app with no KB (shipjaw-adopt), skill-only doc upgrades (shipjaw-upgrade), plan-only adversarial review (shipjaw-challenge), polishing a vague product idea (shipjaw-prompt), pure one-line CSS/copy tweaks, or non-TypeScript repos.
 ---
 
 # shipjaw-ask
 
 Continuation-only. Do **not** reload bootstrap discovery/architecture or
 the full `shipjaw-build` SKILL body. Trust project tooling + docs.
+
+## Challenge before implement (non-trivial)
+
+Before coding a **new phase**, new auth/persistence, primary UI surface,
+money/authz, or an ADR not forced by `tech-choices.md`:
+
+1. Ensure the phase file exists (from template).
+2. Run **`/shipjaw-challenge`** (or follow that skill in-session): real
+   **proposer vs challenger** split — prefer a **subagent/Task** for the
+   challenger; fallback = same-session challenger mode only.
+3. Apply plan edits from the challenge report.
+4. Only then implement.
+
+Skip only for tiny fixes inside an already-challenged phase (note the
+prior challenge path in the phase Challenge section).
 
 ## Binding defaults (do not open principles unless conflict)
 
@@ -81,6 +96,7 @@ Never leave INDEX/features-index lying after you ship a path change.
 ```
 - [ ] Read / repair INDEX + handoff
 - [ ] Drift check (table above) on touched area
+- [ ] Non-trivial work → /shipjaw-challenge before code
 - [ ] ≤1 clarifying Q; stop if core behavior still ambiguous
 - [ ] Implement (journey-first; domain tests; e2e edges if critical)
 - [ ] UI touch → design-constraints.md floor
@@ -96,9 +112,11 @@ Never leave INDEX/features-index lying after you ship a path change.
 1. Read / repair INDEX (check `scaffolded-with`; migrate lightly if needed
    or suggest `shipjaw-upgrade`). Read handoff.
 2. Drift check on the area the task touches.
-3. ≤1 clarifying question. If the **core behavior** is still ambiguous
+3. If non-trivial (new phase / auth / data / primary UI / money) → run
+   `shipjaw-challenge` and apply plan edits **before** coding.
+4. ≤1 clarifying question. If the **core behavior** is still ambiguous
    after that → **stop** and ask the human; do not invent the business rule.
-4. Implement via project config as source of truth:
+5. Implement via project config as source of truth:
    - prefer the active phase's *User can…* / journey over drive-by polish
    - do not implement Out-of-v1 / out-of-phase scope "while we're here"
    - place new types/constants/helpers per
@@ -116,9 +134,9 @@ Never leave INDEX/features-index lying after you ship a path change.
      `regression-and-business-rules.md` if needed
    - contracts consumers only if package exists
    - actions/endpoints → authz + session + middleware as needed
-5. Gate via `run-gate.sh`; on **second** failure open
+6. Gate via `run-gate.sh`; on **second** failure open
    `../shipjaw-build/references/gate-failure-modes.md`, apply one matching
    fix; if still red → stop and ask human.
-6. Surgical KB / product updates; validate-docs optional.
-7. **Handoff (mandatory):** overwrite `documentation/handoff.md`.
-8. Suggest `/compact` or fresh chat; point at INDEX + handoff.
+7. Surgical KB / product updates; validate-docs optional.
+8. **Handoff (mandatory):** overwrite `documentation/handoff.md`.
+9. Suggest `/compact` or fresh chat; point at INDEX + handoff.

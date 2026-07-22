@@ -149,6 +149,7 @@ Compact between tasks (`/compact` on Claude, or a fresh chat on Cursor): resume 
 | Build-ready prompt → docs + app + v1 | `/shipjaw-build` |
 | Existing app, no Shipjaw KB | `/shipjaw-adopt` |
 | Refresh stamps / AGENTS / migration gaps only | `/shipjaw-upgrade` |
+| Challenge a phase/ADR before coding | `/shipjaw-challenge` |
 | Feature / fix / continue in a Shipjaw app | `/shipjaw-ask` |
 
 Scaffolded apps also get `AGENTS.md` + `.cursor/rules/shipjaw.mdc` so the
@@ -175,6 +176,7 @@ ln -s "$(pwd)/.claude/skills/shipjaw-prompt"  ~/.claude/skills/shipjaw-prompt
 ln -s "$(pwd)/.claude/skills/shipjaw-build"   ~/.claude/skills/shipjaw-build
 ln -s "$(pwd)/.claude/skills/shipjaw-adopt"   ~/.claude/skills/shipjaw-adopt
 ln -s "$(pwd)/.claude/skills/shipjaw-upgrade" ~/.claude/skills/shipjaw-upgrade
+ln -s "$(pwd)/.claude/skills/shipjaw-challenge" ~/.claude/skills/shipjaw-challenge
 ln -s "$(pwd)/.claude/skills/shipjaw-ask"     ~/.claude/skills/shipjaw-ask
 
 ln -s "$(pwd)/.claude/skills/shipjaw"         ~/.cursor/skills/shipjaw
@@ -182,12 +184,13 @@ ln -s "$(pwd)/.claude/skills/shipjaw-prompt"  ~/.cursor/skills/shipjaw-prompt
 ln -s "$(pwd)/.claude/skills/shipjaw-build"   ~/.cursor/skills/shipjaw-build
 ln -s "$(pwd)/.claude/skills/shipjaw-adopt"   ~/.cursor/skills/shipjaw-adopt
 ln -s "$(pwd)/.claude/skills/shipjaw-upgrade" ~/.cursor/skills/shipjaw-upgrade
+ln -s "$(pwd)/.claude/skills/shipjaw-challenge" ~/.cursor/skills/shipjaw-challenge
 ln -s "$(pwd)/.claude/skills/shipjaw-ask"     ~/.cursor/skills/shipjaw-ask
 ```
 
 Keep the skills as **siblings** so relative `../shipjaw-build/references/` paths resolve.
 
-> Migrating from `skill-my-app` / old single `shipjaw` bootstrap: remove old symlinks, link the six skills above. Legacy stamps still work. Bootstrap = **`shipjaw-build`**; foreign apps = **`shipjaw-adopt`**; stamp refresh = **`shipjaw-upgrade`**.
+> Migrating from older installs: link **all seven** skills above. Legacy stamps still work. Non-trivial phases should run **`/shipjaw-challenge`** before implement.
 
 ## Why it’s different
 
@@ -195,7 +198,7 @@ Keep the skills as **siblings** so relative `../shipjaw-build/references/` paths
 |---|---|
 | Jump straight into code from vibes | Optional **prompt craft** before scaffold |
 | Everything in the transcript | Versioned state + **handoff.md** |
-| One mega catch-all prompt | Express ≠ build ≠ adopt ≠ upgrade ≠ continue |
+| One mega catch-all prompt | Express ≠ build ≠ adopt ≠ upgrade ≠ **challenge** ≠ continue |
 | “No `any`” as forgettable prose | Encoded in tsconfig / eslint / CI |
 | Gitignored docs → amnesiac clones | **Committed** docs |
 | Fixes that quietly regress | Bug ⇒ failing-then-passing test |
@@ -206,6 +209,7 @@ Keep the skills as **siblings** so relative `../shipjaw-build/references/` paths
 - Vague idea, no prompt yet → **`shipjaw-prompt`**, not build  
 - Existing app without Shipjaw docs → **`shipjaw-adopt`**, not build  
 - Only bump skill docs/stamps → **`shipjaw-upgrade`**, not ask  
+- Challenge a plan before coding → **`shipjaw-challenge`**  
 - One-off CSS / copy tweak → normal edit  
 - Non-TypeScript repo → refuse  
 - KB already exists + product work → **`shipjaw-ask`**, not build  

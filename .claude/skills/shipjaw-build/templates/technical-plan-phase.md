@@ -39,6 +39,16 @@
 - Gaps / risks: <compat, side effects, concurrency — or "none">
 <!-- Do not start implementation while expected behavior is ambiguous. -->
 
+## Challenge (required for non-trivial phases)
+<!-- Run /shipjaw-challenge (proposer vs challenger) before coding.
+     Trivial follow-ups inside an already-challenged phase may note
+     "covered by challenge on phase-0N <date>". -->
+- **Report:** `documentation/technical-plan/challenge-phase-0N-….md` (or path)
+- **Verdict:** proceed | revise-then-proceed | defer | split-phase
+- **Axis calls:** Product __ · Business __ · Tech __ · Pragmatism __ · Design __
+- **Plan changes applied after challenge:** <none | bullets>
+- **Strongest objection addressed how:** <one line>
+
 ## Business rules (tiered)
 - [ ] None critical — invariants noted in feature doc / domain tests only
 - [ ] Critical — slim `BR-XXX` under `product/business-rules/`
@@ -61,6 +71,7 @@
 
 ## Acceptance criteria
 - [ ] Every "User can…" checkbox above is true
+- [ ] Challenge section complete for non-trivial phases (or explicit skip reason)
 - [ ] Nothing from Out of scope was implemented
 - [ ] `tsc --noEmit`, lint, and test/e2e all pass (local + CI)
 - [ ] If `packages/contracts/` exists: every consumer updated (else n/a)

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Structural smoke check for shipjaw / shipjaw-prompt / shipjaw-build /
-# shipjaw-adopt / shipjaw-upgrade / shipjaw-ask.
+# shipjaw-adopt / shipjaw-upgrade / shipjaw-challenge / shipjaw-ask.
 # Run from repo root: ./scripts/smoke-check.sh
 set -euo pipefail
 
@@ -10,6 +10,7 @@ ASK="$ROOT/.claude/skills/shipjaw-ask"
 PROMPT="$ROOT/.claude/skills/shipjaw-prompt"
 ADOPT="$ROOT/.claude/skills/shipjaw-adopt"
 UPGRADE="$ROOT/.claude/skills/shipjaw-upgrade"
+CHALLENGE="$ROOT/.claude/skills/shipjaw-challenge"
 ENTRY="$ROOT/.claude/skills/shipjaw"
 FAIL=0
 
@@ -25,6 +26,7 @@ for f in \
   "$ASK/SKILL.md" \
   "$ADOPT/SKILL.md" \
   "$UPGRADE/SKILL.md" \
+  "$CHALLENGE/SKILL.md" \
   "$SKILL/SKILL.md" \
   "$SKILL/VERSION" \
   "$SKILL/references/skill-principles.md" \
@@ -52,6 +54,7 @@ for f in \
   "$SKILL/templates/scaffold/shipjaw.cursor-rule.mdc" \
   "$SKILL/templates/business-rule.md" \
   "$SKILL/templates/technical-plan-converge-arch.md" \
+  "$SKILL/templates/challenge-report.md" \
   "$SKILL/templates/handoff.md" \
   "$SKILL/scripts/copy-continuation-contract.sh" \
   "$SKILL/scripts/stamp-provenance.sh" \
@@ -64,6 +67,7 @@ for f in \
   "$ROOT/.cursor/skills/shipjaw-build" \
   "$ROOT/.cursor/skills/shipjaw-adopt" \
   "$ROOT/.cursor/skills/shipjaw-upgrade" \
+  "$ROOT/.cursor/skills/shipjaw-challenge" \
   "$ROOT/.cursor/skills/shipjaw-ask" \
   "$ROOT/scripts/smoke-check.sh"
 do
@@ -138,7 +142,7 @@ else
 fi
 
 echo "== checklists =="
-for skill_md in "$ENTRY/SKILL.md" "$PROMPT/SKILL.md" "$SKILL/SKILL.md" "$ADOPT/SKILL.md" "$UPGRADE/SKILL.md" "$ASK/SKILL.md"; do
+for skill_md in "$ENTRY/SKILL.md" "$PROMPT/SKILL.md" "$SKILL/SKILL.md" "$ADOPT/SKILL.md" "$UPGRADE/SKILL.md" "$CHALLENGE/SKILL.md" "$ASK/SKILL.md"; do
   name="$(basename "$(dirname "$skill_md")")"
   if grep -q '\- \[ \]' "$skill_md"; then ok "$name has checklist"
   else bad "$name missing copiable checklist (- [ ])"
@@ -191,6 +195,7 @@ for phrase in \
   "shipjaw-build" \
   "shipjaw-adopt" \
   "shipjaw-upgrade" \
+  "shipjaw-challenge" \
   "shipjaw-ask" \
   "Dogfood" \
   "Migration" \
@@ -237,11 +242,11 @@ if grep -qi 'mkdir' "$ENTRY/SKILL.md" \
   && grep -q 'shipjaw-prompt' "$ENTRY/SKILL.md" \
   && grep -q 'shipjaw-build' "$ENTRY/SKILL.md" \
   && grep -q 'shipjaw-adopt' "$ENTRY/SKILL.md" \
-  && grep -q 'shipjaw-upgrade' "$ENTRY/SKILL.md" \
+  && grep -q 'shipjaw-challenge' "$ENTRY/SKILL.md" \
   && grep -q 'shipjaw-ask' "$ENTRY/SKILL.md"; then
   ok "shipjaw entrypoint: folder + explains work skills"
 else
-  bad "shipjaw entrypoint must mkdir/cd and explain prompt/build/adopt/upgrade/ask"
+  bad "shipjaw entrypoint must mkdir/cd and explain prompt/build/adopt/upgrade/challenge/ask"
 fi
 if grep -qi 'create-next-app\|knowledge-base' "$ENTRY/SKILL.md" \
   && grep -qi 'No `create-next-app`\|never\|Do \*\*not\*\*' "$ENTRY/SKILL.md"; then
@@ -282,6 +287,20 @@ if grep -q 'disable-model-invocation: true' "$UPGRADE/SKILL.md"; then
   ok "shipjaw-upgrade slash-only"
 else
   bad "shipjaw-upgrade should be slash-only"
+fi
+if [[ -f "$CHALLENGE/SKILL.md" ]] \
+  && grep -qi 'proposer\|Challenger\|subagent' "$CHALLENGE/SKILL.md" \
+  && grep -qi 'Do not rubber-stamp\|rubber-stamp' "$CHALLENGE/SKILL.md" \
+  && grep -q 'disable-model-invocation: true' "$CHALLENGE/SKILL.md"; then
+  ok "shipjaw-challenge dual-agent protocol"
+else
+  bad "shipjaw-challenge missing dual-agent / slash-only / anti-rubber-stamp"
+fi
+if grep -qi 'shipjaw-challenge\|Challenge before implement' "$ASK/SKILL.md" \
+  && grep -qi 'Challenge (required' "$SKILL/templates/technical-plan-phase.md"; then
+  ok "ask + phase template require challenge for non-trivial work"
+else
+  bad "challenge not wired into ask / phase template"
 fi
 if grep -q 'survey-adopt-state' "$ADOPT/SKILL.md" \
   && grep -qi 'PARTIAL_DOCS\|FULL_SHIPJAW_KB\|Status snapshot\|where we are' "$ADOPT/SKILL.md"; then

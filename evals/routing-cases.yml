@@ -71,3 +71,12 @@
   anti_skill: shipjaw-ask
   anti_needles:
     - shipjaw-upgrade
+
+- id: challenge-plan
+  expected: shipjaw-challenge
+  triggers:
+    - challenge this plan
+    - contester ce plan
+  anti_skill: shipjaw-ask
+  anti_needles:
+    - shipjaw-challenge

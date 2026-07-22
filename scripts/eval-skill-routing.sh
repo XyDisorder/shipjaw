@@ -82,6 +82,9 @@ check_anti ask-after-compact shipjaw-prompt "knowledge-base"
 check_case upgrade-stamps shipjaw-upgrade "upgrade Shipjaw" "scaffolded-with"
 check_anti upgrade-stamps shipjaw-ask "shipjaw-upgrade"
 
+check_case challenge-plan shipjaw-challenge "challenge this plan" "contester ce plan"
+check_anti challenge-plan shipjaw-ask "shipjaw-challenge"
+
 if [[ "$FAIL" -ne 0 ]]; then
   echo "eval-skill-routing FAILED"
   exit 1
