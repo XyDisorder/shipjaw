@@ -37,13 +37,13 @@ You ask an agent to “build my site.” You get:
 
 ## The promise
 
-| Express (`shipjaw-prompt`) | Build (`shipjaw-build`) | Continue (`shipjaw-ask`) |
-|---|---|---|
-| Rough idea → dense product prompt | Prompt → docs + scaffold + v1 | `INDEX.md` + 1–2 files |
-| Clarifies only what’s missing | Tech choices from the **prompt** | No rediscovery |
-| Writes `product/source-prompt.md` | Committed `documentation/` | State in the repo, not chat |
-| No code, no KB yet | Strict TS, tests, security gate | Same contract, minimal tokens |
-| | Invariants in domain/application | Bug fix ⇒ regression test |
+| Express (`shipjaw-prompt`) | Build (`shipjaw-build`) | Adopt (`shipjaw-adopt`) | Continue (`shipjaw-ask`) |
+|---|---|---|---|
+| Rough idea → dense product prompt | Prompt → docs + scaffold + v1 | Existing app → docs + contract | `INDEX.md` + 1–2 files |
+| Clarifies only what’s missing | Tech choices from the **prompt** | No rewrite | No rediscovery |
+| Writes `product/source-prompt.md` | Committed `documentation/` | AGENTS + Cursor rule | State in the repo, not chat |
+| No code, no KB yet | Strict TS, tests, security gate | Idempotent tooling gaps | Same contract, minimal tokens |
+| | Invariants in domain/application | Stamp `adopted-with` | Bug fix ⇒ regression test |
 
 Start with `/shipjaw` to create the project folder and see this map.
 
@@ -65,26 +65,27 @@ One line: **prompt-first, docs-first, tooling-enforced, core journey first, cont
   /shipjaw  →  create folder + explain pipeline
          │
          ▼
-  Rough idea / notes
-         │
-         ▼
- ┌───────────────────┐
- │  shipjaw-prompt   │  express once (optional if prompt is ready)
- │  → source-prompt  │
- └─────────┬─────────┘
-           │  documentation/product/source-prompt.md
-           ▼
- ┌───────────────────┐
- │  shipjaw-build    │  bootstrap once
- │  docs → scaffold  │
- │  → v1 + gate      │
- └─────────┬─────────┘
-           │  documentation/INDEX.md  (committed)
-           ▼
- ┌───────────────────┐
- │   shipjaw-ask     │  every later feature / fix
- │  INDEX + 1–2 files│
- └───────────────────┘
+  Rough idea / notes          Existing TS/Next app (no Shipjaw KB)
+         │                              │
+         ▼                              ▼
+ ┌───────────────────┐         ┌───────────────────┐
+ │  shipjaw-prompt   │         │  shipjaw-adopt    │
+ │  → source-prompt  │         │  docs + contract   │
+ └─────────┬─────────┘         └─────────┬─────────┘
+           │                             │
+           ▼                             │
+ ┌───────────────────┐                   │
+ │  shipjaw-build    │                   │
+ │  docs → scaffold  │                   │
+ │  → v1 + gate      │                   │
+ └─────────┬─────────┘                   │
+           │  documentation/INDEX.md     │
+           └──────────────┬──────────────┘
+                          ▼
+                ┌───────────────────┐
+                │   shipjaw-ask     │
+                │  INDEX + 1–2 files│
+                └───────────────────┘
 ```
 
 ## Usage
@@ -100,7 +101,8 @@ One line: **prompt-first, docs-first, tooling-enforced, core journey first, cont
 ```
 
 Creates (or reuses) the folder, switches into it, then explains
-`/shipjaw-prompt` → `/shipjaw-build` → `/shipjaw-ask`.
+`/shipjaw-prompt` → `/shipjaw-build` → `/shipjaw-ask` (and `/shipjaw-adopt`
+for existing apps).
 
 **1. Express** — optional if you already have a sharp prompt:
 
@@ -118,6 +120,12 @@ Creates (or reuses) the folder, switches into it, then explains
 /shipjaw-build A personal todo tool, no accounts, minimal UI, local persistence
 ```
 
+**2b. Adopt** — existing TS/Next app started without Shipjaw:
+
+```text
+/shipjaw-adopt
+```
+
 **3. Continue** — same repo, later:
 
 ```text
@@ -133,6 +141,7 @@ Compact between tasks (`/compact` on Claude, or a fresh chat on Cursor): resume 
 | New empty folder / named project home | `/shipjaw` |
 | Rough idea → dense prompt only | `/shipjaw-prompt` |
 | Build-ready prompt → docs + app + v1 | `/shipjaw-build` |
+| Existing app, no Shipjaw KB | `/shipjaw-adopt` |
 | Feature / fix / continue in a Shipjaw app | `/shipjaw-ask` |
 
 Scaffolded apps also get `AGENTS.md` + `.cursor/rules/shipjaw.mdc` so the
@@ -157,17 +166,19 @@ mkdir -p ~/.claude/skills ~/.cursor/skills
 ln -s "$(pwd)/.claude/skills/shipjaw"        ~/.claude/skills/shipjaw
 ln -s "$(pwd)/.claude/skills/shipjaw-prompt" ~/.claude/skills/shipjaw-prompt
 ln -s "$(pwd)/.claude/skills/shipjaw-build"  ~/.claude/skills/shipjaw-build
+ln -s "$(pwd)/.claude/skills/shipjaw-adopt"  ~/.claude/skills/shipjaw-adopt
 ln -s "$(pwd)/.claude/skills/shipjaw-ask"    ~/.claude/skills/shipjaw-ask
 
 ln -s "$(pwd)/.claude/skills/shipjaw"        ~/.cursor/skills/shipjaw
 ln -s "$(pwd)/.claude/skills/shipjaw-prompt" ~/.cursor/skills/shipjaw-prompt
 ln -s "$(pwd)/.claude/skills/shipjaw-build"  ~/.cursor/skills/shipjaw-build
+ln -s "$(pwd)/.claude/skills/shipjaw-adopt"  ~/.cursor/skills/shipjaw-adopt
 ln -s "$(pwd)/.claude/skills/shipjaw-ask"    ~/.cursor/skills/shipjaw-ask
 ```
 
 Keep the skills as **siblings** so relative `../shipjaw-build/references/` paths resolve.
 
-> Migrating from `skill-my-app` / old single `shipjaw` bootstrap: remove old symlinks, link the four skills above. Legacy `scaffolded-with: skill-my-app@…` / `shipjaw@…` stamps still work. Bootstrap is now **`shipjaw-build`**.
+> Migrating from `skill-my-app` / old single `shipjaw` bootstrap: remove old symlinks, link the five skills above. Legacy `scaffolded-with: skill-my-app@…` / `shipjaw@…` stamps still work. Bootstrap is now **`shipjaw-build`**; existing foreign apps use **`shipjaw-adopt`**.
 
 ## Why it’s different
 
@@ -175,7 +186,7 @@ Keep the skills as **siblings** so relative `../shipjaw-build/references/` paths
 |---|---|
 | Jump straight into code from vibes | Optional **prompt craft** before scaffold |
 | Everything in the transcript | Versioned state in `documentation/` |
-| One mega catch-all prompt | Express ≠ build ≠ continue |
+| One mega catch-all prompt | Express ≠ build ≠ adopt ≠ continue |
 | “No `any`” as forgettable prose | Encoded in tsconfig / eslint / CI |
 | Gitignored docs → amnesiac clones | **Committed** docs |
 | Fixes that quietly regress | Bug ⇒ failing-then-passing test |
@@ -184,6 +195,7 @@ Keep the skills as **siblings** so relative `../shipjaw-build/references/` paths
 
 - Bare start / need a project folder → **`/shipjaw`**  
 - Vague idea, no prompt yet → **`shipjaw-prompt`**, not build  
+- Existing app without Shipjaw docs → **`shipjaw-adopt`**, not build  
 - One-off CSS / copy tweak → normal edit  
 - Non-TypeScript repo → refuse  
 - KB already exists → **`shipjaw-ask`**, not build  

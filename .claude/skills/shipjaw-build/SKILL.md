@@ -1,6 +1,6 @@
 ---
 name: shipjaw-build
-description: Scaffold a brand-new TypeScript/Next.js site/app (NestJS only when needed) from a product prompt (pasted or documentation/product/source-prompt.md) — docs-first, tests, security, clean architecture. Trigger for initial build only. Do not use to polish a vague idea first (shipjaw-prompt), for small CSS tweaks, non-TS repos, or when documentation/knowledge-base/ already exists (shipjaw-ask).
+description: Scaffold a brand-new TypeScript/Next.js site/app (NestJS only when needed) from a product prompt (pasted or documentation/product/source-prompt.md) — docs-first, tests, security, clean architecture. Trigger for initial build only. Do not use to polish a vague idea first (shipjaw-prompt), to adopt an existing app (shipjaw-adopt), for small CSS tweaks, non-TS repos, or when documentation/knowledge-base/ already exists (shipjaw-ask).
 ---
 
 # shipjaw-build
@@ -11,7 +11,7 @@ TypeScript site and a committed `documentation/` map. Later sessions use
 still vague.
 
 **Operating principles:** `references/skill-principles.md` (1–18).
-Highlights: entrypoint + prompt/build/ask; state in repo; progressive
+Highlights: entrypoint + prompt/build/adopt/ask; state in repo; progressive
 disclosure; compile into tooling; templates > prose; host fallbacks;
 stop budgets; docs committed; anti-triggers; narration budget;
 `scaffolded-with`; project owns conventions; tiered regression /
@@ -20,6 +20,8 @@ business-rule safety; **core journey first**.
 ## Anti-triggers (stop — don't run bootstrap)
 
 - `documentation/knowledge-base/` already exists → `shipjaw-ask`
+- Existing app code **without** Shipjaw KB → `shipjaw-adopt` (do not
+  re-scaffold in place)
 - Idea is still vague / user wants help wording the product →
   `shipjaw-prompt` first
 - Single-file cosmetic / copy tweak with no product build

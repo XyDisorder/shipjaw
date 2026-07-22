@@ -1,5 +1,12 @@
 # skill-my-website changelog
 
+## 2026-07-22j
+
+- New **`shipjaw-adopt`**: bring an existing TS/Next app under the
+  Shipjaw contract (docs + AGENTS/Cursor rule + idempotent tooling gaps,
+  no rewrite). Wired into entrypoint, principles, migration, build/ask
+  anti-triggers, README, and install symlinks.
+
 ## 2026-07-22i
 
 - Less slash friction on scaffolded apps: always copy `AGENTS.md` +

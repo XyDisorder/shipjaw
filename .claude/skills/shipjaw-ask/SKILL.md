@@ -17,7 +17,7 @@ Project owns conventions after bootstrap (principle 16).
 
 - No app yet / no KB → if only a rough idea, `shipjaw-prompt`; if a
   build-ready prompt exists (message or `source-prompt.md`),
-  `shipjaw-build`
+  `shipjaw-build`; if an **existing** TS app has no KB → `shipjaw-adopt`
 - Task is a one-line copy/CSS change → normal edit, don't load the whole
   continuation protocol beyond a quick INDEX peek if unsure
 

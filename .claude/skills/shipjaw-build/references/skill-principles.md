@@ -3,16 +3,19 @@
 These are product decisions for *how the skills behave*, not app-domain
 rules. Agents must follow them; do not re-litigate mid-task.
 
-1. **Entrypoint + three work skills.** `/shipjaw` = onboarding only
+1. **Entrypoint + work skills.** `/shipjaw` = onboarding only
    (create/cd into a named project folder, explain the pipeline).
    `shipjaw-prompt` = expression only (rough idea →
    `documentation/product/source-prompt.md`). `shipjaw-build` =
-   bootstrap only (prompt → docs + scaffold + v1). `shipjaw-ask` =
-   every later session. Continuation never reloads bootstrap
-   discovery/architecture docs or re-derives the stack. If KB exists →
-   hand off to ask; if INDEX missing but docs exist → repair, don't
-   bootstrap. Prompt and entrypoint must **never** create
-   `knowledge-base/`.
+   bootstrap only (prompt → docs + scaffold + v1). `shipjaw-adopt` =
+   bring an **existing** non-Shipjaw TS/Next app under the contract
+   (docs + AGENTS/rule + idempotent gaps — **no** rewrite).
+   `shipjaw-ask` = every later session. Continuation never reloads
+   bootstrap discovery/architecture docs or re-derives the stack. If KB
+   exists → hand off to ask; if INDEX missing but docs exist → repair,
+   don't bootstrap. Prompt and entrypoint must **never** create
+   `knowledge-base/`. Adopt creates KB only when the app already exists
+   and KB is absent.
 
 
 2. **State lives in the repo, not the transcript.** Anything needed to

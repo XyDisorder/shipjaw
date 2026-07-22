@@ -23,6 +23,13 @@
 - Repair missing `INDEX.md` from the tree rather than re-bootstrapping.
 - Do **not** force a full re-scaffold to "upgrade" the skill.
 
+## Foreign projects (never used Shipjaw)
+
+If the repo has app code but **no** `documentation/knowledge-base/`,
+do **not** use this file as a green light to bootstrap. Run
+**`shipjaw-adopt`** instead (docs + contract + idempotent gaps, no
+rewrite). After adopt, continue with `shipjaw-ask`.
+
 ## Era-specific upgrades (opt-in, one per task unless user asks for all)
 
 | Gap | Upgrade |

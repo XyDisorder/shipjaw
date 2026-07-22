@@ -7,6 +7,8 @@
 ## Skill provenance
 - scaffolded-with: shipjaw-build@<YYYY.MM.DD>
   (copy from `.claude/skills/shipjaw-build/VERSION` or the installed skill's VERSION file)
+  <!-- if brought in via shipjaw-adopt, also note:
+  adopted-with: shipjaw-adopt@<YYYY.MM.DD> — docs + contract; code pre-existed -->
 
 ## Stack
 - Frontend: Next.js <exact version>, TypeScript <exact version>, App Router
