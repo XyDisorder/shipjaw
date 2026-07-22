@@ -42,6 +42,7 @@ rewrite). After adopt, continue with `shipjaw-ask`.
 | Missing eslint/tsconfig strict bits | Add only the missing flags/files from `templates/scaffold/` (**idempotent** — don't overwrite custom rules) |
 | No `AGENTS.md` / `.cursor/rules/shipjaw.mdc` | Copy from scaffold kit if missing (idempotent) |
 | INDEX lacks continuation banner | Add the shipjaw-ask pointer at the top on next INDEX edit |
+| Types/consts/helpers dumped in UI or `lib/utils.ts` | On touched code, relocate per `project-structure.md` placement table (don't mass-move unrelated files) |
 | No decisions/changelog rotation | Start rotating when files next cross thresholds |
 | Assumes `packages/contracts/` but Next-only | Skip contracts rule; don't create the package |
 

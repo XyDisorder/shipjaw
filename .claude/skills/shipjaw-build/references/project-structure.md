@@ -93,6 +93,41 @@ Do not mix all three for the same use-case. Authz still runs in
   hook (data/state) + smaller presentational components.
 - Prefer several small, well-named files over one large one.
 
+## Types, constants, helpers (placement)
+
+Do **not** leave domain types, magic values, and reusable helpers buried
+inside route files, Server Actions, or large components. Split by
+**ownership**, not by a global “utils” dump.
+
+| Kind | Where it lives | Notes |
+|---|---|---|
+| Domain types / value objects / invariants | `server/domain/<concept>.ts` (or co-located `types.ts` next to that concept) | No React, no fetch, no ORM |
+| Wire / form / env schemas (zod) | `application/` (or `packages/contracts` in Nest monorepo) | Presentation imports schemas; does not redefine the model |
+| Business constants (status, role, limits) | `server/domain/<concept>.constants.ts` (or next to the owning domain module) | Named unions/enums > string literals; see code-standards |
+| Pure domain helpers | `server/domain/` next to the rule they serve | Same purity rules as domain |
+| Application orchestration helpers | `server/application/` | Still no UI imports |
+| Feature-only UI helpers / formatters | `features/<feature>/lib/` | Not imported by domain/application |
+| Generic UI primitives | `components/ui/` | Zero feature/domain knowledge |
+| Cross-cutting infra only | `src/lib/` (`env.ts`, `logger.ts`, …) | **No** catch-all `utils.ts` / `helpers.ts` |
+
+**Extract when** a type, constant, or helper is reused, or when it
+obscures the host file’s one responsibility. **Do not** create empty
+folder trees “for later.” **Do not** put business rules in
+`features/.../lib/` or `lib/utils.ts`.
+
+Canonical sketch (Next-only) — extend the tree above as concepts appear:
+
+```
+src/server/domain/
+  todo.ts                 # types + invariants
+  todo.constants.ts       # status union / limits
+src/server/application/
+  create-todo.ts          # use-case + port types
+features/todos/
+  lib/format-due-date.ts  # UI-only helper
+  actions.ts              # thin → application
+```
+
 ## Feature folders
 
 Group by domain concept under `features/`, not by "all hooks / all

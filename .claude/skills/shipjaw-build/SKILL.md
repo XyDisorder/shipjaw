@@ -32,8 +32,9 @@ runs.
 1. **Typing** — `strict: true`. No `any`. `unknown` only at untyped
    entry points, narrowed via zod/type guard. → `code-standards.md`
 2. **File size** — hard cap **500 lines**; plan split ~300.
-3. **Architecture** — canonical tree in `project-structure.md`.
-   Contracts consumer updates **only if `packages/contracts/` exists**.
+3. **Architecture** — canonical tree in `project-structure.md` (including
+   types / constants / helpers placement). Contracts consumer updates
+   **only if `packages/contracts/` exists**. No grab-bag `lib/utils.ts`.
 4. **Tests** — Vitest for domain/application; Playwright + axe +
    keyboard/focus smoke for critical flows. Bug fix ⇒ regression test;
    never weaken tests to green. → `testing-and-ci.md` ·
@@ -57,7 +58,8 @@ runs.
 - [ ] ./scripts/copy-continuation-contract.sh <project-root>
 - [ ] ./scripts/stamp-provenance.sh <project-root>
 - [ ] ./scripts/validate-docs.sh <project-root>
-- [ ] Implement core *User can…* + tests
+- [ ] Implement core *User can…* + tests (types/consts/helpers placed per
+      project-structure — no utils grab-bag)
 - [ ] ./scripts/run-gate.sh <project-root> --with-e2e
 - [ ] Fix ≤2 attempts; update KB surgically; hand off to shipjaw-ask
 ```

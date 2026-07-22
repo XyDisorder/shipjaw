@@ -324,7 +324,14 @@ else
   bad "next.config.ts missing turbopack.root / outputFileTracingRoot"
 fi
 
-echo "== tech-choices present =="
+echo "== types/helpers placement =="
+if grep -qi 'Types, constants, helpers' "$SKILL/references/project-structure.md" \
+  && grep -qi 'grab-bag\|utils.ts' "$SKILL/references/project-structure.md" \
+  && grep -qi 'dedicated\|constants.ts\|grab-bag\|utils.ts' "$SKILL/references/code-standards.md"; then
+  ok "placement rules for types/consts/helpers"
+else
+  bad "project-structure/code-standards missing types-consts-helpers placement"
+fi
 if grep -qi 'Signal' "$SKILL/references/tech-choices.md"; then
   ok "tech-choices.md signal tables"
 else

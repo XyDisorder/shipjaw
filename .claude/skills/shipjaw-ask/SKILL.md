@@ -14,8 +14,10 @@ the full `shipjaw-build` SKILL body. Trust project tooling + docs.
 2. Progressive disclosure — INDEX → ≤2 files; Grep + offset reads.
 3. Project owns conventions after bootstrap (tsconfig/eslint/CI/docs).
 4. Core *User can…* first; no Out-of-v1 / drive-by scope.
-5. Bug ⇒ failing-then-passing regression test; never weaken tests to green.
-6. Gate once; **stop after 2** failed fix attempts; ask the human.
+5. Types / consts / helpers by ownership (`domain` / `application` /
+   `features/<f>/lib`) — no grab-bag `lib/utils.ts`.
+6. Bug ⇒ failing-then-passing regression test; never weaken tests to green.
+7. Gate once; **stop after 2** failed fix attempts; ask the human.
 
 **Old repos only:** `../shipjaw-build/references/migration.md`.
 
@@ -63,6 +65,8 @@ Never preload `product/` or the full KB. Broad scope → new phase.
 3. Implement via project config as source of truth:
    - prefer the active phase's *User can…* / journey over drive-by polish
    - do not implement Out-of-v1 / out-of-phase scope "while we're here"
+   - place new types/constants/helpers per
+     `../shipjaw-build/references/project-structure.md` (no utils grab-bag)
    - domain/application → Vitest; invariants owned there (not UI-only)
    - bug fix → regression test (fail before / pass after)
    - never weaken/skip existing tests just to green

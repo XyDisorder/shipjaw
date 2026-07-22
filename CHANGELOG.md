@@ -1,5 +1,13 @@
 # skill-my-website changelog
 
+## 2026-07-22n
+
+- Explicit **types / constants / helpers placement** in clean arch
+  (`project-structure.md` + `code-standards.md`): domain-owned types &
+  `*.constants.ts`, zod in application/contracts, feature `lib/` for
+  UI-only helpers, ban grab-bag `lib/utils.ts`. Wired into build/ask +
+  migration.
+
 ## 2026-07-22m
 
 - `shipjaw-adopt` now **surveys** existing docs/plans/phases before

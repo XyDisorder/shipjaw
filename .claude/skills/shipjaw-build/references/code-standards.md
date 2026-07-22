@@ -40,8 +40,18 @@
   catch-alls hiding what went wrong.
 - **No magic literals.** A string/number repeated more than once, or one
   whose meaning isn't obvious at the call site (a role name, a status
-  code, a limit), becomes a named constant or a union/enum, not a
-  hardcoded literal sprinkled across files.
+  code, a limit), becomes a named constant or a union/enum in a
+  **dedicated** `*.constants.ts` (or next to the owning domain module) —
+  not a hardcoded literal sprinkled across actions/components. Placement
+  → `project-structure.md` (Types, constants, helpers).
+- **Types travel with their owner.** Domain shapes live under
+  `server/domain/`; zod boundary schemas under `application/` (or
+  `packages/contracts` when Nest monorepo). Do not redefine the same
+  model as ad-hoc interfaces inside React files.
+- **Helpers follow the dependency rule.** Pure business helpers →
+  `domain/`; orchestration → `application/`; UI-only →
+  `features/<f>/lib/`. Never a repo-wide `lib/utils.ts` / `helpers.ts`
+  grab-bag. Extract when reused or when it clouds the host file.
 - **Domain logic is pure.** Functions in `domain/` take inputs and return
   outputs with no hidden I/O, no `Date.now()`/`Math.random()` called
   directly inside business rules (inject a clock/id-generator port
