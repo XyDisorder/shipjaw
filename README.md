@@ -1,7 +1,7 @@
 # Skill My App
 
 <p align="center">
-  <img src="assets/logo.png" alt="Skill My App logo" width="160" height="160" />
+  <img src="assets/logo-dark-wordmark.png" alt="Skill My App — Ship the product. Not the prompt engineering." width="720" />
 </p>
 
 <p align="center">
@@ -139,9 +139,3 @@ Keep both skills as **siblings** so `ask-my-app` can resolve `../skill-my-app/re
 ```
 
 Version: `.claude/skills/skill-my-app/VERSION` · changelog: [`CHANGELOG.md`](CHANGELOG.md) · principles: [`skill-principles.md`](.claude/skills/skill-my-app/references/skill-principles.md) · tech choices: [`tech-choices.md`](.claude/skills/skill-my-app/references/tech-choices.md)
-
----
-
-<p align="center">
-  <sub>Ship the product. Not the prompt engineering.</sub>
-</p>
