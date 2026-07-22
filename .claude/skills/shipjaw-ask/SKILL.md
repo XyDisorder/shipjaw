@@ -49,9 +49,12 @@ Skip only for tiny fixes inside an already-challenged phase (cite prior).
 10. On **doc↔code drift**, stop and resolve (see below) — don’t invent.
 11. **Challenge** non-trivial plans/choices **in-session** (prefer
     Task/subagent); `/shipjaw-challenge` only for full report / escalate.
-
-**Old repos / stamp lag:** `../shipjaw-build/references/migration.md` or
-`/shipjaw-upgrade` when only docs/contract need bumping.
+12. **Stamp lag:** if `scaffolded-with` / `adopted-with` is behind the
+    installed `shipjaw-build/VERSION`, tell the user once and prefer
+    `/shipjaw-upgrade` before heavy product work (unless they insist on
+    the feature now). Run
+    `../shipjaw-build/scripts/changelog-since-stamp.sh <root>` when
+    explaining what changed.
 
 ## Anti-triggers
 
@@ -105,7 +108,7 @@ Never leave INDEX/features-index lying after you ship a path change.
 ## Checklist
 
 ```
-- [ ] Read / repair INDEX + handoff
+- [ ] Read / repair INDEX + handoff; stamp lag → nudge /shipjaw-upgrade
 - [ ] Drift check (table above) on touched area
 - [ ] Non-trivial work → built-in challenge (subagent preferred) before code
 - [ ] ≤1 clarifying Q; stop if core behavior still ambiguous
@@ -120,8 +123,10 @@ Never leave INDEX/features-index lying after you ship a path change.
 
 ## Workflow
 
-1. Read / repair INDEX (check `scaffolded-with`; migrate lightly if needed
-   or suggest `shipjaw-upgrade`). Read handoff.
+1. Read / repair INDEX. Compare `scaffolded-with` to installed skill
+   VERSION when known — if lagging, **nudge `/shipjaw-upgrade`** (run
+   `changelog-since-stamp.sh` for the delta) before large work unless the
+   user wants the feature immediately. Read handoff.
 2. Drift check on the area the task touches.
 3. If non-trivial (new phase / auth / data / primary UI / money) →
    **built-in** challenger pass (prefer Task/subagent); escalate to

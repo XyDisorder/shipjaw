@@ -52,6 +52,59 @@ else echo "MISS AGENTS.md"; FAIL=1; fi
 if [[ -f "$ROOT/.cursor/rules/shipjaw.mdc" ]]; then echo "OK  .cursor/rules/shipjaw.mdc"
 else echo "MISS .cursor/rules/shipjaw.mdc"; FAIL=1; fi
 
+echo "== open-phase Challenge =="
+PLAN="$DOC/technical-plan"
+if [[ -d "$PLAN" ]]; then
+  shopt -s nullglob
+  for phase in "$PLAN"/phase-*.md; do
+    base="$(basename "$phase")"
+    status_line="$(grep -E '^\*\*Status:\*\*' "$phase" | head -n1 || true)"
+    status="$(echo "$status_line" | sed -E 's/.*\*\*Status:\*\*[[:space:]]*//; s/[[:space:]].*//' | tr '[:upper:]' '[:lower:]')"
+    # Template still showing "todo | in-progress | done" → treat as draft
+    if echo "$status_line" | grep -q '|'; then
+      status="draft"
+    fi
+    if [[ "$status" == "done" || "$status" == "cancelled" || "$status" == "canceled" ]]; then
+      echo "OK  $base (status=$status — skip Challenge)"
+      continue
+    fi
+    if [[ "$status" != "todo" && "$status" != "in-progress" && "$status" != "in_progress" && "$status" != "draft" ]]; then
+      echo "OK  $base (status=${status:-unknown} — skip Challenge)"
+      continue
+    fi
+
+    challenge_ok=1
+    if ! grep -qE '^## Challenge' "$phase"; then
+      challenge_ok=0
+      msg="no ## Challenge section"
+    elif grep -qiE 'covered by challenge|skip reason|\*\*Skip:\*\*|Challenge:\s*n/a' "$phase"; then
+      echo "OK  $base Challenge skipped/covered"
+      continue
+    elif grep -qE '\*\*Axis calls:\*\*.*__' "$phase" \
+      || grep -qE '\*\*Verdict:\*\*[[:space:]]*proceed[[:space:]]*\|[[:space:]]*revise-then-proceed' "$phase"; then
+      challenge_ok=0
+      msg="Challenge looks unfilled (template Verdict/Axis)"
+    elif ! grep -qE '\*\*Verdict:\*\*[[:space:]]*(proceed|revise-then-proceed|defer|split-phase)\b' "$phase"; then
+      challenge_ok=0
+      msg="Challenge missing concrete Verdict"
+    fi
+
+    if [[ "$challenge_ok" -eq 1 ]]; then
+      echo "OK  $base Challenge filled"
+      continue
+    fi
+
+    # todo/draft: warn (planning ok). in-progress: fail (must challenge before code).
+    if [[ "$status" == "in-progress" || "$status" == "in_progress" ]]; then
+      echo "MISS $base in-progress — $msg — challenge before implement"
+      FAIL=1
+    else
+      echo "WARN $base ($status) — $msg — fill Challenge before setting in-progress"
+    fi
+  done
+  shopt -u nullglob
+fi
+
 if [[ "$FAIL" -ne 0 ]]; then
   echo "validate-docs FAILED"
   exit 1

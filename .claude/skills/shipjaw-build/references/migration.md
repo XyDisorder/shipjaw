@@ -23,7 +23,9 @@
   the task is product work.
 - Prefer **`shipjaw-upgrade`** when KB exists but you only need stamps,
   AGENTS/Cursor rule, INDEX banner, or other migration-table gaps refreshed
-  to the current skill VERSION (no feature work).
+  to the current skill VERSION (no feature work). Start upgrade by running
+  `scripts/changelog-since-stamp.sh <project-root>` so the user sees **what
+  changed since their stamp** (not the whole history).
 - Repair missing `INDEX.md` from the tree rather than re-bootstrapping.
 - Do **not** force a full re-scaffold to "upgrade" the skill.
 

@@ -148,7 +148,7 @@ Compact between tasks (`/compact` on Claude, or a fresh chat on Cursor): resume 
 | Rough idea → dense prompt only | `/shipjaw-prompt` |
 | Build-ready prompt → docs + app + v1 | `/shipjaw-build` |
 | Existing app, no Shipjaw KB | `/shipjaw-adopt` |
-| Refresh stamps / AGENTS / migration gaps only | `/shipjaw-upgrade` |
+| Refresh stamps / AGENTS / migration gaps only | `/shipjaw-upgrade` (shows changelog since your stamp) |
 | Challenge plans/choices (built-in in ask/build; optional full report) | `/shipjaw-ask` / `/shipjaw-build` · optional `/shipjaw-challenge` |
 | Feature / fix / continue in a Shipjaw app | `/shipjaw-ask` |
 

@@ -61,6 +61,7 @@ for f in \
   "$SKILL/scripts/stamp-provenance.sh" \
   "$SKILL/scripts/init-docs-skeleton.sh" \
   "$SKILL/scripts/validate-docs.sh" \
+  "$SKILL/scripts/changelog-since-stamp.sh" \
   "$SKILL/scripts/run-gate.sh" \
   "$SKILL/scripts/survey-adopt-state.sh" \
   "$ROOT/.cursor/skills/shipjaw" \
@@ -156,6 +157,7 @@ for s in \
   stamp-provenance.sh \
   init-docs-skeleton.sh \
   validate-docs.sh \
+  changelog-since-stamp.sh \
   run-gate.sh \
   survey-adopt-state.sh
 do
@@ -279,6 +281,7 @@ fi
 if [[ -f "$UPGRADE/SKILL.md" ]] \
   && grep -qi 'disable-model-invocation: true' "$UPGRADE/SKILL.md" \
   && grep -qi 'migration.md' "$UPGRADE/SKILL.md" \
+  && grep -qi 'changelog-since-stamp' "$UPGRADE/SKILL.md" \
   && grep -qi 'Do not rewrite\|no product rewrite\|Do not rewrite product' "$UPGRADE/SKILL.md"; then
   ok "shipjaw-upgrade skill"
 else
@@ -288,6 +291,27 @@ if grep -q 'disable-model-invocation: true' "$UPGRADE/SKILL.md"; then
   ok "shipjaw-upgrade slash-only"
 else
   bad "shipjaw-upgrade should be slash-only"
+fi
+if [[ -x "$SKILL/scripts/changelog-since-stamp.sh" ]]; then
+  delta_out="$("$SKILL/scripts/changelog-since-stamp.sh" "$ROOT/fixtures/golden-todo" 2>&1 || true)"
+  if grep -qiE 'Shipjaw upgrade delta|installed skill' <<<"$delta_out"; then
+    ok "changelog-since-stamp.sh emits delta"
+  else
+    bad "changelog-since-stamp.sh missing or silent"
+  fi
+else
+  bad "changelog-since-stamp.sh not executable"
+fi
+if grep -qi 'Stamp lag\|changelog-since-stamp\|nudge.*shipjaw-upgrade' "$ASK/SKILL.md"; then
+  ok "shipjaw-ask nudges upgrade on stamp lag"
+else
+  bad "shipjaw-ask missing stamp-lag → upgrade nudge"
+fi
+if grep -qi 'open-phase Challenge\|in-progress' "$SKILL/scripts/validate-docs.sh" \
+  && grep -qi 'Axis calls\|Challenge looks unfilled' "$SKILL/scripts/validate-docs.sh"; then
+  ok "validate-docs Challenge guard for in-progress phases"
+else
+  bad "validate-docs missing Challenge guard"
 fi
 if [[ -f "$CHALLENGE/SKILL.md" ]] \
   && grep -qi 'proposer\|Challenger\|subagent' "$CHALLENGE/SKILL.md" \

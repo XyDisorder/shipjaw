@@ -1,5 +1,13 @@
 # skill-my-website changelog
 
+## 2026-07-22v
+
+- **Diff-aware upgrade:** `changelog-since-stamp.sh` shows skill CHANGELOG
+  since the project’s `scaffolded-with` stamp; wired into `/shipjaw-upgrade`
+  + ask stamp-lag nudge.
+- **`validate-docs` Challenge guard:** `in-progress` phases must have a
+  filled Challenge section (todo/draft → WARN only).
+
 ## 2026-07-22u
 
 - Challenge is **built-in** for plans/choices in ask/build (prefer a
