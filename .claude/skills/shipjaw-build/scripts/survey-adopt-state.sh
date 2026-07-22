@@ -126,6 +126,50 @@ else
 fi
 
 echo
+echo "-- Shipjaw architecture practice signals (heuristic, read-only) --"
+# Layer folders
+for d in \
+  src/server/domain server/domain \
+  src/server/application server/application \
+  src/server/infrastructure server/infrastructure \
+  src/server/application/ports server/application/ports \
+  src/features features
+do
+  if [[ -d "$d" ]]; then echo "  OK  dir $d"; fi
+done
+for f in \
+  src/server/composition.ts server/composition.ts \
+  src/lib/utils.ts lib/utils.ts \
+  src/lib/helpers.ts lib/helpers.ts \
+  utils.ts helpers.ts
+do
+  if [[ -f "$f" ]]; then echo "  FOUND $f"; fi
+done
+# counts
+actions_n=$(find . -path ./node_modules -prune -o \( -name 'actions.ts' -o -name 'actions.tsx' \) -print 2>/dev/null | wc -l | tr -d ' ')
+echo "  actions.ts files: $actions_n"
+ports_n=$(find . -path ./node_modules -prune -o -path '*/application/ports/*' -type f -print 2>/dev/null | wc -l | tr -d ' ')
+echo "  application/ports files: $ports_n"
+# smell: server actions / routes mentioning prisma|drizzle|sql / infra
+if command -v rg >/dev/null 2>&1; then
+  hits=$(rg -l --glob '!node_modules' --glob '**/actions.ts' --glob '**/actions.tsx' --glob '**/route.ts' --glob '**/route.tsx' \
+    -e 'infrastructure/' -e 'prisma\.' -e 'drizzle\(' -e 'better-sqlite' -e 'from ['\''"].*db['\''"]' \
+    features src/features app src/app 2>/dev/null | head -n 15 || true)
+  if [[ -n "${hits:-}" ]]; then
+    echo "  SMELL adapters may touch infra/DB directly:"
+    echo "$hits" | sed 's/^/    /'
+  else
+    echo "  OK  no obvious infra imports in actions/routes (heuristic)"
+  fi
+  if rg -l --glob '!node_modules' -e 'lib/utils' -e 'lib/helpers' -g '*.ts' -g '*.tsx' 2>/dev/null | head -n 1 | grep -q .; then
+    echo "  SMELL references to lib/utils or lib/helpers"
+  fi
+else
+  echo "  (rg not available — agent should Grep for infra-in-actions / utils bag)"
+fi
+echo "  NOTE: signals inform the architecture gap plan; do not auto-refactor in adopt"
+
+echo
 echo "-- adopt routing hint --"
 if [[ -f "$DOC/knowledge-base/architecture.md" ]] \
   && [[ -f "$DOC/INDEX.md" ]] \

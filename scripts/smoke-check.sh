@@ -47,6 +47,7 @@ for f in \
   "$SKILL/templates/scaffold/AGENTS.md" \
   "$SKILL/templates/scaffold/shipjaw.cursor-rule.mdc" \
   "$SKILL/templates/business-rule.md" \
+  "$SKILL/templates/technical-plan-converge-arch.md" \
   "$SKILL/scripts/copy-continuation-contract.sh" \
   "$SKILL/scripts/stamp-provenance.sh" \
   "$SKILL/scripts/init-docs-skeleton.sh" \
@@ -233,7 +234,18 @@ if grep -q 'survey-adopt-state' "$ADOPT/SKILL.md" \
 else
   bad "shipjaw-adopt must survey state and produce status snapshot"
 fi
-if grep -qi 'no rewrite\|Do not rewrite\|never rewrites\|no.*rewrite' "$ADOPT/SKILL.md" \
+if grep -qi 'Architecture practice audit\|practice gaps\|converge-arch\|improvement plan' "$ADOPT/SKILL.md" \
+  && [[ -f "$SKILL/templates/technical-plan-converge-arch.md" ]]; then
+  ok "shipjaw-adopt audits practices and proposes converge plan"
+else
+  bad "shipjaw-adopt must audit arch practices + converge-arch template"
+fi
+if grep -q 'architecture practice signals' "$SKILL/scripts/survey-adopt-state.sh"; then
+  ok "survey-adopt-state emits arch practice signals"
+else
+  bad "survey-adopt-state.sh missing architecture practice signals"
+fi
+if grep -qi 'no rewrite\|Do not rewrite\|never rewrites\|no silent\|opt-in' "$ADOPT/SKILL.md" \
   && grep -q 'shipjaw-ask' "$ADOPT/SKILL.md"; then
   ok "shipjaw-adopt: no rewrite + handoff to ask"
 else

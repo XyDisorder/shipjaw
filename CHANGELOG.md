@@ -1,5 +1,12 @@
 # skill-my-website changelog
 
+## 2026-07-22p
+
+- `shipjaw-adopt` now runs a **read-only architecture practice audit**,
+  records gaps in `architecture.md`, and **proposes** a converge-clean-arch
+  phase (`technical-plan-converge-arch.md`) — execution stays opt-in via
+  `shipjaw-ask`. Survey script emits arch practice signals.
+
 ## 2026-07-22o
 
 - Architecture deepening: **ports** (one file each), **composition root**

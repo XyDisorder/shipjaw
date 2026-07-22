@@ -1,21 +1,22 @@
 ---
 name: shipjaw-adopt
-description: Adopts the Shipjaw contract on an existing TypeScript/Next (or React TS) app that was never scaffolded with Shipjaw: surveys existing docs/plans/phases, creates or merges documentation/ + INDEX.md, AGENTS.md, Cursor rule, provenance stamps, and fills tooling gaps — never rewrites product code. Use when legacy Next app, foreign create-next-app, ramener ce projet sous Shipjaw, adopter Shipjaw, bring this codebase under Shipjaw, or app has code but incomplete/missing Shipjaw KB. Do not use for empty greenfield (shipjaw-build), vague idea polishing (shipjaw-prompt), or a complete Shipjaw knowledge-base/ (shipjaw-ask). Do not rewrite the app.
+description: Adopts the Shipjaw contract on an existing TypeScript/Next (or React TS) app that was never scaffolded with Shipjaw: surveys docs/plans/phases and architecture practice gaps, merges documentation/, proposes a converge-arch improvement plan, adds AGENTS/Cursor rule and tooling gaps — never rewrites product code unless the user explicitly asks. Use when legacy Next app, foreign create-next-app, ramener ce projet sous Shipjaw, adopter Shipjaw, or incomplete Shipjaw KB. Do not use for empty greenfield (shipjaw-build), vague idea polishing (shipjaw-prompt), or a complete Shipjaw knowledge-base/ (shipjaw-ask).
 ---
 
 # shipjaw-adopt
 
 **Adopt only.** Bring an existing app under the Shipjaw continuation
-contract **without** re-scaffolding or rewriting the product.
+contract **without** re-scaffolding or rewriting the product by default.
 
-After adopt → use **`shipjaw-ask`**. Never run `shipjaw-build` on a
-non-empty app that already has product code.
+After adopt → use **`shipjaw-ask`** (including the proposed arch
+convergence phase). Never run `shipjaw-build` on a non-empty app that
+already has product code.
 
 **Templates / kit:** `../shipjaw-build/templates/` ·
-`../shipjaw-build/templates/scaffold/`.
-**Complete Shipjaw KB already** (INDEX + architecture + features-index):
-`shipjaw-ask` + `../shipjaw-build/references/migration.md` — not a
-full re-adopt.
+`../shipjaw-build/templates/scaffold/` ·
+`../shipjaw-build/templates/technical-plan-converge-arch.md`.
+**Complete Shipjaw KB already:** `shipjaw-ask` + migration — not a full
+re-adopt.
 
 ## Anti-triggers
 
@@ -33,55 +34,43 @@ full re-adopt.
 
 ```
 - [ ] Detect TS/Next app
-- [ ] ./scripts/survey-adopt-state.sh <root>  (read output fully)
+- [ ] ./scripts/survey-adopt-state.sh <root>  (read fully, incl. arch signals)
 - [ ] Classify: NO_DOCS | PARTIAL_DOCS | FULL_SHIPJAW_KB
 - [ ] If FULL → stop; hand off shipjaw-ask
 - [ ] ≤2 clarify Q only for gaps survey couldn't answer
-- [ ] init-docs-skeleton (idempotent — skips existing files)
+- [ ] init-docs-skeleton (idempotent)
 - [ ] Absorb foreign plans → roadmap / features-index / decisions / changelog
-- [ ] Fill as-is status: shipped vs next phase (*User can…*)
+- [ ] Architecture practice audit (read-only) → gaps table in architecture.md
+- [ ] Propose converge-arch phase (plan only; no mass refactor)
 - [ ] copy-continuation-contract + stamp-provenance --adopted
 - [ ] Tooling gaps idempotent
 - [ ] validate-docs + run-gate (cheap)
-- [ ] Status snapshot in reply + hand off /shipjaw-ask
+- [ ] Status snapshot + improvement plan summary + /shipjaw-ask handoff
 ```
 
 ## Workflow
 
 ### 1. Detect + survey (mandatory)
 
-Confirm TS app (`package.json` + Next/React TS). Then **execute and
-read**:
-
 ```bash
 ../shipjaw-build/scripts/survey-adopt-state.sh <project-root>
 ```
 
-The survey reports:
-
-- stack / scripts
-- which Shipjaw `documentation/` files exist (and phase files + status)
-- foreign planning docs (`README`, `ROADMAP`, `docs/`, ADRs, `TODO`, …)
-- route/page surface
-- recent git commits/tags
-- routing hint: `NO_DOCS` | `PARTIAL_DOCS` | `FULL_SHIPJAW_KB`
-
-**Routing:**
+Read **all** sections, including **architecture practice signals**.
 
 | Survey hint | Action |
 |---|---|
 | `FULL_SHIPJAW_KB` | Stop → `/shipjaw-ask` (+ migration if legacy) |
-| `PARTIAL_DOCS` | Continue adopt: **merge**, never overwrite real content with blank templates |
-| `NO_DOCS` | Continue adopt: skeleton then fill from code + foreign plans |
+| `PARTIAL_DOCS` | Continue: **merge**, never wipe |
+| `NO_DOCS` | Continue: skeleton then fill |
 
 ### 2. Clarify (≤2 questions total)
 
-Only ask what survey + README still leave open:
-
 1. One-line product vision / audience
-2. The single core *User can…* journey **today** (what already works)
+2. Core *User can…* today
 
-Do **not** re-run full discovery or redesign the stack.
+Optional third only if user already asked for refactor scope: *Audit only
+vs start P0 slice now?* Default = **audit + plan only**.
 
 ### 3. Documentation — create or merge
 
@@ -89,26 +78,55 @@ Do **not** re-run full discovery or redesign the stack.
 ../shipjaw-build/scripts/init-docs-skeleton.sh <project-root>
 ```
 
-Idempotent: existing files are **skipped**. Then the agent must:
+Fill as-is; absorb foreign plans (same rules as before).
 
-1. **Fill / repair** Shipjaw files from **reality** (paths/signatures only).
-2. **Absorb** foreign plans into Shipjaw homes (do not leave two sources
-   of truth):
-   - roadmaps / TODOs / phase notes → `technical-plan/00-roadmap.md` +
-     active `phase-*.md` (status: todo | doing | done)
-   - shipped features from README/routes/git → `features-index.md`
-   - ADRs / decision notes → `decisions.md`
-   - prior changelogs → `changelog.md` (summaries, not dumps)
-3. Infer **where we are**:
-   - INDEX `Current phase:` = active phase or “stabilize + document”
-   - roadmap lists done vs next with honest status
-   - one active phase whose *User can…* matches what works **or** the
-     next concrete slice — never invent a fake multi-phase history
-4. If foreign `docs/` remain, note in `architecture.md` /
-   `decisions.md` that Shipjaw `documentation/` is now canonical; link
-   paths, don’t duplicate bodies.
+### 4. Architecture practice audit (read-only — mandatory)
 
-### 4. Continuation contract + provenance
+Using survey signals + targeted Grep (do **not** rewrite code here),
+score the repo against Shipjaw practices
+(`../shipjaw-build/references/project-structure.md` ·
+`code-standards.md`):
+
+| Practice | Look for | Gap if… |
+|---|---|---|
+| Layer folders | `server/domain|application|infrastructure` | missing / logic only in `app/` |
+| Ports | `application/ports/*` | use-cases import concrete DB/clients |
+| Composition root | `server/composition.ts` | actions `new` repos / import infra |
+| Thin adapters | `features/**/actions.ts` | SQL/ORM/domain rules inside actions |
+| Typed errors + UI/HTTP map | domain error types | only `throw new Error` / bare 500 |
+| Types/consts ownership | `*.constants.ts`, domain types | models only in components |
+| No utils grab-bag | `lib/utils.ts` / `helpers.ts` | catch-all shared bag |
+| Anti-barrel | layer `index.ts` re-exports | whole-layer barrels |
+
+**Write results into** `documentation/knowledge-base/architecture.md`:
+
+- section **Shipjaw practice gaps** (table: gap · evidence path · P0/P1/P2)
+- section **Notable deviations** — current layout is canonical until
+  converged; do not pretend clean-arch exists if it doesn’t
+
+Also append one short entry to `decisions.md`: “Adopted Shipjaw contract;
+architecture convergence planned, not executed at adopt.”
+
+### 5. Propose improvement plan (mandatory — plan only)
+
+Create (or merge into) a technical-plan phase from
+`../shipjaw-build/templates/technical-plan-converge-arch.md`:
+
+- Path eg. `documentation/technical-plan/phase-0N-converge-clean-arch.md`
+- Fill the gaps table from the audit; **ordered slices** (core journey
+  P0 first; no big-bang)
+- Link it from `technical-plan/00-roadmap.md` and INDEX `Current phase`
+  if this is the next work (or keep product phase current and list
+  converge as following)
+
+**Do not implement** the slices during adopt unless the user **explicitly**
+asked to start refactoring in the same message. Default handoff:
+
+```text
+/shipjaw-ask Execute P0 from phase-0N-converge-clean-arch (characterization first)
+```
+
+### 6. Continuation contract + provenance
 
 ```bash
 ../shipjaw-build/scripts/copy-continuation-contract.sh <project-root>
@@ -116,41 +134,37 @@ Idempotent: existing files are **skipped**. Then the agent must:
 ../shipjaw-build/scripts/validate-docs.sh <project-root>
 ```
 
-### 5. Tooling gaps (idempotent)
+### 7. Tooling gaps (idempotent)
 
-From `templates/scaffold/` README: add **missing** bits only. Never
-wholesale-replace working eslint/playwright/next config. Document real
-layout; do not mass-move folders.
+Add missing strict/tsconfig/eslint/test/CI bits only. Never wholesale
+replace working configs. Do not mass-move folders to match clean-arch
+during adopt — that’s the converge phase.
 
-### 6. Gate sanity
+### 8. Gate sanity
 
 ```bash
 ../shipjaw-build/scripts/run-gate.sh <project-root>
 ```
 
-`--with-e2e` only if asked or a critical journey is already covered.
+### 9. Status snapshot + hand off
 
-### 7. Status snapshot + hand off
+Reply **must** include:
 
-Reply must include a short **where we are** block:
+1. Docs before → after
+2. Shipped / current product phase
+3. **Architecture gaps** (top P0/P1)
+4. **Proposed improvement plan** (phase path + ordered slices, 3–6 bullets)
+5. Explicit: *no structural rewrite done* (unless user asked)
 
-- Docs before → after (created / merged / left alone)
-- Shipped (from features-index / routes)
-- Current phase + next *User can…*
-- Known gaps (tests, a11y, clean-arch drift)
-
-Then:
-
-```text
-/shipjaw-ask <next feature or fix>
-```
+Then hand off to `/shipjaw-ask` for the first P0 slice or the next product
+feature.
 
 ## Hard rules
 
-- No `create-next-app`, no product rewrite, no Out-of-v1 feature dump.
-- Survey before skeleton. Merge > overwrite. Templates never clobber
-  existing content (`init-docs-skeleton` skips).
-- Docs describe **as-is** status; phases reflect reality, not a fake
-  greenfield roadmap.
-- Narration budget: survey summary + status snapshot + handoff.
+- No `create-next-app`, no silent product/architecture rewrite.
+- Survey + practice audit + **written plan** are mandatory; execution of
+  the plan is **opt-in**.
+- Merge > overwrite. Templates never clobber existing content.
+- Docs describe **as-is**; the converge phase describes **to-be** slices.
+- Narration budget: survey + gaps + plan + handoff.
 - VERSION = contents of `../shipjaw-build/VERSION`.

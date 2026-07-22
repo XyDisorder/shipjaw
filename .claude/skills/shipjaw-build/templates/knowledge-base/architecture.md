@@ -37,3 +37,9 @@ rate-limited surfaces, Dependabot/audit.>
 ## Notable deviations / convention owner
 <Project owns conventions after bootstrap. Record any bent skill default
 or external design-system ADR here with the reason.>
+
+## Shipjaw practice gaps
+<!-- Filled by shipjaw-adopt audit (and updated as converge slices land). -->
+| Gap | Evidence | Priority | Status |
+|---|---|---|---|
+| <none yet / list from adopt> | <path> | P0/P1/P2 | open \| deferred \| done |
