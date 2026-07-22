@@ -5,8 +5,8 @@
 > Paths/signatures only — never paste code blocks.
 
 ## Skill provenance
-- scaffolded-with: shipjaw@<YYYY.MM.DD>
-  (copy from `.claude/skills/shipjaw/VERSION` or the installed skill's VERSION file)
+- scaffolded-with: shipjaw-build@<YYYY.MM.DD>
+  (copy from `.claude/skills/shipjaw-build/VERSION` or the installed skill's VERSION file)
 
 ## Stack
 - Frontend: Next.js <exact version>, TypeScript <exact version>, App Router

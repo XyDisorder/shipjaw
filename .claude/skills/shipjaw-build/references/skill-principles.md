@@ -1,13 +1,16 @@
-# Operating principles (binding for both skills)
+# Operating principles (binding for all Shipjaw skills)
 
 These are product decisions for *how the skills behave*, not app-domain
 rules. Agents must follow them; do not re-litigate mid-task.
 
-1. **Two skills, not one.** `shipjaw` = bootstrap only (discovery,
-   archi, scaffold). `shipjaw-ask` = every later session. Continuation
-   never reloads bootstrap discovery/architecture docs or re-derives the
-   stack. If KB exists → hand off; if INDEX missing but docs exist →
-   repair, don't bootstrap.
+1. **Three skills, one pipeline.** `shipjaw-prompt` = expression only
+   (rough idea → `documentation/product/source-prompt.md`). 
+   `shipjaw-build` = bootstrap only (prompt → docs + scaffold + v1).
+   `shipjaw-ask` = every later session. Continuation never reloads
+   bootstrap discovery/architecture docs or re-derives the stack. If KB
+   exists → hand off to ask; if INDEX missing but docs exist → repair,
+   don't bootstrap. Prompt skill must **never** create `knowledge-base/`.
+
 
 2. **State lives in the repo, not the transcript.** Anything needed to
    resume (architecture, decisions, phase status, contracts) is written
@@ -50,7 +53,7 @@ rules. Agents must follow them; do not re-litigate mid-task.
 
 9. **Dogfood the skill.** Maintainers run `./scripts/smoke-check.sh`
    after editing skills/templates. Periodically run a tiny real
-   `/shipjaw` smoke app when Next/tooling majors move. A skill that
+   `/shipjaw-build` smoke app when Next/tooling majors move. A skill that
    isn't exercised drifts.
 
 10. **Migration over forced upgrades.** Old projects stay valid. Use
@@ -79,8 +82,8 @@ rules. Agents must follow them; do not re-litigate mid-task.
 
 15. **Stamp the skill version.** At scaffold (and on doc upgrades), set
     in `architecture.md`:
-    `scaffolded-with: shipjaw@<VERSION>` where VERSION is the
-    contents of `shipjaw/VERSION` (YYYY.MM.DD). Enables migration
+    `scaffolded-with: shipjaw-build@<VERSION>` where VERSION is the
+    contents of `shipjaw-build/VERSION` (YYYY.MM.DD). Enables migration
     detection later.
 
 16. **One convention owner.** After bootstrap, the **project** owns

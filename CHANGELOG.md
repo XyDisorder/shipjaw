@@ -1,5 +1,12 @@
 # skill-my-website changelog
 
+## 2026-07-22e
+
+- Three-skill pipeline: **`shipjaw-prompt`** (expression →
+  `product/source-prompt.md`) → **`shipjaw-build`** (scaffold) →
+  **`shipjaw-ask`** (continue). Principle 1 updated; README/install
+  refreshed.
+
 ## 2026-07-22d
 
 - Principle **17** (tiered regression / business-rule safety): always
@@ -8,8 +15,8 @@
   get slim `BR-XXX` docs.
 - New `references/regression-and-business-rules.md` +
   `templates/business-rule.md`; wired into testing, technical-plan,
-  doc-structure, INDEX, shipjaw / shipjaw-ask.
-- Rebrand to **Shipjaw** (`shipjaw` / `shipjaw-ask`), new wordmark, README
+  doc-structure, INDEX, shipjaw-build / shipjaw-ask.
+- Rebrand to **Shipjaw** (`shipjaw-build` / `shipjaw-ask`), new wordmark, README
   marketing copy updated.
 
 ## 2026-07-22b

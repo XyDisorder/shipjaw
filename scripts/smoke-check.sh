@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
-# Structural smoke check for shipjaw / shipjaw-ask (no network).
+# Structural smoke check for shipjaw-prompt / shipjaw-build / shipjaw-ask.
 # Run from repo root: ./scripts/smoke-check.sh
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-SKILL="$ROOT/.claude/skills/shipjaw"
+SKILL="$ROOT/.claude/skills/shipjaw-build"
 ASK="$ROOT/.claude/skills/shipjaw-ask"
+PROMPT="$ROOT/.claude/skills/shipjaw-prompt"
 FAIL=0
 
 ok() { printf '  OK  %s\n' "$1"; }
@@ -13,6 +14,9 @@ bad() { printf '  FAIL %s\n' "$1"; FAIL=1; }
 
 echo "== skill layout =="
 for f in \
+  "$PROMPT/SKILL.md" \
+  "$PROMPT/references/prompt-craft.md" \
+  "$PROMPT/templates/source-prompt.md" \
   "$ASK/SKILL.md" \
   "$SKILL/SKILL.md" \
   "$SKILL/VERSION" \
@@ -36,7 +40,8 @@ for f in \
   "$SKILL/templates/scaffold/src/lib/logger.ts" \
   "$SKILL/templates/scaffold/Dockerfile" \
   "$SKILL/templates/business-rule.md" \
-  "$ROOT/.cursor/skills/shipjaw" \
+  "$ROOT/.cursor/skills/shipjaw-prompt" \
+  "$ROOT/.cursor/skills/shipjaw-build" \
   "$ROOT/.cursor/skills/shipjaw-ask" \
   "$ROOT/scripts/smoke-check.sh"
 do
@@ -52,7 +57,7 @@ else bad "VERSION must be YYYY.MM.DD or YYYY.MM.DDb (got: ${VER:-empty})"
 fi
 
 echo "== frontmatter descriptions =="
-for skill_md in "$SKILL/SKILL.md" "$ASK/SKILL.md"; do
+for skill_md in "$PROMPT/SKILL.md" "$SKILL/SKILL.md" "$ASK/SKILL.md"; do
   name="$(basename "$(dirname "$skill_md")")"
   desc="$(grep -E '^description:' "$skill_md" | sed 's/^description:[[:space:]]*//' | head -n1)"
   if [[ -z "$desc" ]]; then bad "$name missing description"
@@ -65,6 +70,41 @@ for skill_md in "$SKILL/SKILL.md" "$ASK/SKILL.md"; do
     bad "$name description needs anti-trigger (do not use / not for / instead)"
   fi
 done
+
+echo "== three-skill pipeline phrases =="
+PRINCIPLES="$SKILL/references/skill-principles.md"
+for phrase in \
+  "shipjaw-prompt" \
+  "shipjaw-build" \
+  "shipjaw-ask" \
+  "Three skills" \
+  "Dogfood" \
+  "Migration" \
+  "Anti-trigger" \
+  "framework docs" \
+  "Idempotent" \
+  "Narration" \
+  "scaffolded-with" \
+  "convention owner" \
+  "Regression"
+do
+  if grep -qi "$phrase" "$PRINCIPLES"; then ok "$phrase"
+  else bad "skill-principles.md missing: $phrase"
+  fi
+done
+
+echo "== prompt skill constraints =="
+if grep -qi 'knowledge-base' "$PROMPT/SKILL.md" \
+  && grep -qi 'never' "$PROMPT/SKILL.md"; then
+  ok "shipjaw-prompt forbids KB scaffold"
+else
+  bad "shipjaw-prompt must forbid creating knowledge-base/"
+fi
+if grep -q 'source-prompt.md' "$PROMPT/SKILL.md" "$SKILL/references/workflow.md"; then
+  ok "source-prompt handoff wired"
+else
+  bad "source-prompt.md handoff missing"
+fi
 
 echo "== doc templates: no code fences =="
 if command -v rg >/dev/null 2>&1; then
@@ -84,24 +124,6 @@ if grep -n 'add `documentation/` to `.gitignore`' "$SKILL/references/doc-structu
   bad "still instructs gitignoring documentation/ by default"
 else ok "documentation/ default = committed"
 fi
-
-echo "== principles 9–17 phrases =="
-PRINCIPLES="$SKILL/references/skill-principles.md"
-for phrase in \
-  "Dogfood" \
-  "Migration" \
-  "Anti-trigger" \
-  "framework docs" \
-  "Idempotent" \
-  "Narration" \
-  "scaffolded-with" \
-  "convention owner" \
-  "Regression"
-do
-  if grep -qi "$phrase" "$PRINCIPLES"; then ok "$phrase"
-  else bad "skill-principles.md missing: $phrase"
-  fi
-done
 
 echo "== regression reference + BR template =="
 if [[ -f "$SKILL/references/regression-and-business-rules.md" ]]; then

@@ -2,15 +2,23 @@
 
 This is the bootstrap workflow. Once a project has
 `documentation/knowledge-base/`, all later work goes through
-`shipjaw-ask`, not this one.
+`shipjaw-ask`, not this one. Vague ideas should go through
+`shipjaw-prompt` first.
 
 ## 1. Intake
 
-Read the project prompt. Briefly note what's specified vs missing
-(one or two sentences — don't restate the obvious). List the **technical
-signals** you already see (auth? DB? multi-client API? i18n? deploy?) —
-these feed step 3 via `tech-choices.md`.
+Resolve the product prompt in this order:
 
+1. Prompt text in the user message (paste wins if present).
+2. Else `documentation/product/source-prompt.md` (from `shipjaw-prompt`).
+3. Else stop and ask for a prompt **or** suggest `/shipjaw-prompt`.
+
+Read the prompt. Briefly note what's specified vs missing (one or two
+sentences). List the **technical signals** you already see (auth? DB?
+multi-client API? i18n? deploy?) — these feed step 3 via
+`tech-choices.md`. If the prompt already has the craft sections
+(one-liner, core action, v1 scope, auth/data, constraints, design,
+success criteria), treat discovery as nearly done.
 ## 2. Clarify (only what's missing)
 
 Use `references/discovery-questions.md`. Max 4 questions/round via host
@@ -34,7 +42,8 @@ exist.** Config/scaffold may follow immediately after docs are written.
 1. Create committed `documentation/` (do **not** gitignore). Seed from
    `templates/`.
 2. Fill `product/overview.md` (incl. Non-goals / Out of v1) and
-   `design-brief.md`.
+   `design-brief.md`. If `product/source-prompt.md` exists, keep it and
+   derive overview/design-brief from it (don't delete the source prompt).
 3. Break into phases (`templates/technical-plan-phase.md`). Split when
    >~500 lines net-new across many files **or** when a critical e2e flow
    is bundled with unrelated polish.
@@ -66,7 +75,7 @@ Never delete `documentation/` to please the scaffolder.
 4. `security.md` — always; headers/CSP/actions/middleware patterns.
 5. `monorepo-and-nestjs.md` — **only if** NestJS.
 6. `modern-extras.md` — **only** sections discovery/tech-choices activated.
-7. `migration.md` — only when upgrading a pre-existing shipjaw app.
+7. `migration.md` — only when upgrading a pre-existing shipjaw-build app.
 
 Do **not** paste official Next/Nest docs into the repo (principle 12).
 
@@ -74,7 +83,7 @@ Do **not** paste official Next/Nest docs into the repo (principle 12).
 
 Copy `templates/scaffold/` per its README (**idempotent**). Wire scripts:
 `typecheck`, `lint`, `test`, `test:watch`, `e2e`, `build`. Copy CI +
-Dependabot. Stamp `scaffolded-with: shipjaw@<VERSION>` and exact
+Dependabot. Stamp `scaffolded-with: shipjaw-build@<VERSION>` and exact
 framework versions in `architecture.md`.
 
 If a native DB driver fails to install (pnpm build-script deny), apply the

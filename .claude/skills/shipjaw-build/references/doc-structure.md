@@ -20,6 +20,7 @@ documentation/
     phase-archive/                # completed phases moved here on demand
       phase-01-<slug>.md
   product/
+    source-prompt.md             # optional; from shipjaw-prompt (build-ready)
     overview.md                  # vision, target users, value prop, success criteria
     design-brief.md               # style, palette, fonts, references, i18n, dark mode
     features/
@@ -68,6 +69,7 @@ Current phase: <phase N — name — status>
 ## Product
 | File | What it covers | Open when |
 |---|---|---|
+| product/source-prompt.md | build-ready prompt (if present) | re-open expression / re-build intake |
 | product/overview.md | vision, audience, success criteria | scope / audience change |
 | product/design-brief.md | style direction, palette, locales | visual / i18n change |
 | product/business-rules/BR-*.md | critical invariants (if folder exists) | auth / money / state / contract change |
