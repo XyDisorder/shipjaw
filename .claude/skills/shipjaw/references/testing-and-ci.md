@@ -26,10 +26,18 @@
   Flakes: fix the race; don't raise retries above 1 in CI.
 - Scaffold tooling **day one** — phase 1 can add a test the same way
   phase 10 will.
+- **Bug fix ⇒ regression test** that reproduces the bug (fails before,
+  passes after). Justify any exception in the phase/plan.
+- **Do not delete, skip, or weaken** an existing test merely to make new
+  code pass. Intentional behavior change ⇒ update product/BR docs +
+  plan note + replacement coverage.
+- **Characterization tests** before changing poorly documented behavior.
+  Details / tiers: `regression-and-business-rules.md`.
 
 ## Verification gate (agent)
 
-Run once at end of phase/task: typecheck → lint → unit → e2e.
+Run once at end of phase/task: typecheck → lint → unit → e2e
+(plus contract / migration / a11y / build when relevant to the change).
 **After 2 failed gate attempts**, stop fixing in a loop: list the
 remaining errors, what you tried, and ask the user how to proceed.
 Don't burn tokens on a third blind retry.

@@ -5,9 +5,11 @@
 
 ## Clean architecture layers (per app)
 
-- `domain/` — entities, value objects, pure business rules. Zero imports
-  from infrastructure, frameworks, or presentation. No `fetch`, no ORM, no
-  React, no Nest decorators here.
+- `domain/` — entities, value objects, pure business rules / invariants.
+  Zero imports from infrastructure, frameworks, or presentation. No
+  `fetch`, no ORM, no React, no Nest decorators. Critical rules live here
+  (or in `application/` use-cases), never only in UI/adapters — see
+  `regression-and-business-rules.md`.
 - `application/` — use-cases/services that orchestrate domain objects;
   defines **ports** (interfaces) for anything it needs from the outside (a
   repository interface, an email-sender interface...). Depends on `domain`

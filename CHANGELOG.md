@@ -1,5 +1,17 @@
 # skill-my-website changelog
 
+## 2026-07-22d
+
+- Principle **17** (tiered regression / business-rule safety): always
+  pre-change bullets, domain-owned invariants, bug⇒regression test, never
+  weaken tests to green, characterization on fuzzy legacy; critical paths
+  get slim `BR-XXX` docs.
+- New `references/regression-and-business-rules.md` +
+  `templates/business-rule.md`; wired into testing, technical-plan,
+  doc-structure, INDEX, shipjaw / shipjaw-ask.
+- Rebrand to **Shipjaw** (`shipjaw` / `shipjaw-ask`), new wordmark, README
+  marketing copy updated.
+
 ## 2026-07-22b
 
 - Dogfood fixes: docs vs `create-next-app` (temp-dir merge); data-layer

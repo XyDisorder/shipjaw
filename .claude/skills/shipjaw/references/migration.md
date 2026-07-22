@@ -1,20 +1,22 @@
 # Migration & compatibility
 
-> For agents on repos scaffolded by an older skill-my-app. Read only when
+> For agents on repos scaffolded by an older Shipjaw (or the former
+> name `skill-my-app` / `ask-my-app`). Read only when
 > `architecture.md` lacks `scaffolded-with`, docs look gitignored, or
 > INDEX/layout diverges from current expectations.
 
 ## Detect era
 
 1. Read `documentation/knowledge-base/architecture.md` for
-   `scaffolded-with: skill-my-app@<VERSION>`.
+   `scaffolded-with: shipjaw@<VERSION>` (legacy:
+   `scaffolded-with: skill-my-app@<VERSION>` — treat as valid, same era).
 2. If missing: treat as **pre-version-stamp** (before 2026.07.22).
 3. If `documentation/` is gitignored or absent from git but present
    locally: **pre-committed-docs** era.
 
 ## Always do (any era)
 
-- Prefer `ask-my-app` when any `documentation/knowledge-base/` exists.
+- Prefer `shipjaw-ask` when any `documentation/knowledge-base/` exists.
 - Repair missing `INDEX.md` from the tree rather than re-bootstrapping.
 - Do **not** force a full re-scaffold to "upgrade" the skill.
 
@@ -22,7 +24,7 @@
 
 | Gap | Upgrade |
 |---|---|
-| No `scaffolded-with` line | Add `scaffolded-with: skill-my-app@<current VERSION>` + note "upgraded docs only" |
+| No `scaffolded-with` line | Add `scaffolded-with: shipjaw@<current VERSION>` + note "upgraded docs only" |
 | `documentation/` gitignored | Remove from `.gitignore`, commit docs (ask user if secrets might be in docs first) |
 | Docs contain large code fences | Convert touched sections to paths/signatures only when you edit them |
 | No Open-when column in INDEX | Add it on next INDEX edit |

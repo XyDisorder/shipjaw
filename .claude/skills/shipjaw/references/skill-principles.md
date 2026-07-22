@@ -3,8 +3,8 @@
 These are product decisions for *how the skills behave*, not app-domain
 rules. Agents must follow them; do not re-litigate mid-task.
 
-1. **Two skills, not one.** `skill-my-app` = bootstrap only (discovery,
-   archi, scaffold). `ask-my-app` = every later session. Continuation
+1. **Two skills, not one.** `shipjaw` = bootstrap only (discovery,
+   archi, scaffold). `shipjaw-ask` = every later session. Continuation
    never reloads bootstrap discovery/architecture docs or re-derives the
    stack. If KB exists → hand off; if INDEX missing but docs exist →
    repair, don't bootstrap.
@@ -17,7 +17,7 @@ rules. Agents must follow them; do not re-litigate mid-task.
 
 3. **Progressive disclosure.** SKILL.md stays thin. Rare detail lives in
    `references/*` and is opened **only when the current step needs it**
-   — never "just in case." `ask-my-app`: at most **one** reference file
+   — never "just in case." `shipjaw-ask`: at most **one** reference file
    per task, and usually zero. Same idea as `INDEX.md` → one/two KB files.
 
 4. **Compile rules into tooling.** Bootstrap is incomplete until typing /
@@ -50,7 +50,7 @@ rules. Agents must follow them; do not re-litigate mid-task.
 
 9. **Dogfood the skill.** Maintainers run `./scripts/smoke-check.sh`
    after editing skills/templates. Periodically run a tiny real
-   `/skill-my-app` smoke app when Next/tooling majors move. A skill that
+   `/shipjaw` smoke app when Next/tooling majors move. A skill that
    isn't exercised drifts.
 
 10. **Migration over forced upgrades.** Old projects stay valid. Use
@@ -79,8 +79,8 @@ rules. Agents must follow them; do not re-litigate mid-task.
 
 15. **Stamp the skill version.** At scaffold (and on doc upgrades), set
     in `architecture.md`:
-    `scaffolded-with: skill-my-app@<VERSION>` where VERSION is the
-    contents of `skill-my-app/VERSION` (YYYY.MM.DD). Enables migration
+    `scaffolded-with: shipjaw@<VERSION>` where VERSION is the
+    contents of `shipjaw/VERSION` (YYYY.MM.DD). Enables migration
     detection later.
 
 16. **One convention owner.** After bootstrap, the **project** owns
@@ -89,3 +89,12 @@ rules. Agents must follow them; do not re-litigate mid-task.
     system or ADR that conflicts with a skill default, follow the
     project and record the deviation in `architecture.md` — don't fight
     it on every task.
+
+17. **Regression & business-rule safety (tiered).** Every behavior
+    change preserves documented invariants. Always: short pre-change
+    bullets; invariants owned in domain/application; bug fix ⇒
+    failing-then-passing regression test; never weaken tests to green;
+    characterization before rewriting fuzzy legacy; gate + docs current.
+    Critical paths (auth, money, multi-state, multi-client, migrations)
+    add slim `BR-XXX` docs and contract/state/side-effect checks.
+    → `references/regression-and-business-rules.md`

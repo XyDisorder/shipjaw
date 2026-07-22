@@ -2,12 +2,12 @@
 
 Created at the project root during scaffolding and **committed with the
 repo** — do **not** add `documentation/` to `.gitignore`. It is the
-shared, AI-facing map that makes `ask-my-app` work after clone, on another
+shared, AI-facing map that makes `shipjaw-ask` work after clone, on another
 machine, or for a teammate. Always keep it current, and keep it **cheap
 to re-read** (paths/signatures only, no secrets, no pasted code).
 
 If a user explicitly wants docs local-only, they may gitignore it — but
-warn that `ask-my-app` will then fail for anyone who doesn't have those
+warn that `shipjaw-ask` will then fail for anyone who doesn't have those
 files. Default = versioned.
 
 ```
@@ -24,6 +24,8 @@ documentation/
     design-brief.md               # style, palette, fonts, references, i18n, dark mode
     features/
       <feature-slug>.md           # one file per feature/epic — templates/product-feature.md
+    business-rules/               # create when ≥1 critical rule (auth/money/state/multi-client)
+      BR-001-<slug>.md            # slim rule — templates/business-rule.md
   knowledge-base/
     architecture.md               # the REAL, current architecture & folder layout
     domain-model.md                # entities/DTOs/relations as they exist in code today
@@ -68,6 +70,7 @@ Current phase: <phase N — name — status>
 |---|---|---|
 | product/overview.md | vision, audience, success criteria | scope / audience change |
 | product/design-brief.md | style direction, palette, locales | visual / i18n change |
+| product/business-rules/BR-*.md | critical invariants (if folder exists) | auth / money / state / contract change |
 ```
 
 A session should be able to decide, from `INDEX.md` alone, exactly which
@@ -90,6 +93,11 @@ nothing else. Treat the **Open when** column as a hard filter, not a hint.
   rare audits, not default agent context.
 - **`product/` changes when the product surface changes** — new feature,
   changed scope, changed design direction. Not on every commit.
+  Create `product/business-rules/` only when there is at least one
+  **critical** invariant (authz, money, multi-state, multi-client,
+  migration). Slim `BR-XXX` files (`templates/business-rule.md`); simple
+  apps keep invariants in feature docs + domain tests. See
+  `regression-and-business-rules.md`.
 - **`knowledge-base/` is the single source of truth for "how the site
   works today"** and must be updated in the same session as any of: a
   shipped feature, a changed API contract, a changed data model, or an

@@ -1,15 +1,15 @@
-# Skill My App
+# Shipjaw
 
 <p align="center">
-  <img src="assets/logo-dark-wordmark.png" alt="Skill My App — Ship the product. Not the prompt engineering." width="720" />
+  <img src="assets/logo-dark-wordmark.png" alt="Shipjaw — Ship the product. Not the prompt engineering." width="720" />
 </p>
 
 <p align="center">
-  <strong>Describe the product. The agent builds it — clean, tested, documented, and cheap on tokens.</strong>
+  <strong>Ship the product — solid tech, docs that scale, tokens kept low.</strong>
 </p>
 
 <p align="center">
-  Claude Code &amp; Cursor skills to scaffold and grow<br/>
+  Claude Code &amp; Cursor skills to scaffold and grow production-grade apps<br/>
   <strong>TypeScript · Next.js · NestJS (only when you actually need it)</strong>
 </p>
 
@@ -29,21 +29,23 @@ You ask an agent to “build my site.” You get:
 - code that *sometimes* compiles  
 - no stable architecture  
 - missing or invented docs  
+- features that regress because nothing owns the business rules  
 - the next session **re-deriving everything** and burning your token budget  
 
-**Skill My App** flips that: the first run lays the foundation; every later run only reads what it needs.
+**Shipjaw** flips that: bootstrap once with real foundations; every later change stays cheap, tested, and faithful to the product.
 
 ## The promise
 
-| At bootstrap (`skill-my-app`) | Afterward (`ask-my-app`) |
+| At bootstrap (`shipjaw`) | Afterward (`shipjaw-ask`) |
 |---|---|
 | Targeted questions (not an interrogation) | Reads `INDEX.md` + 1–2 relevant files |
 | Tech choices derived from the **prompt** | No rediscovery, no re-architecture |
 | Committed `documentation/` | State lives in the repo, not the chat |
 | Deterministic scaffold (copy-ready kit) | Typecheck / lint / test / e2e gate |
 | Strict TS, clean architecture, App Router security | Same contract, minimal token bill |
+| Invariants owned in domain/application | Bug fix ⇒ regression test; never weaken tests to green |
 
-One line: **docs-first, tooling-enforced, continuation cheap.**
+One line: **docs-first, tooling-enforced, continuation cheap, regressions blocked.**
 
 ## What you get
 
@@ -51,6 +53,7 @@ One line: **docs-first, tooling-enforced, continuation cheap.**
 - **NestJS in a monorepo** only when the product justifies it (multi-client API, workers, etc.)  
 - **Rules compiled** into tsconfig, eslint, CSP headers, Vitest, Playwright + a11y (axe)  
 - A **living knowledge base**: architecture, domain, decisions, changelog — rotated so it stays short  
+- **Tiered business-rule safety**: short pre-change analysis always; slim `BR-XXX` docs when auth / money / multi-state / multi-client matter  
 - **Automatic tech decisions**: signal → stack tables (`tech-choices.md`) — you don’t pick Drizzle vs Nest “by vibe”  
 - Works with **Claude Code** and **Cursor**
 
@@ -61,32 +64,32 @@ One line: **docs-first, tooling-enforced, continuation cheap.**
          │
          ▼
  ┌───────────────────┐
- │   skill-my-app    │  bootstrap once
+ │     shipjaw       │  bootstrap once
  │  discovery → docs │
  │  → scaffold → v1  │
  └─────────┬─────────┘
            │  documentation/INDEX.md  (committed)
            ▼
  ┌───────────────────┐
- │    ask-my-app     │  every later feature / fix
+ │   shipjaw-ask     │  every later feature / fix
  │  INDEX + 1–2 files│
  └───────────────────┘
 ```
 
-Two skills, one contract. Pay the expensive thinking once; keep day-to-day work light.
+Two skills, one contract. Pay the expensive thinking once; keep day-to-day work light — without sacrificing delivery quality.
 
 ## Usage
 
 **1. Bootstrap** — new project:
 
 ```text
-/skill-my-app A personal todo tool, no accounts, minimal UI, local persistence
+/shipjaw A personal todo tool, no accounts, minimal UI, local persistence
 ```
 
 **2. Continue** — same repo, later:
 
 ```text
-/ask-my-app Add a done/active filter and the matching e2e
+/shipjaw-ask Add a done/active filter and the matching e2e
 ```
 
 Compact context between unrelated tasks (`/compact` on Claude, or a fresh chat on Cursor): **everything needed to resume already lives in `documentation/`**.
@@ -101,36 +104,39 @@ Compact context between unrelated tasks (`/compact` on Claude, or a fresh chat o
 ### Global (any project)
 
 ```sh
-git clone https://github.com/XyDisorder/skill-my-app.git
-cd skill-my-app
+git clone https://github.com/XyDisorder/shipjaw.git
+cd shipjaw
 
 mkdir -p ~/.claude/skills ~/.cursor/skills
 
-ln -s "$(pwd)/.claude/skills/skill-my-app" ~/.claude/skills/skill-my-app
-ln -s "$(pwd)/.claude/skills/ask-my-app"   ~/.claude/skills/ask-my-app
+ln -s "$(pwd)/.claude/skills/shipjaw" ~/.claude/skills/shipjaw
+ln -s "$(pwd)/.claude/skills/shipjaw-ask"   ~/.claude/skills/shipjaw-ask
 
-ln -s "$(pwd)/.claude/skills/skill-my-app" ~/.cursor/skills/skill-my-app
-ln -s "$(pwd)/.claude/skills/ask-my-app"   ~/.cursor/skills/ask-my-app
+ln -s "$(pwd)/.claude/skills/shipjaw" ~/.cursor/skills/shipjaw
+ln -s "$(pwd)/.claude/skills/shipjaw-ask"   ~/.cursor/skills/shipjaw-ask
 ```
 
-Keep both skills as **siblings** so `ask-my-app` can resolve `../skill-my-app/references/` when needed.
+Keep both skills as **siblings** so `shipjaw-ask` can resolve `../shipjaw/references/` when needed.
+
+> Renaming from the old `skill-my-app` install: remove the old symlinks, clone/pull this repo, then link `shipjaw` + `shipjaw-ask` as above. Legacy `scaffolded-with: skill-my-app@…` stamps still work via migration notes.
 
 ## Why it’s different
 
-| Typical agent approach | Skill My App |
+| Typical agent approach | Shipjaw |
 |---|---|
 | Everything in the transcript | Versioned state in `documentation/` |
 | One mega catch-all prompt | Expensive bootstrap ≠ cheap continuation |
 | “No `any`” as forgettable prose | Encoded in tsconfig / eslint / CI |
 | Config reinvented every time | Copy `templates/scaffold/` |
 | Nest “just in case” | Nest only when the prompt justifies it |
-| Gitignored docs → amnesiac clones | **Committed** docs; `ask-my-app` survives clone |
+| Gitignored docs → amnesiac clones | **Committed** docs; `shipjaw-ask` survives clone |
+| Fixes that quietly regress | Bug ⇒ failing-then-passing test; invariants in domain |
 
 ## Anti-triggers (don’t use it for)
 
 - A one-off CSS / copy tweak  
 - A non-TypeScript repo  
-- A project that **already** has `documentation/knowledge-base/` → use **`ask-my-app`**, not bootstrap  
+- A project that **already** has `documentation/knowledge-base/` → use **`shipjaw-ask`**, not bootstrap  
 
 ## Maintainers
 
@@ -138,4 +144,4 @@ Keep both skills as **siblings** so `ask-my-app` can resolve `../skill-my-app/re
 ./scripts/smoke-check.sh
 ```
 
-Version: `.claude/skills/skill-my-app/VERSION` · changelog: [`CHANGELOG.md`](CHANGELOG.md) · principles: [`skill-principles.md`](.claude/skills/skill-my-app/references/skill-principles.md) · tech choices: [`tech-choices.md`](.claude/skills/skill-my-app/references/tech-choices.md)
+Version: `.claude/skills/shipjaw/VERSION` · changelog: [`CHANGELOG.md`](CHANGELOG.md) · principles: [`skill-principles.md`](.claude/skills/shipjaw/references/skill-principles.md) · regression: [`regression-and-business-rules.md`](.claude/skills/shipjaw/references/regression-and-business-rules.md) · tech choices: [`tech-choices.md`](.claude/skills/shipjaw/references/tech-choices.md)

@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Structural smoke check for skill-my-app / ask-my-app (no network).
+# Structural smoke check for shipjaw / shipjaw-ask (no network).
 # Run from repo root: ./scripts/smoke-check.sh
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-SKILL="$ROOT/.claude/skills/skill-my-app"
-ASK="$ROOT/.claude/skills/ask-my-app"
+SKILL="$ROOT/.claude/skills/shipjaw"
+ASK="$ROOT/.claude/skills/shipjaw-ask"
 FAIL=0
 
 ok() { printf '  OK  %s\n' "$1"; }
@@ -19,6 +19,7 @@ for f in \
   "$SKILL/references/skill-principles.md" \
   "$SKILL/references/migration.md" \
   "$SKILL/references/tech-choices.md" \
+  "$SKILL/references/regression-and-business-rules.md" \
   "$SKILL/references/workflow.md" \
   "$SKILL/references/doc-structure.md" \
   "$SKILL/references/project-structure.md" \
@@ -34,8 +35,9 @@ for f in \
   "$SKILL/templates/scaffold/src/env.ts" \
   "$SKILL/templates/scaffold/src/lib/logger.ts" \
   "$SKILL/templates/scaffold/Dockerfile" \
-  "$ROOT/.cursor/skills/skill-my-app" \
-  "$ROOT/.cursor/skills/ask-my-app" \
+  "$SKILL/templates/business-rule.md" \
+  "$ROOT/.cursor/skills/shipjaw" \
+  "$ROOT/.cursor/skills/shipjaw-ask" \
   "$ROOT/scripts/smoke-check.sh"
 do
   if [[ -e "$f" ]]; then ok "$(basename "$f")"
@@ -83,7 +85,7 @@ if grep -n 'add `documentation/` to `.gitignore`' "$SKILL/references/doc-structu
 else ok "documentation/ default = committed"
 fi
 
-echo "== principles 9–16 phrases =="
+echo "== principles 9–17 phrases =="
 PRINCIPLES="$SKILL/references/skill-principles.md"
 for phrase in \
   "Dogfood" \
@@ -93,12 +95,31 @@ for phrase in \
   "Idempotent" \
   "Narration" \
   "scaffolded-with" \
-  "convention owner"
+  "convention owner" \
+  "Regression"
 do
   if grep -qi "$phrase" "$PRINCIPLES"; then ok "$phrase"
   else bad "skill-principles.md missing: $phrase"
   fi
 done
+
+echo "== regression reference + BR template =="
+if [[ -f "$SKILL/references/regression-and-business-rules.md" ]]; then
+  ok "regression-and-business-rules.md"
+else
+  bad "missing regression-and-business-rules.md"
+fi
+if [[ -f "$SKILL/templates/business-rule.md" ]]; then
+  ok "business-rule.md template"
+else
+  bad "missing templates/business-rule.md"
+fi
+if grep -q 'BR-' "$SKILL/templates/business-rule.md" \
+  && grep -qi 'Invariant' "$SKILL/templates/business-rule.md"; then
+  ok "BR template has id + invariant"
+else
+  bad "BR template missing BR- / Invariant"
+fi
 
 echo "== architecture template stamps version =="
 if grep -q 'scaffolded-with' "$SKILL/templates/knowledge-base/architecture.md"; then

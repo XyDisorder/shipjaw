@@ -24,10 +24,11 @@ Current phase: <phase N — name — status>
 |---|---|---|
 | product/overview.md | vision, audience, success criteria | scope / audience change |
 | product/design-brief.md | style direction, palette, locales | visual / i18n change |
+<!-- add product/business-rules/BR-*.md rows only when that folder exists -->
 
 <!--
 Keep this file short (~30-60 lines). It is the only file a continuation
-session (ask-my-app) reads by default — update it only when
+session (shipjaw-ask) reads by default — update it only when
 the table of contents itself changes (new file, new/archived phase,
 status flip, KB split), not when a file's internal content changes but
 its summary is still true. Treat "Open when" as a hard filter.

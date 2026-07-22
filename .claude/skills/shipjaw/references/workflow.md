@@ -2,7 +2,7 @@
 
 This is the bootstrap workflow. Once a project has
 `documentation/knowledge-base/`, all later work goes through
-`ask-my-app`, not this one.
+`shipjaw-ask`, not this one.
 
 ## 1. Intake
 
@@ -66,7 +66,7 @@ Never delete `documentation/` to please the scaffolder.
 4. `security.md` — always; headers/CSP/actions/middleware patterns.
 5. `monorepo-and-nestjs.md` — **only if** NestJS.
 6. `modern-extras.md` — **only** sections discovery/tech-choices activated.
-7. `migration.md` — only when upgrading a pre-existing skill-my-app app.
+7. `migration.md` — only when upgrading a pre-existing shipjaw app.
 
 Do **not** paste official Next/Nest docs into the repo (principle 12).
 
@@ -74,7 +74,7 @@ Do **not** paste official Next/Nest docs into the repo (principle 12).
 
 Copy `templates/scaffold/` per its README (**idempotent**). Wire scripts:
 `typecheck`, `lint`, `test`, `test:watch`, `e2e`, `build`. Copy CI +
-Dependabot. Stamp `scaffolded-with: skill-my-app@<VERSION>` and exact
+Dependabot. Stamp `scaffolded-with: shipjaw@<VERSION>` and exact
 framework versions in `architecture.md`.
 
 If a native DB driver fails to install (pnpm build-script deny), apply the
@@ -90,6 +90,9 @@ this app, test/e2e scripts, CI. Still "docs only" → not done.
 ## 6. Implement phase by phase
 
 Implement + tests + security together. Cap 500 lines/file.
+On behavior changes: short pre-change bullets in the phase file; follow
+`regression-and-business-rules.md` (tiered). Bug fixes need a regression
+test; do not weaken existing tests to green.
 
 Routes that **read a local/file DB or per-request user data** must opt
 into dynamic rendering (`export const dynamic = "force-dynamic"` or
