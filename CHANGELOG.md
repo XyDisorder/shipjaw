@@ -1,5 +1,12 @@
 # skill-my-website changelog
 
+## 2026-07-22h
+
+- Explicit **TU vs e2e edge-case matrices** in `testing-and-ci.md`
+  (validation/authz/boundaries in unit; empty/form error/unauthorized
+  golden-path companions in e2e; no duplicate coverage). Wired into phase
+  + feature templates and `shipjaw-ask`.
+
 ## 2026-07-22g
 
 - Principle **18 — Ship the core journey first**: *User can…* DoD on

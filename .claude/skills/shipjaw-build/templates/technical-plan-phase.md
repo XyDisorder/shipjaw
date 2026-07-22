@@ -45,13 +45,17 @@
       (`templates/business-rule.md`) + INDEX row when folder is created
 
 ## Tests
-- [ ] Unit (Vitest) — `<file>.test.ts`: <happy path + meaningful edge>
+- [ ] Unit (Vitest) — `<file>.test.ts`: happy path + **required edges**
+      from `testing-and-ci.md` (validation/reject, not-found, authz,
+      boundaries, idempotency as applicable) — list cases or `n/a + why`
 - [ ] Bug fix — regression test reproduces failure (fail before / pass after)
 - [ ] Core journey e2e (Playwright) — **required when "User can…" is a
       critical flow / phase-01 product slice**: golden path succeeds
+- [ ] E2E edges on that critical flow — empty · form error · unauthorized
+      · not-found UI as applicable (`testing-and-ci.md` e2e table); do
+      **not** re-test pure domain validation already covered in unit
 - [ ] E2E + a11y extras — axe zero critical/serious + keyboard/focus on
       primary control (same spec when e2e exists)
-- [ ] Empty / error / unauthorized covered for the critical flow (or n/a)
 - [ ] No existing test deleted/weakened unless intentional behavior change
       (docs + plan updated; replacement coverage in place)
 

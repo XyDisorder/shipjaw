@@ -21,4 +21,6 @@
 - [ ] Out of scope for this feature stays out: <…>
 
 ## Edge cases
-- <Edge case and expected behavior>
+- Domain/application (unit): <validation · not-found · authz · boundary · …>
+- Critical journey UI (e2e): <empty · form error · unauthorized · not-found · n/a>
+<!-- Map to testing-and-ci.md tables; avoid duplicating the same case in both. -->

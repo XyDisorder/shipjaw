@@ -49,7 +49,11 @@ Never preload `product/` or the full KB. Broad scope → new phase.
    - domain/application → Vitest; invariants owned there (not UI-only)
    - bug fix → regression test (fail before / pass after)
    - never weaken/skip existing tests just to green
-   - critical flow → Playwright golden path (+ axe + keyboard/focus)
+   - critical flow → Playwright golden path + e2e edges (empty / form
+     error / unauthorized / not-found as applicable) + axe + keyboard/focus
+   - unit edges for new domain/application behavior (see
+     `../shipjaw-build/references/testing-and-ci.md` tables) — don't
+     duplicate pure validation in e2e
    - critical auth/money/state/multi-client → slim BR +
      `../shipjaw-build/references/regression-and-business-rules.md` if needed
    - contracts consumers only if package exists

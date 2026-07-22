@@ -113,6 +113,13 @@ if grep -qi 'ruthless\|exactly one\|Out of v1' "$PROMPT/references/prompt-craft.
 else
   bad "prompt-craft.md missing MVP / one core action rules"
 fi
+if grep -qi 'Edge cases' "$SKILL/references/testing-and-ci.md" \
+  && grep -qi 'Golden path' "$SKILL/references/testing-and-ci.md" \
+  && grep -qi 'Validation' "$SKILL/references/testing-and-ci.md"; then
+  ok "testing-and-ci edge-case matrices"
+else
+  bad "testing-and-ci.md missing TU/e2e edge-case tables"
+fi
 
 echo "== entrypoint constraints =="
 if grep -qi 'mkdir' "$ENTRY/SKILL.md" \
