@@ -10,7 +10,7 @@
 
 ## Core action
 
-<the one v1 action>
+<exactly one — "User can …">
 
 ## Users & roles
 
@@ -20,12 +20,13 @@
 
 ## v1 scope
 
-- <flow / page>
+- <only what the core action needs — journeys, not a page wishlist>
 - …
 
 ## Out of v1 / non-goals
 
-- <…>
+- <ruthless: anything not required for the core action>
+- …
 
 ## Data & integrations
 
@@ -45,7 +46,7 @@
 
 ## Success criteria
 
-- [ ] <checkable outcome>
+- [ ] <core action — e2e-able>
 - [ ] …
 
 ## Open defaults

@@ -104,3 +104,13 @@ rules. Agents must follow them; do not re-litigate mid-task.
     Critical paths (auth, money, multi-state, multi-client, migrations)
     add slim `BR-XXX` docs and contract/state/side-effect checks.
     → `references/regression-and-business-rules.md`
+
+18. **Ship the core journey first.** v1 and each phase optimize for one
+    demonstrable *User can …* outcome before polish, extras, or
+    speculative platform work. Phase-01 (and any critical flow) is not
+    done until a golden-path e2e proves that journey. Do not implement
+    Out-of-v1 items "while we're here." Ambiguous product behavior →
+    ≤1 clarifying question, then **stop** — do not invent the business
+    rule. Phases should be demonstrable to a non-dev when possible.
+    → phase template `User can…` · `prompt-craft.md` · product-feature
+    journey section.

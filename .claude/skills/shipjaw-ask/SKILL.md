@@ -40,13 +40,17 @@ Never preload `product/` or the full KB. Broad scope → new phase.
 ## Workflow
 
 1. Read / repair INDEX (check `scaffolded-with`; migrate lightly if needed).
-2. ≤1 clarifying question.
+2. ≤1 clarifying question. If the **core behavior** is still ambiguous
+   after that → **stop** and ask the human (principle 18); do not invent
+   the business rule.
 3. Implement via project config as source of truth:
+   - prefer the active phase's *User can…* / journey over drive-by polish
+   - do not implement Out-of-v1 / out-of-phase scope "while we're here"
    - domain/application → Vitest; invariants owned there (not UI-only)
    - bug fix → regression test (fail before / pass after)
    - never weaken/skip existing tests just to green
-   - critical flow → Playwright + axe + keyboard/focus
-   - critical auth/money/state/multi-client → slim BR + 
+   - critical flow → Playwright golden path (+ axe + keyboard/focus)
+   - critical auth/money/state/multi-client → slim BR +
      `../shipjaw-build/references/regression-and-business-rules.md` if needed
    - contracts consumers only if package exists
    - actions/endpoints → authz + session + middleware as needed

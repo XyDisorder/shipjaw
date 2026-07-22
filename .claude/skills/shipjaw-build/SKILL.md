@@ -10,11 +10,12 @@ TypeScript site and a committed `documentation/` map. Later sessions use
 `shipjaw-ask`. Prefer running `shipjaw-prompt` first when the idea is
 still vague.
 
-**Operating principles:** `references/skill-principles.md` (1–17).
-Highlights: three-skill pipeline; state in repo; progressive disclosure;
-compile into tooling; templates > prose; host fallbacks; stop budgets;
-docs committed; anti-triggers; narration budget; `scaffolded-with`;
-project owns conventions; tiered regression / business-rule safety.
+**Operating principles:** `references/skill-principles.md` (1–18).
+Highlights: entrypoint + prompt/build/ask; state in repo; progressive
+disclosure; compile into tooling; templates > prose; host fallbacks;
+stop budgets; docs committed; anti-triggers; narration budget;
+`scaffolded-with`; project owns conventions; tiered regression /
+business-rule safety; **core journey first**.
 
 ## Anti-triggers (stop — don't run bootstrap)
 

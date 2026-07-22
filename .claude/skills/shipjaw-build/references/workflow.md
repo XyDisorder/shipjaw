@@ -103,11 +103,16 @@ On behavior changes: short pre-change bullets in the phase file; follow
 `regression-and-business-rules.md` (tiered). Bug fixes need a regression
 test; do not weaken existing tests to green.
 
+**Principle 18 — core journey first:** each phase needs a *User can…*
+line. Phase-01 / critical flows: golden-path e2e before polish or
+Out-of-v1 extras. Refuse scope creep "while we're here."
+
 Routes that **read a local/file DB or per-request user data** must opt
 into dynamic rendering (`export const dynamic = "force-dynamic"` or
 equivalent) — otherwise Next may statically shell an empty page.
 
-**Verification gate (once per phase):** typecheck → lint → test → e2e.
+**Verification gate (once per phase):** typecheck → lint → test → e2e
+(e2e mandatory when the phase's *User can…* is a critical journey).
 If e2e fails because the port is busy: free it or use the Playwright
 config's dedicated e2e port (see scaffold `playwright.config.ts`) — that
 counts as environment fix, not a "logic" retry. **After 2 failed gate

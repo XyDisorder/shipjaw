@@ -1,5 +1,12 @@
 # skill-my-website changelog
 
+## 2026-07-22g
+
+- Principle **18 — Ship the core journey first**: *User can…* DoD on
+  phases, journey-first feature template, ruthless single core action in
+  `prompt-craft` / source-prompt; golden-path e2e before polish; stop on
+  ambiguous product behavior after one question.
+
 ## 2026-07-22f
 
 - Entrypoint **`/shipjaw`**: create a named project folder, switch into

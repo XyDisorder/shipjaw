@@ -2,12 +2,27 @@
 
 **Status:** todo | in-progress | done
 **Depends on:** <phase(s) or "none">
+**Demonstrable to a non-dev?** yes | no
+<!-- Principle 18: prefer yes. Tech-only phases (eslint/CI) only when
+     blocking the core journey. -->
 
 ## Goal
 <One paragraph: what this phase delivers and why it's a coherent unit.>
 
+## User can… (business DoD — required)
+- [ ] <Observable outcome in product language, e.g. "create a todo and see it listed">
+<!-- If you cannot write this, the phase is too tech-centric — split or merge. -->
+
 ## Out of scope
-<What this phase explicitly does NOT cover — push it to a later phase file.>
+- <Explicit exclusions for this phase — push to a later phase file>
+- Non-goals carried from product overview that stay out
+
+## Journey (if this phase touches a user flow)
+- Trigger: <how the user starts>
+- Steps: <1 → 2 → 3>
+- Success: <what they see / have>
+- Failure: <empty | error | unauthorized — expected behavior>
+<!-- Skip this section only for pure infra with no UX surface. -->
 
 ## Tasks
 - [ ] <Task> — files: `path/to/file.ts` (layer: domain|application|infrastructure|presentation)
@@ -32,14 +47,17 @@
 ## Tests
 - [ ] Unit (Vitest) — `<file>.test.ts`: <happy path + meaningful edge>
 - [ ] Bug fix — regression test reproduces failure (fail before / pass after)
-- [ ] E2E + a11y (Playwright + axe-core) — only if critical flow:
-      `<flow>.spec.ts` — golden path + zero critical/serious axe +
-      keyboard/focus smoke on the primary control
+- [ ] Core journey e2e (Playwright) — **required when "User can…" is a
+      critical flow / phase-01 product slice**: golden path succeeds
+- [ ] E2E + a11y extras — axe zero critical/serious + keyboard/focus on
+      primary control (same spec when e2e exists)
+- [ ] Empty / error / unauthorized covered for the critical flow (or n/a)
 - [ ] No existing test deleted/weakened unless intentional behavior change
       (docs + plan updated; replacement coverage in place)
 
 ## Acceptance criteria
-- [ ] <Concrete, checkable condition>
+- [ ] Every "User can…" checkbox above is true
+- [ ] Nothing from Out of scope was implemented
 - [ ] `tsc --noEmit`, lint, and test/e2e all pass (local + CI)
 - [ ] If `packages/contracts/` exists: every consumer updated (else n/a)
 - [ ] Security: no new secret hardcoded; Server Actions / endpoints

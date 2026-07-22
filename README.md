@@ -47,7 +47,7 @@ You ask an agent to “build my site.” You get:
 
 Start with `/shipjaw` to create the project folder and see this map.
 
-One line: **prompt-first, docs-first, tooling-enforced, continuation cheap, regressions blocked.**
+One line: **prompt-first, docs-first, tooling-enforced, core journey first, continuation cheap, regressions blocked.**
 
 ## What you get
 

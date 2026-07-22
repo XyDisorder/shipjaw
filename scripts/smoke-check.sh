@@ -89,12 +89,30 @@ for phrase in \
   "Narration" \
   "scaffolded-with" \
   "convention owner" \
-  "Regression"
+  "Regression" \
+  "core journey"
 do
   if grep -qi "$phrase" "$PRINCIPLES"; then ok "$phrase"
   else bad "skill-principles.md missing: $phrase"
   fi
 done
+
+echo "== business-first templates =="
+if grep -q 'User can' "$SKILL/templates/technical-plan-phase.md"; then
+  ok "phase template has User can…"
+else
+  bad "technical-plan-phase.md missing User can…"
+fi
+if grep -qi 'Journey' "$SKILL/templates/product-feature.md"; then
+  ok "product-feature has Journey"
+else
+  bad "product-feature.md missing Journey"
+fi
+if grep -qi 'ruthless\|exactly one\|Out of v1' "$PROMPT/references/prompt-craft.md"; then
+  ok "prompt-craft MVP ruthlessness"
+else
+  bad "prompt-craft.md missing MVP / one core action rules"
+fi
 
 echo "== entrypoint constraints =="
 if grep -qi 'mkdir' "$ENTRY/SKILL.md" \
