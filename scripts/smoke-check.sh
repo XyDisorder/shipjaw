@@ -52,6 +52,7 @@ for f in \
   "$SKILL/scripts/init-docs-skeleton.sh" \
   "$SKILL/scripts/validate-docs.sh" \
   "$SKILL/scripts/run-gate.sh" \
+  "$SKILL/scripts/survey-adopt-state.sh" \
   "$ROOT/.cursor/skills/shipjaw" \
   "$ROOT/.cursor/skills/shipjaw-prompt" \
   "$ROOT/.cursor/skills/shipjaw-build" \
@@ -143,7 +144,8 @@ for s in \
   stamp-provenance.sh \
   init-docs-skeleton.sh \
   validate-docs.sh \
-  run-gate.sh
+  run-gate.sh \
+  survey-adopt-state.sh
 do
   path="$SKILL/scripts/$s"
   if [[ -x "$path" ]]; then ok "$s executable"
@@ -224,10 +226,15 @@ else
   bad "shipjaw entrypoint must forbid scaffold/KB"
 fi
 
-echo "== adopt skill constraints =="
-if grep -qi 'no rewrite\|Do not rewrite\|without.*re-scaffold\|no.*rewrite' "$ADOPT/SKILL.md" \
-  && grep -q 'shipjaw-ask' "$ADOPT/SKILL.md" \
-  && grep -qi 'knowledge-base' "$ADOPT/SKILL.md"; then
+echo "== adopt survey wired =="
+if grep -q 'survey-adopt-state' "$ADOPT/SKILL.md" \
+  && grep -qi 'PARTIAL_DOCS\|FULL_SHIPJAW_KB\|Status snapshot\|where we are' "$ADOPT/SKILL.md"; then
+  ok "shipjaw-adopt surveys docs/plans and reports status"
+else
+  bad "shipjaw-adopt must survey state and produce status snapshot"
+fi
+if grep -qi 'no rewrite\|Do not rewrite\|never rewrites\|no.*rewrite' "$ADOPT/SKILL.md" \
+  && grep -q 'shipjaw-ask' "$ADOPT/SKILL.md"; then
   ok "shipjaw-adopt: no rewrite + handoff to ask"
 else
   bad "shipjaw-adopt must forbid rewrite and hand off to ask"

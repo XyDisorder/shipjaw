@@ -1,5 +1,12 @@
 # skill-my-website changelog
 
+## 2026-07-22m
+
+- `shipjaw-adopt` now **surveys** existing docs/plans/phases before
+  writing anything (`survey-adopt-state.sh`): NO_DOCS / PARTIAL_DOCS /
+  FULL_SHIPJAW_KB routing, absorb foreign roadmaps into Shipjaw homes,
+  required **where we are** status snapshot at handoff.
+
 ## 2026-07-22l
 
 - Raise agent robustness + auto-discovery: richer bilingual descriptions
