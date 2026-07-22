@@ -5,100 +5,100 @@
 </p>
 
 <p align="center">
-  <strong>Décris le produit. L’agent le construit — propre, testé, documenté, et pas cher en tokens.</strong>
+  <strong>Describe the product. The agent builds it — clean, tested, documented, and cheap on tokens.</strong>
 </p>
 
 <p align="center">
-  Skills Claude Code &amp; Cursor pour scaffolder et faire évoluer des apps<br/>
-  <strong>TypeScript · Next.js · NestJS (seulement si vraiment nécessaire)</strong>
+  Claude Code &amp; Cursor skills to scaffold and grow<br/>
+  <strong>TypeScript · Next.js · NestJS (only when you actually need it)</strong>
 </p>
 
 <p align="center">
-  <a href="#installation">Installation</a> ·
-  <a href="#utilisation">Utilisation</a> ·
-  <a href="#ce-que-tu-obtiens">Ce que tu obtiens</a> ·
-  <a href="#pourquoi-cest-différent">Pourquoi c’est différent</a>
+  <a href="#installation">Install</a> ·
+  <a href="#usage">Usage</a> ·
+  <a href="#what-you-get">What you get</a> ·
+  <a href="#why-its-different">Why it’s different</a>
 </p>
 
 ---
 
-## Le problème
+## The problem
 
-Tu lances un agent sur « fais-moi mon site ». Tu récupères :
+You ask an agent to “build my site.” You get:
 
-- du code qui compile… parfois  
-- zéro architecture stable  
-- des docs inventées ou absentes  
-- une session suivante qui **re-dérive tout** et brûle ton budget tokens  
+- code that *sometimes* compiles  
+- no stable architecture  
+- missing or invented docs  
+- the next session **re-deriving everything** and burning your token budget  
 
-**Skill My App** inverse ça : le premier run pose les fondations ; tous les suivants ne relisent que ce qu’il faut.
+**Skill My App** flips that: the first run lays the foundation; every later run only reads what it needs.
 
-## La promesse
+## The promise
 
-| Au bootstrap (`skill-my-app`) | Ensuite (`ask-my-app`) |
+| At bootstrap (`skill-my-app`) | Afterward (`ask-my-app`) |
 |---|---|
-| Questions ciblées (pas un interrogatoire) | Lit `INDEX.md` + 1–2 fichiers utiles |
-| Choix techniques dérivés du **prompt** | Pas de rediscovery, pas de re-archi |
-| Docs `documentation/` **commitées** | État dans le repo, pas dans le chat |
-| Scaffold déterministe (kit prêt à copier) | Gate typecheck / lint / tests / e2e |
-| Strict TS, clean archi, sécu App Router | Même contrat, facture tokens minimale |
+| Targeted questions (not an interrogation) | Reads `INDEX.md` + 1–2 relevant files |
+| Tech choices derived from the **prompt** | No rediscovery, no re-architecture |
+| Committed `documentation/` | State lives in the repo, not the chat |
+| Deterministic scaffold (copy-ready kit) | Typecheck / lint / test / e2e gate |
+| Strict TS, clean architecture, App Router security | Same contract, minimal token bill |
 
-Une phrase : **docs-first, tooling-enforced, continuation cheap.**
+One line: **docs-first, tooling-enforced, continuation cheap.**
 
-## Ce que tu obtiens
+## What you get
 
-- **App Next.js** (App Router) avec couches `domain` → `application` → `infrastructure` → présentation  
-- **NestJS en monorepo** uniquement quand le produit le justifie (API multi-clients, workers, etc.)  
-- **Règles compilées** dans tsconfig, eslint, headers CSP, Vitest, Playwright + a11y (axe)  
-- **Knowledge base vivante** : architecture, domaine, décisions, changelog — rotatée pour rester courte  
-- **Décisions tech automatiques** : tables signal → stack (`tech-choices.md`) — tu ne choisis pas Drizzle vs Nest « au feeling »  
-- Compatible **Claude Code** et **Cursor**
+- A **Next.js** app (App Router) with `domain` → `application` → `infrastructure` → presentation layers  
+- **NestJS in a monorepo** only when the product justifies it (multi-client API, workers, etc.)  
+- **Rules compiled** into tsconfig, eslint, CSP headers, Vitest, Playwright + a11y (axe)  
+- A **living knowledge base**: architecture, domain, decisions, changelog — rotated so it stays short  
+- **Automatic tech decisions**: signal → stack tables (`tech-choices.md`) — you don’t pick Drizzle vs Nest “by vibe”  
+- Works with **Claude Code** and **Cursor**
 
-## Comment ça marche
+## How it works
 
 ```text
-  Ton prompt produit
+  Your product prompt
          │
          ▼
  ┌───────────────────┐
- │   skill-my-app    │  bootstrap une seule fois
+ │   skill-my-app    │  bootstrap once
  │  discovery → docs │
  │  → scaffold → v1  │
  └─────────┬─────────┘
-           │  documentation/INDEX.md  (commité)
+           │  documentation/INDEX.md  (committed)
            ▼
  ┌───────────────────┐
- │    ask-my-app     │  chaque feature / fix ensuite
+ │    ask-my-app     │  every later feature / fix
  │  INDEX + 1–2 files│
  └───────────────────┘
 ```
 
-Deux skills, un contrat. Le cher est amorti une fois ; le fréquent reste léger.
+Two skills, one contract. Pay the expensive thinking once; keep day-to-day work light.
 
-## Utilisation
+## Usage
 
-**1. Bootstrap** — nouveau projet :
-
-```text
-/skill-my-app Un outil perso de todos, sans compte, UI minimaliste, persistance locale
-```
-
-**2. Suite** — même repo, plus tard :
+**1. Bootstrap** — new project:
 
 ```text
-/ask-my-app Ajoute un filtre « done / active » et l’e2e associé
+/skill-my-app A personal todo tool, no accounts, minimal UI, local persistence
 ```
 
-Compacte le contexte entre deux sujets sans rapport (`/compact` sur Claude, ou nouveau chat sur Cursor) : **tout ce qu’il faut pour reprendre est déjà dans `documentation/`**.
+**2. Continue** — same repo, later:
+
+```text
+/ask-my-app Add a done/active filter and the matching e2e
+```
+
+Compact context between unrelated tasks (`/compact` on Claude, or a fresh chat on Cursor): **everything needed to resume already lives in `documentation/`**.
 
 ## Installation
 
-### Dans ce repo
+### In this repo
 
-- Claude Code : `.claude/skills/*`  
-- Cursor : `.cursor/skills/*` (symlinks → source unique)
+- Claude Code: `.claude/skills/*`  
+- Cursor: `.cursor/skills/*` (symlinks → single source of truth)
 
-### Global (tous tes projets)
+### Global (any project)
 
 ```sh
 git clone https://github.com/XyDisorder/skill-my-app.git
@@ -113,35 +113,35 @@ ln -s "$(pwd)/.claude/skills/skill-my-app" ~/.cursor/skills/skill-my-app
 ln -s "$(pwd)/.claude/skills/ask-my-app"   ~/.cursor/skills/ask-my-app
 ```
 
-Garde les deux skills **côte à côte** : `ask-my-app` résout `../skill-my-app/references/` si besoin.
+Keep both skills as **siblings** so `ask-my-app` can resolve `../skill-my-app/references/` when needed.
 
-## Pourquoi c’est différent
+## Why it’s different
 
-| Approche classique agent | Skill My App |
+| Typical agent approach | Skill My App |
 |---|---|
-| Tout dans le transcript | État versionné dans `documentation/` |
-| Un mega-prompt fourre-tout | Bootstrap cher ≠ continuation cheap |
-| « No `any` » en prose oubliable | Encodé dans tsconfig / eslint / CI |
-| Config reinventée à chaque fois | Kit `templates/scaffold/` à copier |
-| Nest « au cas où » | Nest seulement si le prompt le justifie |
-| Docs gitignorées → clone amnésique | Docs **commitées** ; `ask-my-app` survit au clone |
+| Everything in the transcript | Versioned state in `documentation/` |
+| One mega catch-all prompt | Expensive bootstrap ≠ cheap continuation |
+| “No `any`” as forgettable prose | Encoded in tsconfig / eslint / CI |
+| Config reinvented every time | Copy `templates/scaffold/` |
+| Nest “just in case” | Nest only when the prompt justifies it |
+| Gitignored docs → amnesiac clones | **Committed** docs; `ask-my-app` survives clone |
 
-## Anti-triggers (ne l’utilise pas pour)
+## Anti-triggers (don’t use it for)
 
-- Un tweak CSS / une typo isolée  
-- Un repo qui n’est pas TypeScript  
-- Un projet qui a **déjà** `documentation/knowledge-base/` → utilise **`ask-my-app`**, pas le bootstrap  
+- A one-off CSS / copy tweak  
+- A non-TypeScript repo  
+- A project that **already** has `documentation/knowledge-base/` → use **`ask-my-app`**, not bootstrap  
 
-## Pour les mainteneurs
+## Maintainers
 
 ```sh
 ./scripts/smoke-check.sh
 ```
 
-Version : `.claude/skills/skill-my-app/VERSION` · changelog : [`CHANGELOG.md`](CHANGELOG.md) · principes : [`skill-principles.md`](.claude/skills/skill-my-app/references/skill-principles.md) · choix tech : [`tech-choices.md`](.claude/skills/skill-my-app/references/tech-choices.md)
+Version: `.claude/skills/skill-my-app/VERSION` · changelog: [`CHANGELOG.md`](CHANGELOG.md) · principles: [`skill-principles.md`](.claude/skills/skill-my-app/references/skill-principles.md) · tech choices: [`tech-choices.md`](.claude/skills/skill-my-app/references/tech-choices.md)
 
 ---
 
 <p align="center">
-  <sub>Fais le produit. Pas le prompt engineering.</sub>
+  <sub>Ship the product. Not the prompt engineering.</sub>
 </p>
