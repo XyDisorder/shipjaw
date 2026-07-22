@@ -1,6 +1,6 @@
 ---
 name: shipjaw-adopt
-description: Adopts Shipjaw on an existing TypeScript/Next app that was never scaffolded with it — adds documentation/, INDEX.md, AGENTS.md, Cursor rule, provenance stamps, and idempotent tooling gaps. Use for legacy Next apps, foreign repos, or "bring this project under Shipjaw" with no knowledge-base/. Do not use for greenfield (shipjaw-build), vague idea polishing (shipjaw-prompt), or when knowledge-base/ already exists (shipjaw-ask). Do not rewrite the app.
+description: Adopts the Shipjaw contract on an existing TypeScript/Next (or React TS) app that was never scaffolded with Shipjaw: creates documentation/ + INDEX.md, AGENTS.md, .cursor/rules/shipjaw.mdc, provenance stamps, and fills missing tooling gaps idempotently — never rewrites product code or re-runs create-next-app. Use when legacy Next app, foreign create-next-app, ramener ce projet sous Shipjaw, adopter Shipjaw, bring this codebase under Shipjaw, migrate docs onto an existing repo, or the app has code but no documentation/knowledge-base/. Do not use for empty greenfield (shipjaw-build), vague idea polishing (shipjaw-prompt), or when knowledge-base/ already exists (shipjaw-ask / migration). Do not rewrite the app.
 ---
 
 # shipjaw-adopt
@@ -31,11 +31,13 @@ non-empty app that already has product code.
 ```
 - [ ] Detect TS/Next app; abort if KB exists
 - [ ] ≤2 clarify Q (vision + core User can…) if needed
-- [ ] Create documentation/ from templates (as-is reality)
+- [ ] ../shipjaw-build/scripts/init-docs-skeleton.sh <root>
+- [ ] Fill placeholders from real codebase (paths only)
 - [ ] ../shipjaw-build/scripts/copy-continuation-contract.sh <root>
 - [ ] ../shipjaw-build/scripts/stamp-provenance.sh <root> --adopted
 - [ ] Idempotent tooling gaps only (no wholesale config overwrite)
-- [ ] Cheap gate if scripts exist; record remaining gaps
+- [ ] ../shipjaw-build/scripts/validate-docs.sh <root>
+- [ ] ../shipjaw-build/scripts/run-gate.sh <root> (cheap; e2e only if asked)
 - [ ] Hand off: /shipjaw-ask <next task>
 ```
 
@@ -60,29 +62,26 @@ Do **not** re-run full discovery or redesign the stack.
 
 ### 3. Documentation (committed)
 
-Create `documentation/` from `../shipjaw-build/templates/` +
-`doc-structure.md`. Fill from **reality** (actual folders, scripts,
-deps) — paths/signatures only, no pasted code.
+Prefer the skeleton script, then fill from **reality**:
 
-Minimum set:
+```bash
+../shipjaw-build/scripts/init-docs-skeleton.sh <project-root>
+```
 
-- `INDEX.md` (with continuation banner)
-- `knowledge-base/architecture.md` — real layout
-- `domain-model.md`, `features-index.md`, `decisions.md`, `changelog.md`
-- `api-reference.md` only if an API/Route Handlers surface exists
-- `product/overview.md` (+ design-brief only if design is already clear)
-- `technical-plan/00-roadmap.md` + one active phase reflecting **current**
-  next work (or “stabilize + document” if no roadmap)
+Fill placeholders from actual folders, scripts, deps — paths/signatures
+only, no pasted code. See `../shipjaw-build/references/doc-structure.md`.
 
-Do not invent features that are not in the code. Mark gaps honestly.
+Minimum after fill: INDEX, architecture (real layout), domain-model,
+features-index, decisions, changelog, product/overview, roadmap + one
+active phase. `api-reference.md` only if an API surface exists. Do not
+invent features that are not in the code.
 
 ### 4. Continuation contract + provenance
-
-Execute (from `shipjaw-build`):
 
 ```bash
 ../shipjaw-build/scripts/copy-continuation-contract.sh <project-root>
 ../shipjaw-build/scripts/stamp-provenance.sh <project-root> --adopted
+../shipjaw-build/scripts/validate-docs.sh <project-root>
 ```
 
 ### 5. Tooling gaps (idempotent, opt-in per file)
@@ -97,9 +96,12 @@ layout in `architecture.md`; do **not** mass-move folders in adopt.
 
 ### 6. Gate sanity
 
-If scripts exist, run what is cheap and already wired (typecheck/lint/
-unit). Do not invent a full e2e suite in adopt unless the user asks.
-Record known gaps in changelog / roadmap.
+```bash
+../shipjaw-build/scripts/run-gate.sh <project-root>
+```
+
+Add `--with-e2e` only if the user asks or a critical journey is already
+covered. Record known gaps in changelog / roadmap.
 
 ### 7. Stop + hand off
 

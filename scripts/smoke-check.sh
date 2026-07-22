@@ -49,6 +49,9 @@ for f in \
   "$SKILL/templates/business-rule.md" \
   "$SKILL/scripts/copy-continuation-contract.sh" \
   "$SKILL/scripts/stamp-provenance.sh" \
+  "$SKILL/scripts/init-docs-skeleton.sh" \
+  "$SKILL/scripts/validate-docs.sh" \
+  "$SKILL/scripts/run-gate.sh" \
   "$ROOT/.cursor/skills/shipjaw" \
   "$ROOT/.cursor/skills/shipjaw-prompt" \
   "$ROOT/.cursor/skills/shipjaw-build" \
@@ -72,15 +75,37 @@ for skill_md in "$ENTRY/SKILL.md" "$PROMPT/SKILL.md" "$SKILL/SKILL.md" "$ADOPT/S
   name="$(basename "$(dirname "$skill_md")")"
   desc="$(grep -E '^description:' "$skill_md" | sed 's/^description:[[:space:]]*//' | head -n1)"
   if [[ -z "$desc" ]]; then bad "$name missing description"
-  elif (( ${#desc} > 560 )); then bad "$name description too long (${#desc}; keep ≤560)"
+  elif (( ${#desc} < 500 )); then bad "$name description too thin (${#desc}; keep ≥500 for discovery)"
+  elif (( ${#desc} > 1024 )); then bad "$name description too long (${#desc}; Cursor max 1024)"
   else ok "$name description ${#desc} chars"
   fi
-  if grep -qiE 'do not use|not for|instead' <<<"$desc"; then
+  if grep -qiE 'do not use|not for|instead|Do not ' <<<"$desc"; then
     ok "$name anti-trigger in description"
   else
-    bad "$name description needs anti-trigger (do not use / not for / instead)"
+    bad "$name description needs anti-trigger (Do not / do not use / not for)"
+  fi
+  if grep -qiE 'Use when|Use for' <<<"$desc"; then
+    ok "$name has Use when/for triggers"
+  else
+    bad "$name description needs Use when / Use for"
+  fi
+  # bilingual discovery: at least one FR cue across pipeline skills
+done
+
+echo "== bilingual discovery cues =="
+FR_HITS=0
+for skill_md in "$ENTRY/SKILL.md" "$PROMPT/SKILL.md" "$SKILL/SKILL.md" "$ADOPT/SKILL.md" "$ASK/SKILL.md"; do
+  desc="$(grep -E '^description:' "$skill_md" | sed 's/^description:[[:space:]]*//' | head -n1)"
+  if grep -qiE 'projet|idée|reprendre|continuer|adopter|après|prêt|créer|nouveau|corriger|ajouter|ramener|notes produit' <<<"$desc"; then
+    FR_HITS=$((FR_HITS + 1))
+    ok "$(basename "$(dirname "$skill_md")") FR trigger cue"
+  else
+    bad "$(basename "$(dirname "$skill_md")") missing FR discovery cue in description"
   fi
 done
+if [[ "$FR_HITS" -ge 5 ]]; then ok "all skills carry FR discovery cues"
+else bad "expected FR cues on all 5 skills (got $FR_HITS)"
+fi
 
 echo "== invocation control =="
 if grep -q 'disable-model-invocation: true' "$ENTRY/SKILL.md"; then
@@ -109,6 +134,20 @@ for skill_md in "$ENTRY/SKILL.md" "$PROMPT/SKILL.md" "$SKILL/SKILL.md" "$ADOPT/S
   name="$(basename "$(dirname "$skill_md")")"
   if grep -q '\- \[ \]' "$skill_md"; then ok "$name has checklist"
   else bad "$name missing copiable checklist (- [ ])"
+  fi
+done
+
+echo "== utility scripts executable =="
+for s in \
+  copy-continuation-contract.sh \
+  stamp-provenance.sh \
+  init-docs-skeleton.sh \
+  validate-docs.sh \
+  run-gate.sh
+do
+  path="$SKILL/scripts/$s"
+  if [[ -x "$path" ]]; then ok "$s executable"
+  else bad "$s missing or not executable"
   fi
 done
 

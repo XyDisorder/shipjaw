@@ -1,6 +1,6 @@
 ---
 name: shipjaw-build
-description: Scaffolds a brand-new TypeScript/Next.js site/app (NestJS only when needed) from a build-ready product prompt — docs-first, tests, security, clean architecture, committed documentation/. Use for initial bootstrap, create-next-app greenfield, or when the user pastes a dense prompt / has documentation/product/source-prompt.md. Do not use to polish a vague idea (shipjaw-prompt), adopt an existing app (shipjaw-adopt), tweak CSS, or when documentation/knowledge-base/ already exists (shipjaw-ask).
+description: Scaffolds a brand-new TypeScript/Next.js application (NestJS API only when the product truly needs one) from a build-ready product prompt — writes committed documentation/, enforces strict TypeScript, Vitest, Playwright, security headers, clean architecture, then ships v1 behind a verification gate. Use when bootstrapping greenfield, running create-next-app from a dense brief, pasting a product prompt, documentation/product/source-prompt.md is ready, après shipjaw-prompt, prompt prêt, initial build, or first scaffold of a new Shipjaw app. Do not use to polish a vague idea first (shipjaw-prompt), adopt an existing foreign codebase (shipjaw-adopt), tweak CSS/copy only, non-TS repos, or when documentation/knowledge-base/ already exists (shipjaw-ask).
 disable-model-invocation: true
 ---
 
@@ -54,10 +54,12 @@ runs.
 - [ ] Write documentation/ (INDEX + phase-01) before feature code
 - [ ] Scaffold Next (temp-dir merge if docs already present)
 - [ ] Copy scaffold kit idempotently (see templates/scaffold/README)
-- [ ] Run scripts/copy-continuation-contract.sh <project-root>
-- [ ] Run scripts/stamp-provenance.sh <project-root>
-- [ ] Implement core *User can…* + tests; gate; ≤2 fix attempts
-- [ ] Update KB surgically; hand off to shipjaw-ask
+- [ ] ./scripts/copy-continuation-contract.sh <project-root>
+- [ ] ./scripts/stamp-provenance.sh <project-root>
+- [ ] ./scripts/validate-docs.sh <project-root>
+- [ ] Implement core *User can…* + tests
+- [ ] ./scripts/run-gate.sh <project-root> --with-e2e
+- [ ] Fix ≤2 attempts; update KB surgically; hand off to shipjaw-ask
 ```
 
 ## Workflow (summary — `references/workflow.md`)
@@ -75,6 +77,9 @@ From this skill directory:
 ```bash
 ./scripts/copy-continuation-contract.sh <project-root>
 ./scripts/stamp-provenance.sh <project-root>
+./scripts/init-docs-skeleton.sh <project-root>   # adopt / repair
+./scripts/validate-docs.sh <project-root>        # feedback loop
+./scripts/run-gate.sh <project-root> [--with-e2e]
 ```
 
 ## Cost / narration

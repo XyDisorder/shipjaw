@@ -1,6 +1,6 @@
 ---
 name: shipjaw-ask
-description: Continues, extends, fixes, or resumes a Shipjaw app that already has documentation/knowledge-base/ + INDEX.md. Use for features, bugs, refactors, next-session work, "continue this repo", or when AGENTS.md / .cursor/rules/shipjaw.mdc apply. Token-cheap — INDEX then 1–2 files. Do not use for greenfield (shipjaw-build), adopting a foreign app with no KB (shipjaw-adopt), vague idea polishing (shipjaw-prompt), pure one-line CSS/copy, or non-TS repos.
+description: Continues, extends, fixes, or resumes work on a Shipjaw-scaffolded or Shipjaw-adopted TypeScript/Next app that already has documentation/knowledge-base/ and INDEX.md. Token-cheap: read INDEX.md first, then at most 1–2 relevant docs. Use when adding features, fixing bugs, refactors, implementing the next phase, continue this repo, resume after compact, fresh chat on this app, reprendre le projet, continuer cette app, corriger un bug, ajouter une feature, or when AGENTS.md / .cursor/rules/shipjaw.mdc say to follow shipjaw-ask. Do not use for greenfield bootstrap (shipjaw-build), adopting a foreign app with no KB (shipjaw-adopt), polishing a vague product idea (shipjaw-prompt), pure one-line CSS/copy tweaks, or non-TypeScript repos.
 ---
 
 # shipjaw-ask
@@ -49,8 +49,9 @@ Never preload `product/` or the full KB. Broad scope → new phase.
 - [ ] Read / repair INDEX
 - [ ] ≤1 clarifying Q; stop if core behavior still ambiguous
 - [ ] Implement (journey-first; domain tests; e2e edges if critical)
-- [ ] One gate; ≤2 fix attempts
-- [ ] Surgical doc updates
+- [ ] ../shipjaw-build/scripts/run-gate.sh <root> [--with-e2e]
+- [ ] ≤2 fix attempts; then ask human
+- [ ] Surgical doc updates; optional validate-docs.sh
 - [ ] Suggest /compact or fresh chat
 ```
 
@@ -74,7 +75,10 @@ Never preload `product/` or the full KB. Broad scope → new phase.
      `../shipjaw-build/references/regression-and-business-rules.md` if needed
    - contracts consumers only if package exists
    - actions/endpoints → authz + session + middleware as needed
-4. One gate; ≤2 fix attempts; then ask human.
+4. One gate via `../shipjaw-build/scripts/run-gate.sh <root> [--with-e2e]`;
+   ≤2 fix attempts; then ask human.
 5. Surgical KB / product updates (paths/signatures only); rotate logs;
    archive done phases. Idempotent: don't rewrite unrelated docs.
+   Optional: `../shipjaw-build/scripts/validate-docs.sh <root>` after
+   doc repairs.
 6. Suggest `/compact` (Claude) or fresh chat / handoff (Cursor).

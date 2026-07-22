@@ -1,6 +1,6 @@
 ---
 name: shipjaw-prompt
-description: Turns a rough project idea into a dense, build-ready product prompt and writes documentation/product/source-prompt.md. Use when the user wants to express, clarify, or polish a product before scaffolding, or mentions a vague app idea. Do not scaffold code or create knowledge-base/ (shipjaw-build). Do not use when documentation/knowledge-base/ already exists (shipjaw-ask).
+description: Turns a rough, messy, or vague product idea into a dense build-ready product prompt and persists it at documentation/product/source-prompt.md for shipjaw-build. Use when the user wants to express/clarify/polish a product before scaffolding, mentions idée vague, brainstorm app, help me write the prompt, notes produit pas prêtes, refine the brief, or the idea is not yet scaffold-ready. Do not scaffold application code or create documentation/knowledge-base/ (that is shipjaw-build). Do not use when knowledge-base/ already exists (shipjaw-ask), the user already has a dense prompt and wants code now (shipjaw-build), or the task is only CSS/copy.
 ---
 
 # shipjaw-prompt

@@ -1,5 +1,12 @@
 # skill-my-website changelog
 
+## 2026-07-22l
+
+- Raise agent robustness + auto-discovery: richer bilingual descriptions
+  (500–1024 chars, Use when + FR cues); scripts `init-docs-skeleton`,
+  `validate-docs`, `run-gate` with feedback-loop wiring in build/adopt/ask
+  checklists; smoke enforces description floor and executable scripts.
+
 ## 2026-07-22k
 
 - Skill hygiene: `disable-model-invocation` on `/shipjaw` + `/shipjaw-build`;

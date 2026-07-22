@@ -1,6 +1,6 @@
 ---
 name: shipjaw
-description: Creates a named Shipjaw project folder, switches into it, and explains the pipeline (prompt → build → ask; adopt for existing apps). Use when the user runs /shipjaw, starts a new Shipjaw project, or needs a clean project home. Do not scaffold code or write source-prompt here — use shipjaw-build / shipjaw-prompt. If documentation/knowledge-base/ exists, use shipjaw-ask instead.
+description: Creates a named Shipjaw project folder, switches the working directory into it, and explains which skill to run next (shipjaw-prompt → shipjaw-build → shipjaw-ask; shipjaw-adopt for existing apps). Slash-only onboarding. Use when the user runs /shipjaw, start a Shipjaw project, nouveau projet Shipjaw, créer un dossier projet, need a clean project home before coding, or bootstrap workspace folder setup. Do not scaffold Next, write source-prompt.md, or create knowledge-base/ here. If documentation/knowledge-base/ already exists → shipjaw-ask; existing app without KB → shipjaw-adopt; idea polishing → shipjaw-prompt; ready prompt → shipjaw-build.
 disable-model-invocation: true
 ---
 

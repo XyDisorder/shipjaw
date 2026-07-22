@@ -88,6 +88,8 @@ Dependabot. Run (do not reinvent):
 ```bash
 ./scripts/copy-continuation-contract.sh <project-root>
 ./scripts/stamp-provenance.sh <project-root>
+./scripts/validate-docs.sh <project-root>
+./scripts/run-gate.sh <project-root> [--with-e2e]
 ```
 
 (paths relative to the `shipjaw-build` skill dir). Stamp exact framework
