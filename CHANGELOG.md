@@ -1,5 +1,12 @@
 # skill-my-website changelog
 
+## 2026-07-22o
+
+- Architecture deepening: **ports** (one file each), **composition root**
+  (`server/composition.ts`), **thin Server Actions/Route Handlers**, and
+  an **error → HTTP/UI** mapping table — plus anti-barrel. Wired into
+  project-structure, code-standards, build/ask, migration, Cursor rule.
+
 ## 2026-07-22n
 
 - Explicit **types / constants / helpers placement** in clean arch

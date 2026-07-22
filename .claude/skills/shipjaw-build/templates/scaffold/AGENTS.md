@@ -11,4 +11,5 @@ This repository was scaffolded with **Shipjaw**.
 
 Gate before done: typecheck, lint, unit, e2e as relevant. Keep docs in sync
 with what shipped. Types/constants/helpers live by ownership (`domain` /
-`application` / `features/<f>/lib`) — no grab-bag `lib/utils.ts`.
+`application` / `features/<f>/lib`) — no grab-bag `lib/utils.ts`. Ports +
+`composition.ts`; thin adapters; map typed errors to UI/HTTP.

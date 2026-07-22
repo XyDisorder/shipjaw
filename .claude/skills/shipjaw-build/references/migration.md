@@ -43,6 +43,8 @@ rewrite). After adopt, continue with `shipjaw-ask`.
 | No `AGENTS.md` / `.cursor/rules/shipjaw.mdc` | Copy from scaffold kit if missing (idempotent) |
 | INDEX lacks continuation banner | Add the shipjaw-ask pointer at the top on next INDEX edit |
 | Types/consts/helpers dumped in UI or `lib/utils.ts` | On touched code, relocate per `project-structure.md` placement table (don't mass-move unrelated files) |
+| Actions/handlers call infra or embed business rules | Thin adapter + port + composition root on the touched path |
+| Errors only as `throw new Error` / bare 500 | Introduce typed domain errors + map per Error→HTTP/UI table when touching that flow |
 | No decisions/changelog rotation | Start rotating when files next cross thresholds |
 | Assumes `packages/contracts/` but Next-only | Skip contracts rule; don't create the package |
 

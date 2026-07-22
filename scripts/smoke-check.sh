@@ -332,6 +332,17 @@ if grep -qi 'Types, constants, helpers' "$SKILL/references/project-structure.md"
 else
   bad "project-structure/code-standards missing types-consts-helpers placement"
 fi
+
+echo "== ports + composition + thin adapters =="
+if grep -qi 'Composition root' "$SKILL/references/project-structure.md" \
+  && grep -qi 'Ports (naming' "$SKILL/references/project-structure.md" \
+  && grep -qi 'thin adapters' "$SKILL/references/project-structure.md" \
+  && grep -qi 'Error → HTTP' "$SKILL/references/project-structure.md" \
+  && grep -qi 'Anti-barrel' "$SKILL/references/project-structure.md"; then
+  ok "ports, composition, thin adapters, error map, anti-barrel"
+else
+  bad "project-structure.md missing ports/composition/thin adapters/error map"
+fi
 if grep -qi 'Signal' "$SKILL/references/tech-choices.md"; then
   ok "tech-choices.md signal tables"
 else

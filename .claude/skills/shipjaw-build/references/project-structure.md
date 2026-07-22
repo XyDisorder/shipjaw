@@ -38,12 +38,14 @@ src/
     <feature>/
       components/
       hooks/
-      actions.ts               # Server Actions → application use-cases
+      actions.ts               # thin adapters → application (see below)
   components/ui/               # generic primitives only (Button, Input…)
   server/
     domain/
     application/
-    infrastructure/
+      ports/                   # one port per file (interfaces only)
+    infrastructure/            # port implementations
+    composition.ts             # wire ports → use-cases (composition root)
   lib/
     env.ts                     # zod-parsed env (from templates/scaffold)
     logger.ts
@@ -69,6 +71,76 @@ domain lives in `packages/domain` **only if both apps truly share it**.
 
 Do not mix all three for the same use-case. Authz still runs in
 `application/` regardless of entry point.
+
+## Ports (naming + one file)
+
+- Ports live under `server/application/ports/` as **TypeScript interfaces
+  (or abstract types) only** — no implementations, no framework imports.
+- **One port per file**, named after the capability:
+  `todo-repository.ts` → `export interface TodoRepository { … }`.
+- Infrastructure implements with a clear suffix:
+  `SqliteTodoRepository`, `PrismaTodoRepository` — file under
+  `server/infrastructure/`.
+- Application use-cases depend on the **port type**, never on a concrete
+  infra class.
+- Do not invent ports “for later”; add a port the first time a use-case
+  needs an outside capability.
+
+## Composition root (wiring)
+
+- **One place** constructs concrete infra and injects it into use-cases:
+  `server/composition.ts` (or `server/composition/<feature>.ts` if the
+  file would otherwise exceed ~300 lines).
+- Presentation (Server Actions, Route Handlers, RSC loaders) imports
+  **wired use-cases / facades from composition** — not
+  `infrastructure/` directly.
+- Tests: unit-test use-cases with fake/in-memory port implementations;
+  do not boot the real DB in domain/application unit tests.
+
+```
+features/todos/actions.ts
+        → server/composition.ts  (getCreateTodo() / createTodo)
+              → application/create-todo.ts(port)
+              → infrastructure/sqlite-todo-repository.ts
+```
+
+## Server Actions & Route Handlers = thin adapters
+
+Allowed in `features/<f>/actions.ts` / `app/api/...` :
+
+1. Parse/validate input with zod (schema owned by application/contracts)
+2. Auth/session re-check if the surface is privileged
+3. Call one application use-case (from composition)
+4. Map domain/application errors → UI message or HTTP status
+5. Revalidate/redirect as needed
+
+**Forbidden in adapters:** SQL/ORM calls, business invariants, multi-step
+orchestration that belongs in a use-case, importing infrastructure
+repos directly.
+
+## Error → HTTP / UI mapping
+
+Keep a small explicit map (in the adapter or a tiny
+`presentation`-level helper next to it — **not** in domain):
+
+| Error kind (domain/application) | HTTP (Route Handler) | UI / Server Action |
+|---|---|---|
+| validation / zod failure | 400 | field or form error |
+| `UnauthorizedError` / unauthenticated | 401 | sign-in / forbidden UI |
+| `ForbiddenError` / authz | 403 | not allowed message |
+| `NotFoundError` | 404 | not-found UI |
+| conflict / duplicate / idempotency | 409 | form-level message |
+| other known domain errors | 422 or 400 | stable user message |
+| unknown | 500 + log | generic failure (no leak) |
+
+Never `catch { return 500 }` without logging and without trying known
+error types first. Prefer typed errors or `Result` over stringly throws.
+
+## Anti-barrel
+
+- Do **not** add `server/domain/index.ts` (or similar) that re-exports the
+  whole layer. Import concrete modules:
+  `server/domain/todo` — keeps boundaries obvious and avoids cycles.
 
 ## React / Next presentation rules
 
@@ -121,11 +193,16 @@ Canonical sketch (Next-only) — extend the tree above as concepts appear:
 src/server/domain/
   todo.ts                 # types + invariants
   todo.constants.ts       # status union / limits
+  errors.ts               # NotFoundError, … (shared domain errors)
 src/server/application/
-  create-todo.ts          # use-case + port types
+  ports/todo-repository.ts
+  create-todo.ts          # use-case depends on TodoRepository port
+src/server/infrastructure/
+  sqlite-todo-repository.ts
+src/server/composition.ts # wires SqliteTodoRepository → createTodo
 features/todos/
   lib/format-due-date.ts  # UI-only helper
-  actions.ts              # thin → application
+  actions.ts              # thin → composition → use-case
 ```
 
 ## Feature folders

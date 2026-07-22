@@ -15,7 +15,8 @@ resumed work, follow the **`shipjaw-ask`** contract (prefer invoking
 2. Open at most 1–2 KB/product files the task needs. Prefer Grep + offset reads.
 3. Implement against project tooling (strict TS, eslint, domain → application
    → infrastructure → presentation). Place types/constants/helpers by
-   ownership — no grab-bag `lib/utils.ts`.
+   ownership — no grab-bag `lib/utils.ts`. Ports + `composition.ts`;
+   Server Actions stay thin; map typed errors to UI/HTTP.
 4. Domain/application changes → Vitest (happy path + required edges).
 5. Critical *User can…* journeys → Playwright golden path + e2e edges + axe.
 6. Bug fix → regression test (fails before, passes after). Never weaken tests

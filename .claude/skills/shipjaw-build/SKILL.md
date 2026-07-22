@@ -33,8 +33,10 @@ runs.
    entry points, narrowed via zod/type guard. → `code-standards.md`
 2. **File size** — hard cap **500 lines**; plan split ~300.
 3. **Architecture** — canonical tree in `project-structure.md` (including
-   types / constants / helpers placement). Contracts consumer updates
-   **only if `packages/contracts/` exists**. No grab-bag `lib/utils.ts`.
+   types / constants / helpers, **ports**, **composition root**, thin
+   adapters, error→UI/HTTP map). Contracts consumer updates **only if
+   `packages/contracts/` exists**. No grab-bag `lib/utils.ts` or layer
+   barrels.
 4. **Tests** — Vitest for domain/application; Playwright + axe +
    keyboard/focus smoke for critical flows. Bug fix ⇒ regression test;
    never weaken tests to green. → `testing-and-ci.md` ·

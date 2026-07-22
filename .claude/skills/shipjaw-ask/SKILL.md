@@ -16,8 +16,10 @@ the full `shipjaw-build` SKILL body. Trust project tooling + docs.
 4. Core *User can…* first; no Out-of-v1 / drive-by scope.
 5. Types / consts / helpers by ownership (`domain` / `application` /
    `features/<f>/lib`) — no grab-bag `lib/utils.ts`.
-6. Bug ⇒ failing-then-passing regression test; never weaken tests to green.
-7. Gate once; **stop after 2** failed fix attempts; ask the human.
+6. Ports in `application/ports/`; wire in `composition.ts`; actions stay
+   thin (validate → use-case → map errors).
+7. Bug ⇒ failing-then-passing regression test; never weaken tests to green.
+8. Gate once; **stop after 2** failed fix attempts; ask the human.
 
 **Old repos only:** `../shipjaw-build/references/migration.md`.
 
@@ -67,6 +69,9 @@ Never preload `product/` or the full KB. Broad scope → new phase.
    - do not implement Out-of-v1 / out-of-phase scope "while we're here"
    - place new types/constants/helpers per
      `../shipjaw-build/references/project-structure.md` (no utils grab-bag)
+   - new outside deps → port file + infra impl + wire in composition;
+     Server Actions stay thin (no SQL / no domain rules in adapters)
+   - map domain errors to UI/HTTP per project-structure table
    - domain/application → Vitest; invariants owned there (not UI-only)
    - bug fix → regression test (fail before / pass after)
    - never weaken/skip existing tests just to green

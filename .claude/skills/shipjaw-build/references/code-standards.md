@@ -35,9 +35,17 @@
   returns specific error types (a small `class NotFoundError extends
   DomainError` hierarchy, or a `Result<T, E>`/`Either`-style return),
   never a bare `throw new Error("...")` or a silently swallowed
-  `catch {}`. Presentation layers map these known error types to
-  user-facing messages/HTTP status codes explicitly — no generic 500
-  catch-alls hiding what went wrong.
+  `catch {}`. Presentation **must** map known errors to UI/HTTP using the
+  table in `project-structure.md` (Error → HTTP / UI mapping) — no naked
+  generic 500 catch-alls that hide the cause.
+- **Thin adapters.** Server Actions / Route Handlers only:
+  validate → (authz) → use-case from `composition` → map error. No SQL,
+  no domain rules, no direct infra imports in those files.
+- **Ports + composition root.** Outside capabilities are interfaces under
+  `application/ports/` (one file each). Wire concretes once in
+  `server/composition.ts`. Presentation never new’s a repository.
+- **No layer barrels.** Avoid `domain/index.ts` / `application/index.ts`
+  re-export grab-bags; import concrete modules.
 - **No magic literals.** A string/number repeated more than once, or one
   whose meaning isn't obvious at the call site (a role name, a status
   code, a limit), becomes a named constant or a union/enum in a
@@ -60,7 +68,7 @@
   `application/` needs from the outside (a repository, a clock, an email
   sender) is passed in (constructor/param), never imported as a
   module-level singleton — again, this is a testability requirement as
-  much as a design one.
+  much as a design one. Construction happens in the composition root.
 - **No `console.*` in committed code.** Use
   `templates/scaffold/src/lib/logger.ts` (or equivalent).
 - **Server Components by default** in Next presentation; `'use client'`
