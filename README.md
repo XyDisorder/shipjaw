@@ -126,6 +126,19 @@ Creates (or reuses) the folder, switches into it, then explains
 
 Compact between tasks (`/compact` on Claude, or a fresh chat on Cursor): resume from `documentation/`.
 
+### When to slash
+
+| Situation | Prefer |
+|---|---|
+| New empty folder / named project home | `/shipjaw` |
+| Rough idea → dense prompt only | `/shipjaw-prompt` |
+| Build-ready prompt → docs + app + v1 | `/shipjaw-build` |
+| Feature / fix / continue in a Shipjaw app | `/shipjaw-ask` |
+
+Scaffolded apps also get `AGENTS.md` + `.cursor/rules/shipjaw.mdc` so the
+continuation contract applies even if you forget the slash — still prefer
+`/shipjaw-ask` so the skill loads on purpose.
+
 ## Installation
 
 ### In this repo

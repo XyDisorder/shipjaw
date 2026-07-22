@@ -1,6 +1,6 @@
 ---
 name: shipjaw-ask
-description: Continue or extend a Shipjaw project (has documentation/knowledge-base/ + INDEX.md). Token-cheap — INDEX plus one or two task files. Trigger on feature/fix/extend. Do not use for greenfield apps (shipjaw-build), vague idea polishing (shipjaw-prompt), pure CSS/copy tweaks, or non-TS repos.
+description: Continue, extend, fix, or resume a Shipjaw app in this repo (has documentation/knowledge-base/ + INDEX.md). Use for features, bugs, refactors, and next-session work — token-cheap INDEX + 1–2 files. Prefer /shipjaw-ask; project rule AGENTS.md / .cursor/rules/shipjaw.mdc apply the same contract. Do not use for greenfield (shipjaw-build), vague idea polishing (shipjaw-prompt), pure one-line CSS/copy, or non-TS repos.
 ---
 
 # shipjaw-ask

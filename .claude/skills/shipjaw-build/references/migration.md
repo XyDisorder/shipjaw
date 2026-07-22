@@ -33,6 +33,8 @@
 | No Open-when column in INDEX | Add it on next INDEX edit |
 | Flat / non-canonical folders | Don't move the tree unless the task requires it; record actual layout in architecture.md |
 | Missing eslint/tsconfig strict bits | Add only the missing flags/files from `templates/scaffold/` (**idempotent** — don't overwrite custom rules) |
+| No `AGENTS.md` / `.cursor/rules/shipjaw.mdc` | Copy from scaffold kit if missing (idempotent) |
+| INDEX lacks continuation banner | Add the shipjaw-ask pointer at the top on next INDEX edit |
 | No decisions/changelog rotation | Start rotating when files next cross thresholds |
 | Assumes `packages/contracts/` but Next-only | Skip contracts rule; don't create the package |
 

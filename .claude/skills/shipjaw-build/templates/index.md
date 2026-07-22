@@ -1,5 +1,8 @@
 # Project map
 
+> **Continuation:** use the **shipjaw-ask** contract (`/shipjaw-ask` preferred).
+> Read this INDEX first; keep docs in sync before done. Do not re-bootstrap.
+
 Stack: <one line — e.g. "Next.js <major> + TypeScript strict, no separate API">
 Current phase: <phase N — name — status>
 

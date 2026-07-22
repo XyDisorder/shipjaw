@@ -1,5 +1,12 @@
 # skill-my-website changelog
 
+## 2026-07-22i
+
+- Less slash friction on scaffolded apps: always copy `AGENTS.md` +
+  `.cursor/rules/shipjaw.mdc` (continuation contract without requiring
+  `/shipjaw-ask`); INDEX template banner; wider `shipjaw-ask` description;
+  README “When to slash” table.
+
 ## 2026-07-22h
 
 - Explicit **TU vs e2e edge-case matrices** in `testing-and-ci.md`

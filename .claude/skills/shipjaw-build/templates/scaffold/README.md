@@ -26,6 +26,8 @@ configs when these exist.
 | `playwright.config.ts` | repo root | always (e2e on port **3005** by default) |
 | `middleware.ts` | repo root | when auth/protected routes exist |
 | `Dockerfile` | repo root | when deploy = Docker |
+| `AGENTS.md` | repo root | always (Shipjaw continuation pointer) |
+| `shipjaw.cursor-rule.mdc` | `.cursor/rules/shipjaw.mdc` | always (Cursor alwaysApply contract) |
 
 **Pages that read a local DB:** add `export const dynamic = "force-dynamic"`
 on the route module (see `project-structure.md`).

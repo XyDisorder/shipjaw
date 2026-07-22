@@ -41,6 +41,8 @@ for f in \
   "$SKILL/templates/scaffold/src/env.ts" \
   "$SKILL/templates/scaffold/src/lib/logger.ts" \
   "$SKILL/templates/scaffold/Dockerfile" \
+  "$SKILL/templates/scaffold/AGENTS.md" \
+  "$SKILL/templates/scaffold/shipjaw.cursor-rule.mdc" \
   "$SKILL/templates/business-rule.md" \
   "$ROOT/.cursor/skills/shipjaw" \
   "$ROOT/.cursor/skills/shipjaw-prompt" \

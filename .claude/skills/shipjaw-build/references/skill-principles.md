@@ -90,7 +90,8 @@ rules. Agents must follow them; do not re-litigate mid-task.
     detection later.
 
 16. **One convention owner.** After bootstrap, the **project** owns
-    conventions via its committed `documentation/` + tsconfig/eslint/CI.
+    conventions via its committed `documentation/` + tsconfig/eslint/CI
+    + `AGENTS.md` / `.cursor/rules/shipjaw.mdc` (continuation contract).
     The skill only fills gaps. If the project later adopts a design
     system or ADR that conflicts with a skill default, follow the
     project and record the deviation in `architecture.md` — don't fight

@@ -83,8 +83,11 @@ Do **not** paste official Next/Nest docs into the repo (principle 12).
 
 Copy `templates/scaffold/` per its README (**idempotent**). Wire scripts:
 `typecheck`, `lint`, `test`, `test:watch`, `e2e`, `build`. Copy CI +
-Dependabot. Stamp `scaffolded-with: shipjaw-build@<VERSION>` and exact
-framework versions in `architecture.md`.
+Dependabot. Always copy `AGENTS.md` and
+`shipjaw.cursor-rule.mdc` → `.cursor/rules/shipjaw.mdc` (continuation
+contract without requiring `/shipjaw-ask`). Stamp
+`scaffolded-with: shipjaw-build@<VERSION>` and exact framework versions
+in `architecture.md`.
 
 If a native DB driver fails to install (pnpm build-script deny), apply the
 `tech-choices.md` data-layer **fallback** and log an ADR — don't loop the
@@ -92,7 +95,8 @@ gate on native compiles.
 
 **Scaffold completeness check:** strict tsconfig, no-explicit-any eslint,
 security headers, `turbopack.root` / `outputFileTracingRoot` pointing at
-this app, test/e2e scripts, CI. Still "docs only" → not done.
+this app, test/e2e scripts, CI, `AGENTS.md` + `.cursor/rules/shipjaw.mdc`.
+Still "docs only" → not done.
 
 **Narration:** don't paste reference contents; keep status short.
 
