@@ -148,13 +148,26 @@ Compact between tasks (`/compact` on Claude, or a fresh chat on Cursor): resume 
 | Rough idea → dense prompt only | `/shipjaw-prompt` |
 | Build-ready prompt → docs + app + v1 | `/shipjaw-build` |
 | Existing app, no Shipjaw KB | `/shipjaw-adopt` |
-| Refresh stamps / AGENTS / migration gaps only | `/shipjaw-upgrade` (shows changelog since your stamp) |
+| Refresh stamps / AGENTS / see what changed since your stamp | `/shipjaw-upgrade` |
 | Challenge plans/choices (built-in in ask/build; optional full report) | `/shipjaw-ask` / `/shipjaw-build` · optional `/shipjaw-challenge` |
 | Feature / fix / continue in a Shipjaw app | `/shipjaw-ask` |
 
 Scaffolded apps also get `AGENTS.md` + `.cursor/rules/shipjaw.mdc` so the
 continuation contract applies even if you forget the slash — still prefer
 `/shipjaw-ask` so the skill loads on purpose.
+
+### Keeping an existing project current
+
+1. Update the Shipjaw skill install (git pull + keep the seven symlinks).
+2. In the app repo run **`/shipjaw-upgrade`** — it prints the skill
+   **changelog since your `scaffolded-with` stamp**, then refreshes
+   AGENTS / Cursor rule / stamps / migration gaps (no product rewrite).
+3. Continue with **`/shipjaw-ask`**.
+
+`validate-docs` also enforces Challenge on **`in-progress`** phases
+(unfilled Challenge → fail; `todo`/draft → warn only). Fill Challenge
+via the built-in ask/build pass (or `/shipjaw-challenge` for a durable
+report) before coding.
 
 ## Installation
 
@@ -199,7 +212,8 @@ Keep the skills as **siblings** so relative `../shipjaw-build/references/` paths
 | Jump straight into code from vibes | Optional **prompt craft** before scaffold |
 | Everything in the transcript | Versioned state + **handoff.md** |
 | One mega catch-all prompt | Express ≠ build ≠ adopt ≠ upgrade ≠ continue (+ optional full **challenge** ritual) |
-| Plans rubber-stamped | **Built-in** challenger pass on plans/choices (prefer 2nd agent) |
+| Plans rubber-stamped | **Built-in** challenger pass; `in-progress` phases must document Challenge |
+| Skill upgrades are opaque | `/shipjaw-upgrade` shows **changelog since your stamp** |
 | “No `any`” as forgettable prose | Encoded in tsconfig / eslint / CI |
 | Gitignored docs → amnesiac clones | **Committed** docs |
 | Fixes that quietly regress | Bug ⇒ failing-then-passing test |
@@ -210,6 +224,7 @@ Keep the skills as **siblings** so relative `../shipjaw-build/references/` paths
 - Vague idea, no prompt yet → **`shipjaw-prompt`**, not build  
 - Existing app without Shipjaw docs → **`shipjaw-adopt`**, not build  
 - Only bump skill docs/stamps → **`shipjaw-upgrade`**, not ask  
+  (shows delta since stamp; ask nudges you if stamps lag)  
 - Challenge a plan (full durable report) → **`shipjaw-challenge`** (ask/build already challenge inline)  
 - One-off CSS / copy tweak → normal edit  
 - Non-TypeScript repo → refuse  

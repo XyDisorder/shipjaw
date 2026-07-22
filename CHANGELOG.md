@@ -1,5 +1,10 @@
 # skill-my-website changelog
 
+## 2026-07-22w
+
+- README: “Keeping an existing project current” (upgrade delta +
+  Challenge `validate-docs` guard).
+
 ## 2026-07-22v
 
 - **Diff-aware upgrade:** `changelog-since-stamp.sh` shows skill CHANGELOG
