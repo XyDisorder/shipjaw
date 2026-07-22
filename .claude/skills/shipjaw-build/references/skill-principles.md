@@ -3,13 +3,16 @@
 These are product decisions for *how the skills behave*, not app-domain
 rules. Agents must follow them; do not re-litigate mid-task.
 
-1. **Three skills, one pipeline.** `shipjaw-prompt` = expression only
-   (rough idea → `documentation/product/source-prompt.md`). 
-   `shipjaw-build` = bootstrap only (prompt → docs + scaffold + v1).
-   `shipjaw-ask` = every later session. Continuation never reloads
-   bootstrap discovery/architecture docs or re-derives the stack. If KB
-   exists → hand off to ask; if INDEX missing but docs exist → repair,
-   don't bootstrap. Prompt skill must **never** create `knowledge-base/`.
+1. **Entrypoint + three work skills.** `/shipjaw` = onboarding only
+   (create/cd into a named project folder, explain the pipeline).
+   `shipjaw-prompt` = expression only (rough idea →
+   `documentation/product/source-prompt.md`). `shipjaw-build` =
+   bootstrap only (prompt → docs + scaffold + v1). `shipjaw-ask` =
+   every later session. Continuation never reloads bootstrap
+   discovery/architecture docs or re-derives the stack. If KB exists →
+   hand off to ask; if INDEX missing but docs exist → repair, don't
+   bootstrap. Prompt and entrypoint must **never** create
+   `knowledge-base/`.
 
 
 2. **State lives in the repo, not the transcript.** Anything needed to

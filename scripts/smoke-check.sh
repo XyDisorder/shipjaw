@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Structural smoke check for shipjaw-prompt / shipjaw-build / shipjaw-ask.
+# Structural smoke check for shipjaw / shipjaw-prompt / shipjaw-build / shipjaw-ask.
 # Run from repo root: ./scripts/smoke-check.sh
 set -euo pipefail
 
@@ -7,6 +7,7 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SKILL="$ROOT/.claude/skills/shipjaw-build"
 ASK="$ROOT/.claude/skills/shipjaw-ask"
 PROMPT="$ROOT/.claude/skills/shipjaw-prompt"
+ENTRY="$ROOT/.claude/skills/shipjaw"
 FAIL=0
 
 ok() { printf '  OK  %s\n' "$1"; }
@@ -14,6 +15,7 @@ bad() { printf '  FAIL %s\n' "$1"; FAIL=1; }
 
 echo "== skill layout =="
 for f in \
+  "$ENTRY/SKILL.md" \
   "$PROMPT/SKILL.md" \
   "$PROMPT/references/prompt-craft.md" \
   "$PROMPT/templates/source-prompt.md" \
@@ -40,6 +42,7 @@ for f in \
   "$SKILL/templates/scaffold/src/lib/logger.ts" \
   "$SKILL/templates/scaffold/Dockerfile" \
   "$SKILL/templates/business-rule.md" \
+  "$ROOT/.cursor/skills/shipjaw" \
   "$ROOT/.cursor/skills/shipjaw-prompt" \
   "$ROOT/.cursor/skills/shipjaw-build" \
   "$ROOT/.cursor/skills/shipjaw-ask" \
@@ -57,7 +60,7 @@ else bad "VERSION must be YYYY.MM.DD or YYYY.MM.DDb (got: ${VER:-empty})"
 fi
 
 echo "== frontmatter descriptions =="
-for skill_md in "$PROMPT/SKILL.md" "$SKILL/SKILL.md" "$ASK/SKILL.md"; do
+for skill_md in "$ENTRY/SKILL.md" "$PROMPT/SKILL.md" "$SKILL/SKILL.md" "$ASK/SKILL.md"; do
   name="$(basename "$(dirname "$skill_md")")"
   desc="$(grep -E '^description:' "$skill_md" | sed 's/^description:[[:space:]]*//' | head -n1)"
   if [[ -z "$desc" ]]; then bad "$name missing description"
@@ -71,13 +74,13 @@ for skill_md in "$PROMPT/SKILL.md" "$SKILL/SKILL.md" "$ASK/SKILL.md"; do
   fi
 done
 
-echo "== three-skill pipeline phrases =="
+echo "== pipeline phrases =="
 PRINCIPLES="$SKILL/references/skill-principles.md"
 for phrase in \
+  "Entrypoint" \
   "shipjaw-prompt" \
   "shipjaw-build" \
   "shipjaw-ask" \
-  "Three skills" \
   "Dogfood" \
   "Migration" \
   "Anti-trigger" \
@@ -92,6 +95,22 @@ do
   else bad "skill-principles.md missing: $phrase"
   fi
 done
+
+echo "== entrypoint constraints =="
+if grep -qi 'mkdir' "$ENTRY/SKILL.md" \
+  && grep -q 'shipjaw-prompt' "$ENTRY/SKILL.md" \
+  && grep -q 'shipjaw-build' "$ENTRY/SKILL.md" \
+  && grep -q 'shipjaw-ask' "$ENTRY/SKILL.md"; then
+  ok "shipjaw entrypoint: folder + explains three skills"
+else
+  bad "shipjaw entrypoint must mkdir/cd and explain prompt/build/ask"
+fi
+if grep -qi 'create-next-app\|knowledge-base' "$ENTRY/SKILL.md" \
+  && grep -qi 'No `create-next-app`\|never\|Do \*\*not\*\*' "$ENTRY/SKILL.md"; then
+  ok "shipjaw entrypoint forbids scaffold/KB"
+else
+  bad "shipjaw entrypoint must forbid scaffold/KB"
+fi
 
 echo "== prompt skill constraints =="
 if grep -qi 'knowledge-base' "$PROMPT/SKILL.md" \

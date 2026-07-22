@@ -1,5 +1,11 @@
 # skill-my-website changelog
 
+## 2026-07-22f
+
+- Entrypoint **`/shipjaw`**: create a named project folder, switch into
+  it, explain `shipjaw-prompt` → `shipjaw-build` → `shipjaw-ask`.
+  Principle 1 updated; README install lists four skills.
+
 ## 2026-07-22e
 
 - Three-skill pipeline: **`shipjaw-prompt`** (expression →

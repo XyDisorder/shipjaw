@@ -45,6 +45,8 @@ You ask an agent to “build my site.” You get:
 | No code, no KB yet | Strict TS, tests, security gate | Same contract, minimal tokens |
 | | Invariants in domain/application | Bug fix ⇒ regression test |
 
+Start with `/shipjaw` to create the project folder and see this map.
+
 One line: **prompt-first, docs-first, tooling-enforced, continuation cheap, regressions blocked.**
 
 ## What you get
@@ -60,6 +62,9 @@ One line: **prompt-first, docs-first, tooling-enforced, continuation cheap, regr
 ## How it works
 
 ```text
+  /shipjaw  →  create folder + explain pipeline
+         │
+         ▼
   Rough idea / notes
          │
          ▼
@@ -83,6 +88,19 @@ One line: **prompt-first, docs-first, tooling-enforced, continuation cheap, regr
 ```
 
 ## Usage
+
+**0. Start** — new empty project folder + roadmap of commands:
+
+```text
+/shipjaw
+```
+
+```text
+/shipjaw my-grocery-app
+```
+
+Creates (or reuses) the folder, switches into it, then explains
+`/shipjaw-prompt` → `/shipjaw-build` → `/shipjaw-ask`.
 
 **1. Express** — optional if you already have a sharp prompt:
 
@@ -123,18 +141,20 @@ cd shipjaw
 
 mkdir -p ~/.claude/skills ~/.cursor/skills
 
+ln -s "$(pwd)/.claude/skills/shipjaw"        ~/.claude/skills/shipjaw
 ln -s "$(pwd)/.claude/skills/shipjaw-prompt" ~/.claude/skills/shipjaw-prompt
 ln -s "$(pwd)/.claude/skills/shipjaw-build"  ~/.claude/skills/shipjaw-build
 ln -s "$(pwd)/.claude/skills/shipjaw-ask"    ~/.claude/skills/shipjaw-ask
 
+ln -s "$(pwd)/.claude/skills/shipjaw"        ~/.cursor/skills/shipjaw
 ln -s "$(pwd)/.claude/skills/shipjaw-prompt" ~/.cursor/skills/shipjaw-prompt
 ln -s "$(pwd)/.claude/skills/shipjaw-build"  ~/.cursor/skills/shipjaw-build
 ln -s "$(pwd)/.claude/skills/shipjaw-ask"    ~/.cursor/skills/shipjaw-ask
 ```
 
-Keep the three skills as **siblings** so relative `../shipjaw-build/references/` paths resolve.
+Keep the skills as **siblings** so relative `../shipjaw-build/references/` paths resolve.
 
-> Migrating from `skill-my-app` / old `shipjaw`: remove old symlinks, link the three skills above. Legacy `scaffolded-with: skill-my-app@…` / `shipjaw@…` stamps still work.
+> Migrating from `skill-my-app` / old single `shipjaw` bootstrap: remove old symlinks, link the four skills above. Legacy `scaffolded-with: skill-my-app@…` / `shipjaw@…` stamps still work. Bootstrap is now **`shipjaw-build`**.
 
 ## Why it’s different
 
@@ -149,6 +169,7 @@ Keep the three skills as **siblings** so relative `../shipjaw-build/references/`
 
 ## Anti-triggers (don’t use the wrong skill)
 
+- Bare start / need a project folder → **`/shipjaw`**  
 - Vague idea, no prompt yet → **`shipjaw-prompt`**, not build  
 - One-off CSS / copy tweak → normal edit  
 - Non-TypeScript repo → refuse  
