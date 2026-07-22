@@ -12,19 +12,21 @@ resumed work, follow the **`shipjaw-ask`** contract (prefer invoking
 ## Do
 
 1. Read `documentation/INDEX.md` first. Use **Open when** as a hard filter.
-2. Open at most 1–2 KB/product files the task needs. Prefer Grep + offset reads.
-3. Implement against project tooling (strict TS, eslint, domain → application
+2. Then read `documentation/handoff.md` if present (last session next step).
+3. Open at most 1–2 KB/product files the task needs. Prefer Grep + offset reads.
+4. Implement against project tooling (strict TS, eslint, domain → application
    → infrastructure → presentation). Place types/constants/helpers by
    ownership — no grab-bag `lib/utils.ts`. Ports + `composition.ts`;
    Server Actions stay thin; map typed errors to UI/HTTP.
-4. Domain/application changes → Vitest (happy path + required edges).
-5. Critical *User can…* journeys → Playwright golden path + e2e edges + axe.
-6. Bug fix → regression test (fails before, passes after). Never weaken tests
+5. Domain/application changes → Vitest (happy path + required edges).
+6. Critical *User can…* journeys → Playwright golden path + e2e edges + axe.
+7. Bug fix → regression test (fails before, passes after). Never weaken tests
    to green.
-7. Run the gate (typecheck → lint → unit → e2e as relevant). Stop after 2
+8. Run the gate (typecheck → lint → unit → e2e as relevant). Stop after 2
    failed fix attempts and ask the human.
-8. Update `documentation/` surgically before ending (changelog, features-index,
-   touched KB, phase status). State lives in the repo, not the chat.
+9. Update `documentation/` surgically before ending (changelog, features-index,
+   touched KB, phase status). **Overwrite `documentation/handoff.md`** with
+   the next slash command. State lives in the repo, not the chat.
 
 ## Don't
 

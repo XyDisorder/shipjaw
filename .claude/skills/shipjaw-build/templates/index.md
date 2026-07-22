@@ -30,6 +30,11 @@ Current phase: <phase N — name — status>
 | product/design-brief.md | style direction, palette, locales | visual / i18n change |
 <!-- add product/business-rules/BR-*.md rows only when that folder exists -->
 
+## Session
+| File | Open when |
+|---|---|---|
+| handoff.md | every new chat / after compact — after INDEX |
+
 <!--
 Keep this file short (~30-60 lines). It is the only file a continuation
 session (shipjaw-ask) reads by default — update it only when

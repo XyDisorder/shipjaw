@@ -1,0 +1,10 @@
+{
+  "name": "golden-todo",
+  "private": true,
+  "scripts": {
+    "typecheck": "echo 'fixture: no full tsconfig — structural only'",
+    "lint": "echo 'fixture: structural only'",
+    "test": "echo 'fixture: structural only'",
+    "e2e": "echo 'fixture: structural only'"
+  }
+}

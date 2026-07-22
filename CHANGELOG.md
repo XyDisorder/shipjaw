@@ -1,5 +1,13 @@
 # skill-my-website changelog
 
+## 2026-07-22q
+
+- Product-quality loop for the skills themselves: **golden fixture**
+  (`fixtures/golden-todo` + `smoke-fixture.sh`), mandatory
+  `documentation/handoff.md` (template + wired into prompt/build/adopt/ask),
+  and static **skill routing eval** (`evals/routing-cases.yml` +
+  `eval-skill-routing.sh`).
+
 ## 2026-07-22p
 
 - `shipjaw-adopt` now runs a **read-only architecture practice audit**,

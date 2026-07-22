@@ -1,0 +1,64 @@
+# Skill routing eval cases (static discovery coverage)
+# Each case: expected skill must contain ALL triggers in its description.
+# Optional anti_skill must contain ALL anti_needles (wrong-skill rejection).
+#
+# Run: ./scripts/eval-skill-routing.sh
+
+- id: entry-new-project
+  expected: shipjaw
+  triggers:
+    - /shipjaw
+    - nouveau projet Shipjaw
+  anti_skill: shipjaw-ask
+  anti_needles:
+    - knowledge-base
+
+- id: prompt-vague-idea
+  expected: shipjaw-prompt
+  triggers:
+    - idée vague
+    - source-prompt.md
+  anti_skill: shipjaw-build
+  anti_needles:
+    - Do not scaffold
+    - knowledge-base
+
+- id: build-greenfield
+  expected: shipjaw-build
+  triggers:
+    - greenfield
+    - source-prompt.md
+  anti_skill: shipjaw-ask
+  anti_needles:
+    - already exists
+    - knowledge-base
+
+- id: adopt-legacy
+  expected: shipjaw-adopt
+  triggers:
+    - adopter Shipjaw
+    - legacy Next
+  anti_skill: shipjaw-build
+  anti_needles:
+    - Do not use for empty greenfield
+    - knowledge-base
+
+- id: ask-continue-fr
+  expected: shipjaw-ask
+  triggers:
+    - reprendre le projet
+    - ajouter une feature
+  anti_skill: shipjaw-build
+  anti_needles:
+    - already exists
+    - greenfield
+
+- id: ask-after-compact
+  expected: shipjaw-ask
+  triggers:
+    - resume after compact
+    - INDEX.md
+  anti_skill: shipjaw-prompt
+  anti_needles:
+    - knowledge-base
+    - already exists

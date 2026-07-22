@@ -11,7 +11,7 @@ the full `shipjaw-build` SKILL body. Trust project tooling + docs.
 ## Binding defaults (do not open principles unless conflict)
 
 1. State lives in committed `documentation/` — update before done.
-2. Progressive disclosure — INDEX → ≤2 files; Grep + offset reads.
+2. Progressive disclosure — INDEX → handoff.md → ≤2 files; Grep + offset reads.
 3. Project owns conventions after bootstrap (tsconfig/eslint/CI/docs).
 4. Core *User can…* first; no Out-of-v1 / drive-by scope.
 5. Types / consts / helpers by ownership (`domain` / `application` /
@@ -20,6 +20,8 @@ the full `shipjaw-build` SKILL body. Trust project tooling + docs.
    thin (validate → use-case → map errors).
 7. Bug ⇒ failing-then-passing regression test; never weaken tests to green.
 8. Gate once; **stop after 2** failed fix attempts; ask the human.
+9. End every run by overwriting `documentation/handoff.md` (template
+   `../shipjaw-build/templates/handoff.md`) with next slash command.
 
 **Old repos only:** `../shipjaw-build/references/migration.md`.
 
@@ -51,11 +53,13 @@ Never preload `product/` or the full KB. Broad scope → new phase.
 
 ```
 - [ ] Read / repair INDEX
+- [ ] Read handoff.md if present (after INDEX)
 - [ ] ≤1 clarifying Q; stop if core behavior still ambiguous
 - [ ] Implement (journey-first; domain tests; e2e edges if critical)
 - [ ] ../shipjaw-build/scripts/run-gate.sh <root> [--with-e2e]
 - [ ] ≤2 fix attempts; then ask human
 - [ ] Surgical doc updates; optional validate-docs.sh
+- [ ] Overwrite documentation/handoff.md (next command + files touched)
 - [ ] Suggest /compact or fresh chat
 ```
 
@@ -90,4 +94,8 @@ Never preload `product/` or the full KB. Broad scope → new phase.
    archive done phases. Idempotent: don't rewrite unrelated docs.
    Optional: `../shipjaw-build/scripts/validate-docs.sh <root>` after
    doc repairs.
-6. Suggest `/compact` (Claude) or fresh chat / handoff (Cursor).
+6. **Handoff (mandatory):** overwrite `documentation/handoff.md` from
+   `../shipjaw-build/templates/handoff.md` — done bullets, files touched,
+   gate status, concrete next `/shipjaw-ask …` command.
+7. Suggest `/compact` (Claude) or fresh chat (Cursor); point at INDEX +
+   handoff.

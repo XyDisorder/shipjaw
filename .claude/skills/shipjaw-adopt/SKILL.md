@@ -45,6 +45,7 @@ re-adopt.
 - [ ] copy-continuation-contract + stamp-provenance --adopted
 - [ ] Tooling gaps idempotent
 - [ ] validate-docs + run-gate (cheap)
+- [ ] Write documentation/handoff.md (next /shipjaw-ask … + arch P0)
 - [ ] Status snapshot + improvement plan summary + /shipjaw-ask handoff
 ```
 
@@ -155,6 +156,7 @@ Reply **must** include:
 3. **Architecture gaps** (top P0/P1)
 4. **Proposed improvement plan** (phase path + ordered slices, 3–6 bullets)
 5. Explicit: *no structural rewrite done* (unless user asked)
+6. **Handoff file** written at `documentation/handoff.md`
 
 Then hand off to `/shipjaw-ask` for the first P0 slice or the next product
 feature.

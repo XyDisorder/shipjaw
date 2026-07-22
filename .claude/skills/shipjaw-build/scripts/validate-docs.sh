@@ -31,6 +31,12 @@ req "$DOC/knowledge-base/changelog.md" "knowledge-base/changelog.md"
 req "$DOC/product/overview.md" "product/overview.md"
 req "$DOC/technical-plan/00-roadmap.md" "technical-plan/00-roadmap.md"
 
+if [[ -f "$DOC/handoff.md" ]]; then
+  echo "OK  documentation/handoff.md"
+else
+  echo "WARN documentation/handoff.md missing (write at end of every skill run)"
+fi
+
 if [[ -f "$DOC/knowledge-base/architecture.md" ]]; then
   if grep -q 'scaffolded-with:' "$DOC/knowledge-base/architecture.md"; then
     echo "OK  scaffolded-with stamp"

@@ -22,7 +22,8 @@ rules. Agents must follow them; do not re-litigate mid-task.
    resume (architecture, decisions, phase status, contracts) is written
    to committed `documentation/` and/or config before the turn ends.
    Chat is disposable. After `/compact` or a new chat, recovery = read
-   `INDEX.md`, not "remember last session."
+   `INDEX.md` then `handoff.md`, not "remember last session." Every
+   skill run **overwrites** `documentation/handoff.md` before ending.
 
 3. **Progressive disclosure.** SKILL.md stays thin. Rare detail lives in
    `references/*` and is opened **only when the current step needs it**

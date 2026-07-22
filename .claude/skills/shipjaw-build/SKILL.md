@@ -63,7 +63,9 @@ runs.
 - [ ] Implement core *User can…* + tests (types/consts/helpers placed per
       project-structure — no utils grab-bag)
 - [ ] ./scripts/run-gate.sh <project-root> --with-e2e
-- [ ] Fix ≤2 attempts; update KB surgically; hand off to shipjaw-ask
+- [ ] Fix ≤2 attempts; update KB surgically
+- [ ] Write documentation/handoff.md (next /shipjaw-ask …)
+- [ ] Hand off to shipjaw-ask
 ```
 
 ## Workflow (summary — `references/workflow.md`)

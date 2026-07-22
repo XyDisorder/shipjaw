@@ -24,6 +24,7 @@ almost no rediscovery. Does **not** scaffold an app, does **not** create
 - [ ] Clarify gaps only (≤2 rounds / ~8 Q); default the rest
 - [ ] Craft dense prompt (references/prompt-craft.md)
 - [ ] Write documentation/product/source-prompt.md (never KB)
+- [ ] Write documentation/handoff.md → next /shipjaw-build
 - [ ] Hand off: /shipjaw-build
 ```
 

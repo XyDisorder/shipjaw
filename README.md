@@ -204,6 +204,11 @@ Keep the skills as **siblings** so relative `../shipjaw-build/references/` paths
 
 ```sh
 ./scripts/smoke-check.sh
+./scripts/smoke-fixture.sh
+./scripts/eval-skill-routing.sh
 ```
+
+- Golden output shape: [`fixtures/golden-todo/`](fixtures/golden-todo/)
+- Routing discovery cases: [`evals/routing-cases.yml`](evals/routing-cases.yml)
 
 Version: `.claude/skills/shipjaw-build/VERSION` · changelog: [`CHANGELOG.md`](CHANGELOG.md) · principles: [`skill-principles.md`](.claude/skills/shipjaw-build/references/skill-principles.md) · prompt craft: [`prompt-craft.md`](.claude/skills/shipjaw-prompt/references/prompt-craft.md) · regression: [`regression-and-business-rules.md`](.claude/skills/shipjaw-build/references/regression-and-business-rules.md)

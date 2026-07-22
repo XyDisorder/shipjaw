@@ -48,6 +48,7 @@ for f in \
   "$SKILL/templates/scaffold/shipjaw.cursor-rule.mdc" \
   "$SKILL/templates/business-rule.md" \
   "$SKILL/templates/technical-plan-converge-arch.md" \
+  "$SKILL/templates/handoff.md" \
   "$SKILL/scripts/copy-continuation-contract.sh" \
   "$SKILL/scripts/stamp-provenance.sh" \
   "$SKILL/scripts/init-docs-skeleton.sh" \
@@ -154,7 +155,22 @@ do
   fi
 done
 
-echo "== ask stays cheap =="
+echo "== handoff wired =="
+if [[ -f "$SKILL/templates/handoff.md" ]] \
+  && grep -q 'handoff.md' "$ASK/SKILL.md" \
+  && grep -q 'handoff.md' "$SKILL/SKILL.md" \
+  && grep -q 'handoff.md' "$ADOPT/SKILL.md" \
+  && grep -q 'handoff.md' "$PROMPT/SKILL.md"; then
+  ok "handoff template + all work skills"
+else
+  bad "handoff.md must be templated and required in prompt/build/adopt/ask"
+fi
+
+if grep -qi 'handoff.md' "$SKILL/references/skill-principles.md"; then
+  ok "principles mention handoff"
+else
+  bad "skill-principles.md should require handoff.md"
+fi
 if grep -qi 'Binding defaults' "$ASK/SKILL.md" \
   && grep -qi 'never.*skill-principles\|skill-principles.md.*default' "$ASK/SKILL.md"; then
   ok "shipjaw-ask inlines defaults / avoids principles preload"
@@ -359,6 +375,26 @@ if grep -qi 'Signal' "$SKILL/references/tech-choices.md"; then
   ok "tech-choices.md signal tables"
 else
   bad "tech-choices.md missing signal tables"
+fi
+
+if [[ "$FAIL" -ne 0 ]]; then
+  echo
+  echo "smoke-check FAILED"
+  exit 1
+fi
+
+echo "== golden fixture =="
+if bash "$ROOT/scripts/smoke-fixture.sh"; then
+  ok "smoke-fixture"
+else
+  bad "smoke-fixture"
+fi
+
+echo "== skill routing eval =="
+if bash "$ROOT/scripts/eval-skill-routing.sh"; then
+  ok "eval-skill-routing"
+else
+  bad "eval-skill-routing"
 fi
 
 if [[ "$FAIL" -ne 0 ]]; then

@@ -34,5 +34,6 @@ copy_if_missing "$TPL/knowledge-base/changelog.md" "$ROOT/documentation/knowledg
 copy_if_missing "$TPL/knowledge-base/api-reference.md" "$ROOT/documentation/knowledge-base/api-reference.md"
 copy_if_missing "$TPL/product-overview.md" "$ROOT/documentation/product/overview.md"
 copy_if_missing "$TPL/roadmap.md" "$ROOT/documentation/technical-plan/00-roadmap.md"
+copy_if_missing "$TPL/handoff.md" "$ROOT/documentation/handoff.md"
 
 echo "init-docs-skeleton done — fill placeholders from the real codebase"
