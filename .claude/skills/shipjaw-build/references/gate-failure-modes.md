@@ -4,6 +4,12 @@
 > message clearly matches a row below). Do not preload at task start.
 > Prefer environment/config fixes that don't count as a "logic" retry
 > when the skill says so (busy e2e port, etc.).
+>
+> **Reaching this file at all is the signal to suggest `/compact` (or a
+> fresh chat) once the current fix attempt finishes** — don't wait for a
+> clean task end that a hard debugging session may never reach. No tool
+> lets an agent compact itself; saying it early enough to matter is the
+> only lever that exists (`skill-principles.md` principle 7).
 
 ## Quick triage
 

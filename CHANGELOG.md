@@ -1,5 +1,22 @@
 # skill-my-website changelog
 
+## 2026-07-23k
+
+- **Proactive `/compact` reminder — not just at clean task end.** A real
+  session (`mariage_les_bibous`) burned most of its usage at >150k
+  context; the only existing reminder was step 9's "suggest /compact",
+  reached only at a clean end that an exploratory debugging session may
+  never hit. Added a session-size budget (`skill-principles.md` 7,
+  inlined into `shipjaw-ask`'s binding defaults since ask never preloads
+  principles): a non-gate runtime bug chased past ~6 file reads, or a
+  request needing more than one phase, should each get an early
+  `/compact` suggestion — before continuing, not after finishing. No tool
+  lets an agent trigger `/compact` itself; saying it early enough is the
+  only lever available. `gate-failure-modes.md` also reminds at the point
+  it's already opened (2nd gate failure). **Caveat, stated plainly: this
+  is prose guidance, not a script — unlike today's other fixes, there's no
+  way to dogfood-test that an agent actually follows it under pressure.**
+
 ## 2026-07-23j
 
 - **`product/features/<slug>.md` was documented but never actually

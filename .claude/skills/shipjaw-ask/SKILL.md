@@ -55,6 +55,12 @@ Skip only for tiny fixes inside an already-challenged phase (cite prior).
     the feature now). Run
     `../shipjaw-build/scripts/changelog-since-stamp.sh <root>` when
     explaining what changed.
+13. **Session-size budget** (no agent can trigger `/compact` itself —
+    saying it early is the only lever): a request needing more than one
+    phase is not one session — finish the current phase (gate + docs +
+    handoff), then suggest `/compact`/fresh chat **before** starting the
+    next phase, even if nothing failed. Chasing a non-gate bug past ~6
+    file reads without root cause → same reminder, before going deeper.
 
 ## Anti-triggers
 
@@ -148,6 +154,9 @@ Never leave INDEX/features-index lying after you ship a path change.
 3. If non-trivial (new phase / auth / data / primary UI / money) →
    **built-in** challenger pass (prefer Task/subagent); escalate to
    `/shipjaw-challenge` only if needed; apply plan edits **before** coding.
+   Request needs more than one phase? Split now — plan to stop, gate, and
+   suggest `/compact` after the first phase rather than chaining all of
+   them in one sitting (binding default 13).
 4. ≤1 clarifying question. If the **core behavior** is still ambiguous
    after that → **stop** and ask the human; do not invent the business rule.
 5. Implement via project config as source of truth:
@@ -176,9 +185,12 @@ Never leave INDEX/features-index lying after you ship a path change.
    gate you're about to run will (correctly) reject an undocumented
    feature.
 7. Gate via `run-gate.sh`; on **second** failure open
-   `../shipjaw-build/references/gate-failure-modes.md`, apply one matching
-   fix; if still red → stop and ask human. A fail here on the
-   feature-module check means step 6 was skipped or incomplete — go back
-   to it, don't bypass the gate.
+   `../shipjaw-build/references/gate-failure-modes.md` (suggest `/compact`
+   once the current fix attempt finishes — don't wait for a clean end),
+   apply one matching fix; if still red → stop and ask human. A fail here
+   on the feature-module check means step 6 was skipped or incomplete — go
+   back to it, don't bypass the gate. Chasing a runtime bug that isn't a
+   gate failure (e.g. a user-reported error) past ~6 file reads without a
+   root cause → same reminder, same rule (`skill-principles.md` 7).
 8. **Handoff (mandatory):** overwrite `documentation/handoff.md`.
 9. Suggest `/compact` or fresh chat; point at INDEX + handoff.

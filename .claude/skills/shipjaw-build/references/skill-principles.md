@@ -63,6 +63,22 @@ rules. Agents must follow them; do not re-litigate mid-task.
    stop and ask the human. No third blind retry. No unbounded "read the
    whole repo."
 
+   **Session-size budget (no agent can trigger `/compact` itself — saying
+   it early enough is the only lever):**
+   - *Investigation:* chasing a runtime/production bug (not a gate
+     failure — e.g. a user-reported error) past **~6 file reads / tool
+     calls** without finding root cause → say so and suggest `/compact`
+     (or a fresh chat) once the current step finishes, before continuing
+     deeper.
+   - *Large or multi-phase feature request:* a request that needs more
+     than **one phase** is not one session. Finish the current phase
+     (gate + `features-index.md` + `product/feature-<slug>.md`), write
+     `handoff.md`, then **suggest `/compact`/fresh chat before starting
+     the next phase** — do not chain phases in one sitting just because
+     the user asked for the whole feature at once. This applies whether
+     or not anything failed; a big feature that goes smoothly still needs
+     the same reminder a failing one gets.
+
 8. **No contradictory product defaults.** Docs are **committed** (not
    gitignored) so continuation works cross-machine. `packages/contracts/`
    rules apply **only when that package exists**. Nest / modern-extras
