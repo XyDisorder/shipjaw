@@ -1,5 +1,21 @@
 # skill-my-website changelog
 
+## 2026-07-23h
+
+- **VERSION was never bumped across today's 7 changelog entries (a-g) —
+  caught via a real project running `/shipjaw-upgrade` and being told "you
+  are already current."** `changelog-since-stamp.sh` compares a project's
+  stamp against `shipjaw-build/VERSION`; since VERSION was still
+  `2026.07.22w`, every real project would have silently missed all of
+  today's changes, including the migration-gate fix motivated by this
+  exact real project's incident. Bumped VERSION — twice: the first bump
+  to `2026.07.23g` was itself already stale by the time this very entry
+  was written, since adding it moved the CHANGELOG header again; landed on
+  `2026.07.23h` to match. Added a `smoke-check.sh` assertion that VERSION
+  always matches the latest CHANGELOG.md header — tested that it correctly
+  fails when they diverge — so this specific mistake can't happen silently
+  again.
+
 ## 2026-07-23g
 
 - **Feature-module check, hard fail this time — validated against a real

@@ -85,6 +85,19 @@ if [[ "$VER" =~ ^[0-9]{4}\.[0-9]{2}\.[0-9]{2}[a-z]?$ ]]; then ok "VERSION=$VER"
 else bad "VERSION must be YYYY.MM.DD or YYYY.MM.DDb (got: ${VER:-empty})"
 fi
 
+# A CHANGELOG entry with no matching VERSION bump is invisible to every
+# project's shipjaw-upgrade: changelog-since-stamp.sh compares a project's
+# stamp against this VERSION file, so real changes silently look like "you
+# are current." Caught once already (7 changelog entries landed before
+# VERSION was bumped) — this stops it from happening silently again.
+LATEST_CHANGELOG_HEADER="$(grep -m1 '^## ' "$ROOT/CHANGELOG.md" | sed -E 's/^## //')"
+VER_AS_HEADER="${VER//./-}"
+if [[ "$VER_AS_HEADER" == "$LATEST_CHANGELOG_HEADER" ]]; then
+  ok "VERSION matches latest CHANGELOG.md header ($LATEST_CHANGELOG_HEADER)"
+else
+  bad "VERSION ($VER) does not match latest CHANGELOG.md header ($LATEST_CHANGELOG_HEADER) — bump VERSION"
+fi
+
 echo "== frontmatter descriptions =="
 for skill_md in "$ENTRY/SKILL.md" "$PROMPT/SKILL.md" "$SKILL/SKILL.md" "$ADOPT/SKILL.md" "$UPGRADE/SKILL.md" "$CHALLENGE/SKILL.md" "$ASK/SKILL.md"; do
   name="$(basename "$(dirname "$skill_md")")"
