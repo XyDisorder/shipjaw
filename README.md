@@ -273,13 +273,15 @@ spec rather than diverge from it.
 - Routing discovery cases: [`evals/routing-cases.yml`](evals/routing-cases.yml) — static (substring) +
   LLM (paraphrased `prompt` per case, semantic) coverage
 - KB drift: `.claude/skills/shipjaw-build/scripts/validate-docs-drift.sh <project-root>` —
-  path references, staleness vs git history, and pending migrations vs
-  `features-index.md`. **Informational only, never blocks** — tested
+  mixed severity, on purpose. **Informational** (path references, staleness
+  vs git history, pending migrations vs `features-index.md`) — tested
   against a real project and found too many legitimate false positives
   (abbreviated paths, dropped Next.js route-group folders) to safely gate
-  on; read as a prompt to double-check, not a pass/fail signal. Wired into
-  build/adopt/upgrade/ask; run against the golden fixture by
-  `smoke-fixture.sh`.
+  on; read as a prompt to double-check, not a pass/fail signal. **Hard
+  fail** (feature module folder absent from `features-index.md`) — a
+  folder name is precise enough to gate on; zero false positives across 8
+  real feature modules in testing. Wired into build/adopt/upgrade/ask; run
+  against the golden fixture by `smoke-fixture.sh`.
 - Gate: `run-gate.sh` runs a project's `db:migrate` script (if present)
   before tests — a committed-but-unapplied migration now fails the gate
   instead of shipping silently (found via real-project dogfooding).

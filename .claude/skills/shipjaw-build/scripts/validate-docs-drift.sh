@@ -2,12 +2,11 @@
 # Report knowledge-base drift: doc content vs current code reality.
 # Complements validate-docs.sh (section/file presence) with checks that
 # actually look at whether the docs still describe the repo as it is today.
-# Purely informational (always exits 0 on a valid project-root) — tested
-# against a real, organically-written project and found too many
-# legitimate false positives (path abbreviation in prose, e.g. dropped
-# `shared/` or a Next.js route-group folder like `(protected)`) to safely
-# hard-block on. Treat this as a prompt for a human/agent to look, not a
-# gate — see "Known limitations" below.
+# Mixed severity, deliberately: checks #1-3 are informational (see "Known
+# limitations" — tested against a real, organically-written project and
+# found too many legitimate false positives to safely hard-block on).
+# Check #4 is a hard fail — tested against the same real project with zero
+# false positives, precise enough to gate on. Exit 1 only from #4.
 #
 #   1. Dangling path references — a KB file points at a file/dir that
 #      doesn't resolve (checked at repo root, then under src/ — the
@@ -16,13 +15,20 @@
 #   2. Staleness heuristic — code under src/app/packages changed after a
 #      KB file's last git update. A human/agent still has to judge whether
 #      the change was KB-relevant.
-#   3. Pending-migration heuristic (code ahead of docs, the direction #1/#2
+#   3. Pending-migration heuristic (code ahead of docs, direction #1/#2
 #      can't see) — a migration file was added/changed after
 #      features-index.md was last updated. Can't check the actual DB state
 #      from a static script: flags "go verify this was applied and
 #      documented," does not prove either way.
+#   4. Feature module vs docs (code ahead of docs, hard fail) — a top-level
+#      folder under src/modules, src/features, or features/ whose name
+#      never appears in features-index.md. A short distinctive folder
+#      name is far less ambiguous to match than a full file path, so this
+#      one is precise enough to block on — this is what would have caught
+#      the actual incident (a shipped module absent from the docs).
 #
-# Known limitations (found via real-project testing, not fixed):
+# Known limitations of checks #1-3 (found via real-project testing, not
+# fixed):
 #   - Paths that drop an intermediate segment in prose (e.g. doc says
 #     `composition/gallery.ts` for real path `src/shared/composition/
 #     gallery.ts`) or a Next.js route-group folder (`(protected)`) will
@@ -49,6 +55,7 @@ DOC="$ROOT/documentation"
 
 ok()   { printf '  OK   %s\n' "$1"; }
 warn() { printf '  WARN %s\n' "$1"; }
+miss() { printf '  MISS %s\n' "$1"; }
 
 REALITY_FILES=(
   "$DOC/knowledge-base/architecture.md"
@@ -181,4 +188,50 @@ else
 fi
 
 echo ""
-echo "validate-docs-drift done (informational only — see WARN lines above)"
+echo "== Feature modules vs docs (code ahead of docs) =="
+# Lower-ambiguity than the path-reference check above: a top-level feature
+# module folder name is a short, distinctive word — far less prone to the
+# abbreviation/route-group issues that forced the path check to be
+# informational-only. If a module exists in code but its name appears
+# nowhere in features-index.md, that's a real, high-confidence signal the
+# doc was never updated for it (exactly the Phase 6 incident this script
+# exists to catch). Hard fail — this is precise enough to gate on.
+FEATURE_MODULE_FAIL=0
+FEATURE_DIRS=()
+for d in src/modules src/features features; do
+  [[ -d "$ROOT/$d" ]] && FEATURE_DIRS+=("$ROOT/$d")
+done
+DENYLIST=(shared common lib core types utils ui __tests__ node_modules)
+if [[ "${#FEATURE_DIRS[@]}" -eq 0 ]]; then
+  ok "no src/modules, src/features, or features/ directory found — nothing to check"
+elif [[ ! -f "$FEATURES_INDEX" ]]; then
+  warn "no features-index.md — skipping feature-module check"
+else
+  any_module=0
+  for fd in "${FEATURE_DIRS[@]}"; do
+    while IFS= read -r name; do
+      [[ -z "$name" ]] && continue
+      skip=0
+      for d in "${DENYLIST[@]}"; do [[ "$name" == "$d" ]] && skip=1; done
+      [[ "$skip" -eq 1 ]] && continue
+      any_module=1
+      if ! grep -qi -- "$name" "$FEATURES_INDEX"; then
+        miss "feature module '$name' (${fd#"$ROOT"/}/$name) not mentioned anywhere in features-index.md"
+        FEATURE_MODULE_FAIL=1
+      fi
+    done < <(find "$fd" -mindepth 1 -maxdepth 1 -type d -exec basename {} \;)
+  done
+  if [[ "$any_module" -eq 1 && "$FEATURE_MODULE_FAIL" -eq 0 ]]; then
+    ok "every feature module is mentioned in features-index.md"
+  fi
+fi
+
+if [[ "$FEATURE_MODULE_FAIL" -ne 0 ]]; then
+  echo ""
+  echo "validate-docs-drift FAILED (feature module undocumented — see WARN above)"
+  echo "(path-reference / staleness / migration checks above are informational only)"
+  exit 1
+fi
+
+echo ""
+echo "validate-docs-drift done (path/staleness/migration checks informational only)"

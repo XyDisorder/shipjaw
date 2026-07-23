@@ -1,5 +1,20 @@
 # skill-my-website changelog
 
+## 2026-07-23g
+
+- **Feature-module check, hard fail this time — validated against a real
+  project first.** Following up on 2026-07-23f (where the path-reference
+  check turned out too ambiguous to gate on): a top-level folder name
+  under `src/modules/`, `src/features/`, or `features/` is a short,
+  distinctive word — far less prone to the abbreviation/route-group issues
+  that forced the path check to stay informational. Tested against
+  `mariage_les_bibous` (the real project from the incident, now fixed on
+  its own): 0 false positives across all 8 real feature modules. Tested
+  against a synthetic new module folder: correctly fails. This is the
+  check that would have actually caught the original incident (a shipped
+  `seating` module absent from `features-index.md`). `validate-docs-drift.sh`
+  now mixes severities on purpose: checks #1-3 informational, #4 hard fail.
+
 ## 2026-07-23f
 
 - **Correction after real-project verification, not just synthetic tests.**

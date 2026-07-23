@@ -86,14 +86,16 @@ Never preload `product/` or the full KB. Broad scope → new phase.
 
 ## Drift protocol (docs ↔ code)
 
-Run `../shipjaw-build/scripts/validate-docs-drift.sh <root>` first — it
-surfaces three signals automatically, all informational (never blocking,
-still needs a human/agent judgment call): unresolved path references, code
-changed since a KB file's last git update, and migrations changed since
-`features-index.md` was last touched. WARN lines can be false positives
-(abbreviated paths, dropped route-group folders) — read them, don't treat
-them as a gate. It cannot see one direction at all (code ahead of docs with
-no migration involved); eyeball the signals below for that.
+Run `../shipjaw-build/scripts/validate-docs-drift.sh <root>` first — mixed
+severity, on purpose. Three signals are informational only (still need a
+human/agent judgment call, WARN lines can be false positives — abbreviated
+paths, dropped route-group folders): unresolved path references, code
+changed since a KB file's last git update, migrations changed since
+`features-index.md` was last touched. One is a **hard fail**: a top-level
+feature module folder (`src/modules/*`, `src/features/*`, `features/*`)
+whose name never appears in `features-index.md` — this is what catches a
+shipped-but-undocumented feature (exactly the real incident this script
+was built for). Eyeball the signals below for anything it still misses.
 
 Before implementing, if anything below is inconsistent with the repo,
 **stop and choose explicitly** (ask once if unclear):
