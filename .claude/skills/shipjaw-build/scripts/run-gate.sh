@@ -13,6 +13,8 @@ if [[ -z "$ROOT" || ! -d "$ROOT" ]]; then
   exit 2
 fi
 
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+ROOT="$(cd "$ROOT" && pwd)"
 cd "$ROOT"
 
 pm() {
@@ -78,6 +80,22 @@ if [[ "$WITH_E2E" -eq 1 ]]; then
     run_script test:e2e
   else
     echo "skip e2e (no package.json script)"
+  fi
+fi
+
+
+# The rest of the gate (typecheck/lint/test/e2e) can be green while a whole
+# new feature module ships completely undocumented — that's exactly what
+# happened in the incident this check was built for. validate-docs-drift.sh
+# is otherwise optional/informational, but its feature-module check is a
+# validated hard-fail (see that script's header) — run it here so the
+# already-mandatory gate is what actually blocks, instead of relying on an
+# easy-to-skip "optional" step at the end of a session.
+if [[ -x "$SCRIPT_DIR/validate-docs-drift.sh" ]]; then
+  echo "== validate-docs-drift.sh (feature-module check) =="
+  if ! "$SCRIPT_DIR/validate-docs-drift.sh" "$ROOT"; then
+    echo "run-gate: blocked — a feature module shipped without a features-index.md mention (see above)"
+    exit 1
   fi
 fi
 

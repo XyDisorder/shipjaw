@@ -28,6 +28,7 @@ Current phase: <phase N — name — status>
 | product/source-prompt.md | build-ready prompt (if present) | re-open expression / rebuild intake |
 | product/overview.md | vision, audience, success criteria | scope / audience change |
 | product/design-brief.md | style direction, palette, locales | visual / i18n change |
+<!-- add product/feature-<slug>.md rows as each feature ships (templates/product-feature.md) -->
 <!-- add product/business-rules/BR-*.md rows only when that folder exists -->
 
 ## Session

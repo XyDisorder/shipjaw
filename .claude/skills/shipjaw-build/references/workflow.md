@@ -130,23 +130,33 @@ Routes that **read a local/file DB or per-request user data** must opt
 into dynamic rendering (`export const dynamic = "force-dynamic"` or
 equivalent) — otherwise Next may statically shell an empty page.
 
+**Before the gate, not after:** flip `features-index.md` **and** write
+`product/feature-<slug>.md` (`templates/product-feature.md`) for
+the phase's feature. `run-gate.sh` hard-fails if a feature module
+(`features/<name>/`, `src/modules/<name>/`, `src/features/<name>/`) isn't
+mentioned anywhere in `features-index.md` — so both must exist before
+running the gate below, not after. Running the gate first and documenting
+after will make the gate fail on your own not-yet-documented feature.
+
 **Verification gate (once per phase):** typecheck → lint → test → e2e
 (e2e mandatory when the phase's *User can…* is a critical journey).
 If e2e fails because the port is busy: free it or use the Playwright
 config's dedicated e2e port (see scaffold `playwright.config.ts`) — that
-counts as environment fix, not a "logic" retry. **After 2 failed gate
-attempts on real product errors, stop** and ask the user.
+counts as environment fix, not a "logic" retry. A gate failure on the
+feature-module check means `features-index.md` still needs that row, not a
+code bug — go add it, don't treat it as a third gate attempt. **After 2
+failed gate attempts on real product errors, stop** and ask the user.
 Only then mark the phase done; archive when status flips to `done`.
 
 ## 7. Update the knowledge base — every time
 
 Before ending a turn that shipped a feature, changed an API/data
-contract, or made an architectural call:
+contract, or made an architectural call (the `features-index.md` row
+itself should already be done, above, before the gate):
 
 - Update touched KB files surgically (paths/signatures only). Split if
   >~200 lines.
 - Append changelog line; rotate past ~50.
-- Flip `features-index.md` row.
 - Short-form `decisions.md` if needed; archive superseded / rotate past
   ~20–25 active.
 - Phase `done` → `phase-archive/` + roadmap pointer + drop from INDEX.

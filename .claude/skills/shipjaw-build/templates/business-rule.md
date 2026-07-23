@@ -1,7 +1,7 @@
 # BR-<XXX> — <short name>
 
 **Status:** draft | active | superseded
-**Feature / area:** `product/features/<slug>.md` (if any)
+**Feature / area:** `product/feature-<slug>.md` (if any)
 **Owner layer:** domain | application
 **Tests:** `path/to/file.test.ts` · (e2e if critical) `path/to/flow.spec.ts`
 

@@ -21,6 +21,7 @@
 | Axe critical/serious | Missing labels, contrast, roles | Fix a11y in the critical journey; don't disable axe |
 | `create-next-app` refuses non-empty dir | Docs already written | Scaffold into **temp dir**, merge into project (workflow.md) |
 | `relation "..." does not exist` at runtime, gate was green | Migration committed but never applied locally; tests didn't hit real DB | Add/run `db:migrate` script (`run-gate.sh` now runs it before tests); update features-index.md same session |
+| `run-gate.sh` fails at "validate-docs-drift.sh (feature-module check)", typecheck/lint/test all passed | New `features/<name>/` or `src/modules/<name>/` folder not mentioned in `features-index.md` | Not a code bug — add/update the features-index.md row for that feature, then re-run the gate (doesn't count as a logic retry) |
 | Turbopack / tracing wrong root | Nested workspace confusion | `turbopack.root` + `outputFileTracingRoot` pinned to app root |
 | Tests pass locally, fail in CI | Env, port, timing | Reproduce with CI-like Playwright config; pin Node version if needed |
 

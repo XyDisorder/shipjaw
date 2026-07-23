@@ -25,6 +25,8 @@ Current phase: phase-01-create-todo — done (fixture baseline)
 | File | What it covers | Open when |
 |---|---|---|
 | product/overview.md | vision, audience, success criteria | scope / audience change |
+| product/feature-create-todo.md | create-todo feature spec | feature behavior change |
+| product/feature-list-todos.md | list-todos feature spec | feature behavior change |
 
 ## Session
 | File | Open when |

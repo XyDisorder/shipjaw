@@ -227,7 +227,7 @@ or an ORM like Prisma is a different layer, not a competing approach).
 |---|---|---|
 | Scope | One (or a few) static instruction files | Full lifecycle: discovery → build → continue → upgrade |
 | State | Whatever fits in the rule file | Versioned `documentation/` (product, plan, knowledge base) |
-| Gates | None — prose only | Scripted: `run-gate.sh` (typecheck/lint/**db:migrate**/test/e2e), `validate-docs.sh` |
+| Gates | None — prose only | Scripted: `run-gate.sh` (typecheck/lint/**db:migrate**/test/e2e/**feature-module-doc check**), `validate-docs.sh` |
 | Drift detection | None | `validate-docs-drift.sh` — informational (path refs, staleness, pending migrations); a prompt to look, not a gate |
 | Portability | Tool-specific format | Shipjaw **writes** `AGENTS.md` + `.cursor/rules/shipjaw.mdc` as output — layers on top, doesn't replace them |
 
@@ -285,5 +285,11 @@ spec rather than diverge from it.
 - Gate: `run-gate.sh` runs a project's `db:migrate` script (if present)
   before tests — a committed-but-unapplied migration now fails the gate
   instead of shipping silently (found via real-project dogfooding).
+- Gate: `run-gate.sh` also runs `validate-docs-drift.sh`'s feature-module
+  check at the end — typecheck/lint/test/e2e can all be green while a
+  whole new feature ships with zero mention in `features-index.md`; now
+  the already-mandatory gate blocks that too, instead of relying on an
+  easy-to-skip "optional" doc-update step. Workflow reordered in
+  build/ask so KB updates happen **before** the gate runs.
 
 Version: `.claude/skills/shipjaw-build/VERSION` · changelog: [`CHANGELOG.md`](CHANGELOG.md) · principles: [`skill-principles.md`](.claude/skills/shipjaw-build/references/skill-principles.md) · prompt craft: [`prompt-craft.md`](.claude/skills/shipjaw-prompt/references/prompt-craft.md) · regression: [`regression-and-business-rules.md`](.claude/skills/shipjaw-build/references/regression-and-business-rules.md)

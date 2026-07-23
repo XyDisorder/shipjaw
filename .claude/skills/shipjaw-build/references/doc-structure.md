@@ -23,8 +23,7 @@ documentation/
     source-prompt.md             # optional; from shipjaw-prompt (build-ready)
     overview.md                  # vision, target users, value prop, success criteria
     design-brief.md               # style, palette, fonts, references, i18n, dark mode
-    features/
-      <feature-slug>.md           # one file per feature/epic — templates/product-feature.md
+    feature-<slug>.md             # one file per feature/epic — templates/product-feature.md
     business-rules/               # create when ≥1 critical rule (auth/money/state/multi-client)
       BR-001-<slug>.md            # slim rule — templates/business-rule.md
   knowledge-base/

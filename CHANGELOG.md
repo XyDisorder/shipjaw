@@ -1,5 +1,49 @@
 # skill-my-website changelog
 
+## 2026-07-23j
+
+- **`product/features/<slug>.md` was documented but never actually
+  instructed — and the convention itself was wrong.** Asked "is that file
+  still always written?" — checked: `doc-structure.md` specified a
+  `features/` subfolder, with a template ready
+  (`templates/product-feature.md`), but `workflow.md`'s actual steps never
+  told the agent to create one. Proof: the golden fixture had zero
+  product/features files despite 2 shipped features. Initially kept the
+  subfolder convention for consistency with `product/business-rules/` — but
+  while implementing, the real `mariage_les_bibous` project's own agent
+  independently converged on a **flat** naming
+  (`product/feature-<slug>.md`, no subfolder) and committed to it as an
+  ongoing practice, unprompted. Live evidence beats the abstract
+  consistency argument: switched to flat naming everywhere (it also
+  self-groups alphabetically via the shared `feature-` prefix, so the
+  subfolder's main benefit was never actually needed). Fixed the real gap:
+  `workflow.md`, `shipjaw-build/SKILL.md`, and `shipjaw-ask/SKILL.md` now
+  explicitly instruct writing `product/feature-<slug>.md` in the same
+  "before the gate" step as the `features-index.md` flip. Dogfooded: golden
+  fixture now has `product/feature-create-todo.md` and
+  `feature-list-todos.md` (`templates/product-feature.md` shape),
+  `smoke-fixture.sh` checks for both, `INDEX.md` template and fixture both
+  updated.
+
+## 2026-07-23i
+
+- **Closed the loop: the feature-module doc check now runs inside the
+  already-mandatory `run-gate.sh`, not as a skippable "optional" step at
+  session end.** Asked directly "does the doc actually update better now"
+  — answer was no: the hard-fail check from 2026-07-23g only ran at
+  session *start* (catching old drift) and was explicitly optional at
+  session *end* (exactly where the original incident happened). Fixed by
+  calling `validate-docs-drift.sh` from inside `run-gate.sh` itself, so a
+  new feature module undocumented in `features-index.md` now fails the
+  gate the same run that would otherwise go green. Found and fixed a
+  second issue this surfaced: `shipjaw-build`/`shipjaw-ask` ran the gate
+  *before* the KB-update step, which would have made every legitimate
+  first-time feature fail its own gate — reordered both workflows so
+  `features-index.md` is updated before the gate, not after. Tested: golden
+  fixture still passes; a synthetic new module now fails the whole
+  `run-gate.sh` run (previously only `validate-docs-drift.sh` alone would
+  have failed).
+
 ## 2026-07-23h
 
 - **VERSION was never bumped across today's 7 changelog entries (a-g) —

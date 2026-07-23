@@ -23,6 +23,8 @@ for f in \
   "$FIX/documentation/knowledge-base/decisions.md" \
   "$FIX/documentation/knowledge-base/changelog.md" \
   "$FIX/documentation/product/overview.md" \
+  "$FIX/documentation/product/feature-create-todo.md" \
+  "$FIX/documentation/product/feature-list-todos.md" \
   "$FIX/documentation/technical-plan/00-roadmap.md" \
   "$FIX/documentation/technical-plan/phase-01-create-todo.md" \
   "$FIX/src/server/domain/todo.ts" \
@@ -48,6 +50,13 @@ else bad "architecture missing scaffolded-with"; fi
 if grep -q 'User can' "$FIX/documentation/technical-plan/phase-01-create-todo.md"; then
   ok "phase has User can…"
 else bad "phase missing User can…"; fi
+
+for pf in create-todo list-todos; do
+  f="$FIX/documentation/product/feature-$pf.md"
+  if grep -q '^## Description' "$f" && grep -q '^\*\*Status:\*\*' "$f"; then
+    ok "product/feature-$pf.md matches product-feature.md shape"
+  else bad "product/feature-$pf.md missing Description/Status"; fi
+done
 
 if grep -q 'Next command' "$FIX/documentation/handoff.md" \
   && grep -q 'shipjaw-ask' "$FIX/documentation/handoff.md"; then

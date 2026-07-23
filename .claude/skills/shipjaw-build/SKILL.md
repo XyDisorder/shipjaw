@@ -66,8 +66,11 @@ runs.
 - [ ] ./scripts/validate-docs.sh <project-root>
 - [ ] Implement core *User can…* + tests (types/consts/helpers placed per
       project-structure — no utils grab-bag)
+- [ ] Flip features-index.md row + write product/feature-<slug>.md
+      (templates/product-feature.md) — **before** the gate (run-gate.sh
+      now hard-fails if a feature module isn't in features-index.md)
 - [ ] ./scripts/run-gate.sh <project-root> --with-e2e
-- [ ] Fix ≤2 attempts; update KB surgically
+- [ ] Fix ≤2 attempts; update remaining KB surgically (changelog, decisions)
 - [ ] Write documentation/handoff.md (next /shipjaw-ask …)
 - [ ] For non-trivial phase-01+: built-in challenge on MVP/ADR choices (note in phase Challenge)
 - [ ] Hand off to shipjaw-ask (optional /shipjaw-challenge if plan still soft / want durable report)

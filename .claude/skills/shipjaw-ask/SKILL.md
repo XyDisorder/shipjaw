@@ -125,9 +125,15 @@ Never leave INDEX/features-index lying after you ship a path change.
 - [ ] ≤1 clarifying Q; stop if core behavior still ambiguous
 - [ ] Implement (journey-first; domain tests; e2e edges if critical)
 - [ ] UI touch → design-constraints.md floor
-- [ ] ../shipjaw-build/scripts/run-gate.sh <root> [--with-e2e]
-- [ ] On 2nd fail → gate-failure-modes.md then one focused fix; else ask human
-- [ ] Surgical doc updates; optional validate-docs.sh / validate-docs-drift.sh
+- [ ] Surgical doc updates — features-index.md row **and**
+      product/feature-<slug>.md (new feature: create from
+      ../shipjaw-build/templates/product-feature.md) — **before** the gate
+- [ ] ../shipjaw-build/scripts/run-gate.sh <root> [--with-e2e] — now also
+      hard-fails if a new feature module isn't in features-index.md
+- [ ] On 2nd fail → gate-failure-modes.md; a feature-module fail here means
+      the doc-update step above was skipped or incomplete — fix that, don't
+      bypass the gate
+- [ ] optional validate-docs.sh for the section-presence checks
 - [ ] Overwrite documentation/handoff.md
 - [ ] Suggest /compact or fresh chat
 ```
@@ -162,9 +168,17 @@ Never leave INDEX/features-index lying after you ship a path change.
      `regression-and-business-rules.md` if needed
    - contracts consumers only if package exists
    - actions/endpoints → authz + session + middleware as needed
-6. Gate via `run-gate.sh`; on **second** failure open
+6. Surgical KB / product updates **before** the gate — flip
+   `features-index.md` and, for a new feature, write
+   `product/feature-<slug>.md` (`../shipjaw-build/templates/product-feature.md`).
+   `run-gate.sh` now also hard-fails if a new feature module isn't
+   mentioned in `features-index.md`, so doc updates must land first or the
+   gate you're about to run will (correctly) reject an undocumented
+   feature.
+7. Gate via `run-gate.sh`; on **second** failure open
    `../shipjaw-build/references/gate-failure-modes.md`, apply one matching
-   fix; if still red → stop and ask human.
-7. Surgical KB / product updates; validate-docs / validate-docs-drift optional.
+   fix; if still red → stop and ask human. A fail here on the
+   feature-module check means step 6 was skipped or incomplete — go back
+   to it, don't bypass the gate.
 8. **Handoff (mandatory):** overwrite `documentation/handoff.md`.
 9. Suggest `/compact` or fresh chat; point at INDEX + handoff.

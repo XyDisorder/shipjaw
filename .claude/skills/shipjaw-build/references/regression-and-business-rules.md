@@ -53,7 +53,7 @@ Also cover as needed:
 
 | Situation | Where |
 |---|---|
-| Simple app, few rules | Invariants in `product/features/<slug>.md` + domain tests |
+| Simple app, few rules | Invariants in `product/feature-<slug>.md` + domain tests |
 | ≥1 critical rule (authz, billing, stateful machine, etc.) | `product/business-rules/BR-XXX-<slug>.md` + INDEX row |
 | Always | Enforcement in `domain/` / `application/`; tests colocated |
 
