@@ -17,6 +17,7 @@
   <a href="#installation">Install</a> ·
   <a href="#usage">Usage</a> ·
   <a href="#what-you-get">What you get</a> ·
+  <a href="#positioning">Positioning</a> ·
   <a href="#why-its-different">Why it’s different</a>
 </p>
 
@@ -205,6 +206,35 @@ Keep the skills as **siblings** so relative `../shipjaw-build/references/` paths
 
 > Migrating from older installs: link **all seven** skills above. Legacy stamps still work. Agents **challenge plans/choices by default** in ask/build; `/shipjaw-challenge` is the optional full report ritual.
 
+## Positioning
+
+Shipjaw is **a methodology encoded as skills** — not a framework you import,
+not an operating system you run on, not a platform with its own
+infrastructure. The contract lives in your repo's own files
+(`documentation/`, tsconfig, eslint, CI), not in a runtime you depend on.
+Closer to "`AGENTS.md` + Cursor Rules, but covering the whole project
+lifecycle instead of one static instructions file" than to a code
+generator.
+
+### Compared to the closest analogues
+
+Cursor Rules, `AGENTS.md`, and GitHub Copilot custom instructions solve the
+same narrow problem shipjaw does — give an agent durable, low-token repo
+context — so they're the real comparison set (a UI generator like v0/Bolt
+or an ORM like Prisma is a different layer, not a competing approach).
+
+| | Cursor Rules / `AGENTS.md` / Copilot instructions | Shipjaw |
+|---|---|---|
+| Scope | One (or a few) static instruction files | Full lifecycle: discovery → build → continue → upgrade |
+| State | Whatever fits in the rule file | Versioned `documentation/` (product, plan, knowledge base) |
+| Gates | None — prose only | Scripted: `run-gate.sh` (typecheck/lint/**db:migrate**/test/e2e), `validate-docs.sh` |
+| Drift detection | None | `validate-docs-drift.sh` — informational (path refs, staleness, pending migrations); a prompt to look, not a gate |
+| Portability | Tool-specific format | Shipjaw **writes** `AGENTS.md` + `.cursor/rules/shipjaw.mdc` as output — layers on top, doesn't replace them |
+
+Shipjaw does not try to replace `AGENTS.md`; it generates one. If `AGENTS.md`
+keeps consolidating as a cross-tool standard, shipjaw should track that
+spec rather than diverge from it.
+
 ## Why it’s different
 
 | Typical agent approach | Shipjaw |
@@ -236,9 +266,22 @@ Keep the skills as **siblings** so relative `../shipjaw-build/references/` paths
 ./scripts/smoke-check.sh
 ./scripts/smoke-fixture.sh
 ./scripts/eval-skill-routing.sh
+./scripts/eval-skill-routing-llm.sh   # real model call — run pre-release, not per-commit
 ```
 
 - Golden output shape: [`fixtures/golden-todo/`](fixtures/golden-todo/)
-- Routing discovery cases: [`evals/routing-cases.yml`](evals/routing-cases.yml)
+- Routing discovery cases: [`evals/routing-cases.yml`](evals/routing-cases.yml) — static (substring) +
+  LLM (paraphrased `prompt` per case, semantic) coverage
+- KB drift: `.claude/skills/shipjaw-build/scripts/validate-docs-drift.sh <project-root>` —
+  path references, staleness vs git history, and pending migrations vs
+  `features-index.md`. **Informational only, never blocks** — tested
+  against a real project and found too many legitimate false positives
+  (abbreviated paths, dropped Next.js route-group folders) to safely gate
+  on; read as a prompt to double-check, not a pass/fail signal. Wired into
+  build/adopt/upgrade/ask; run against the golden fixture by
+  `smoke-fixture.sh`.
+- Gate: `run-gate.sh` runs a project's `db:migrate` script (if present)
+  before tests — a committed-but-unapplied migration now fails the gate
+  instead of shipping silently (found via real-project dogfooding).
 
 Version: `.claude/skills/shipjaw-build/VERSION` · changelog: [`CHANGELOG.md`](CHANGELOG.md) · principles: [`skill-principles.md`](.claude/skills/shipjaw-build/references/skill-principles.md) · prompt craft: [`prompt-craft.md`](.claude/skills/shipjaw-prompt/references/prompt-craft.md) · regression: [`regression-and-business-rules.md`](.claude/skills/shipjaw-build/references/regression-and-business-rules.md)

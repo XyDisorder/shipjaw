@@ -61,6 +61,7 @@ for f in \
   "$SKILL/scripts/stamp-provenance.sh" \
   "$SKILL/scripts/init-docs-skeleton.sh" \
   "$SKILL/scripts/validate-docs.sh" \
+  "$SKILL/scripts/validate-docs-drift.sh" \
   "$SKILL/scripts/changelog-since-stamp.sh" \
   "$SKILL/scripts/run-gate.sh" \
   "$SKILL/scripts/survey-adopt-state.sh" \
@@ -157,6 +158,7 @@ for s in \
   stamp-provenance.sh \
   init-docs-skeleton.sh \
   validate-docs.sh \
+  validate-docs-drift.sh \
   changelog-since-stamp.sh \
   run-gate.sh \
   survey-adopt-state.sh

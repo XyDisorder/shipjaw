@@ -1,8 +1,15 @@
-# Skill routing eval cases (static discovery coverage)
-# Each case: expected skill must contain ALL triggers in its description.
-# Optional anti_skill must contain ALL anti_needles (wrong-skill rejection).
+# Skill routing eval cases
+# Static check (eval-skill-routing.sh): expected skill's description must
+# contain ALL triggers (keyword substrings); optional anti_skill must
+# contain ALL anti_needles (wrong-skill rejection). Fast, offline, exact.
+#
+# LLM check (eval-skill-routing-llm.sh): `prompt` is a paraphrased, realistic
+# user message that deliberately avoids the triggers below — it's fed to a
+# real model alongside the skill catalog to test semantic routing, not
+# substring matching. Slower, costs a real API call, non-deterministic.
 #
 # Run: ./scripts/eval-skill-routing.sh
+# Run: ./scripts/eval-skill-routing-llm.sh
 
 - id: entry-new-project
   expected: shipjaw
@@ -12,6 +19,9 @@
   anti_skill: shipjaw-ask
   anti_needles:
     - knowledge-base
+  prompt: >-
+    Je veux démarrer un tout nouveau projet avec Shipjaw, j'ai encore aucun
+    dossier ni code, juste besoin d'un point de départ propre.
 
 - id: prompt-vague-idea
   expected: shipjaw-prompt
@@ -22,6 +32,10 @@
   anti_needles:
     - Do not scaffold
     - knowledge-base
+  prompt: >-
+    J'ai juste un brouillon d'idée dans la tête pour une appli, rien de
+    concret encore, tu peux m'aider à structurer ça avant qu'on code quoi
+    que ce soit ?
 
 - id: build-greenfield
   expected: shipjaw-build
@@ -32,6 +46,9 @@
   anti_needles:
     - already exists
     - knowledge-base
+  prompt: >-
+    Mon brief produit est prêt et détaillé, on peut lancer le scaffold
+    complet de l'appli maintenant.
 
 - id: adopt-legacy
   expected: shipjaw-adopt
@@ -42,6 +59,9 @@
   anti_needles:
     - Do not use for empty greenfield
     - knowledge-base
+  prompt: >-
+    Mon app a été codée par un pote avant que je connaisse Shipjaw, je veux
+    que ce soit maintenant dans les clous du framework.
 
 - id: ask-continue-fr
   expected: shipjaw-ask
@@ -52,6 +72,9 @@
   anti_needles:
     - already exists
     - greenfield
+  prompt: >-
+    On reprend le projet de la semaine dernière, il me faut un filtre
+    supplémentaire sur la liste.
 
 - id: ask-after-compact
   expected: shipjaw-ask
@@ -62,6 +85,9 @@
   anti_needles:
     - knowledge-base
     - already exists
+  prompt: >-
+    Nouvelle session après un compact, où est-ce que j'en étais sur cette
+    appli déjà scaffoldée ?
 
 - id: upgrade-stamps
   expected: shipjaw-upgrade
@@ -71,6 +97,9 @@
   anti_skill: shipjaw-ask
   anti_needles:
     - shipjaw-upgrade
+  prompt: >-
+    Le skill a changé de version depuis la dernière fois, je veux juste
+    remettre mes docs à jour, je n'ajoute pas de feature aujourd'hui.
 
 - id: challenge-plan
   expected: shipjaw-challenge
@@ -80,3 +109,6 @@
   anti_skill: shipjaw-ask
   anti_needles:
     - shipjaw-challenge
+  prompt: >-
+    Avant qu'on implémente cette phase un peu lourde, je veux un vrai avis
+    contradictoire écrit sur le plan, pas juste une relecture rapide.

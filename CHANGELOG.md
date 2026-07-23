@@ -1,5 +1,89 @@
 # skill-my-website changelog
 
+## 2026-07-23f
+
+- **Correction after real-project verification, not just synthetic tests.**
+  Ran `validate-docs-drift.sh` against an actual in-progress project
+  (not the golden fixture) before committing anything from this week's
+  work. Findings and fixes:
+  - The dangling-path check produced real false positives on organically
+    written docs: abbreviated paths (dropped `shared/` segment, dropped
+    Next.js route-group folders like `(protected)`), extension omission,
+    and a path mentioned only as a negative/comparison example. Fixed
+    what's fixable (fallback resolution under `src/`, skip ellipsis
+    abbreviations, skip extensionless `api/...` route shorthand) but real
+    noise remained. **Downgraded the whole check from hard-fail to
+    informational-only** — a false-positive gate teaches people to ignore
+    gates, which is the exact failure mode this project exists to prevent.
+  - `MIGRATION_DIRS` in the pending-migration check previously included
+    two directories I invented without basis (`migrations`,
+    `src/server/infrastructure/migrations`). Trimmed to verified tool
+    defaults only: `drizzle` (confirmed against the real project's
+    `drizzle.config.ts`), `prisma/migrations`, `supabase/migrations`.
+  - Reverted gap #3 (`glossary.md` / `tech-debt.md` / `risks.md`
+    templates, 2026-07-23e below) entirely: zero real usage, purely
+    speculative, and this session's own lesson is that unvalidated
+    process additions don't survive contact with a real project. Deferred
+    back to backlog — revisit only if a real project actually needs one.
+  - `run-gate.sh`'s `db:migrate` step and the pending-migration WARN logic
+    held up: the real project's `package.json` has `"db:migrate":
+    "drizzle-kit migrate"` and its migrations live at `./drizzle` (from
+    `drizzle.config.ts`'s `out`), matching what was assumed. Kept as-is.
+
+## 2026-07-23e
+
+- **On-demand KB files (gap #3):** `glossary.md` / `tech-debt.md` /
+  `risks.md` templates added — created only when actually needed (same
+  tiering logic as `product/business-rules/`), not scaffolded by default.
+  Documented in `doc-structure.md`, optional rows noted in the `INDEX.md`
+  template. `tech-debt.md` and `risks.md` are also checked by
+  `validate-docs-drift.sh` when present; `glossary.md` is excluded (term
+  definitions, not path references).
+
+## 2026-07-23d
+
+- **Positioning (gap #2):** README now states what Shipjaw actually is —
+  "a methodology encoded as skills," not a framework/OS/platform — and
+  compares against the real analogues (Cursor Rules, `AGENTS.md`, Copilot
+  custom instructions) instead of unrelated product tools. Shipjaw writes
+  `AGENTS.md` + `.cursor/rules/shipjaw.mdc` as output rather than competing
+  with them.
+
+## 2026-07-23c
+
+- **Real-dogfood fix (gap #4):** a live project's `/shipjaw-ask` run shipped
+  a Drizzle migration + feature code without applying the migration locally
+  and without updating `features-index.md` — the gate stayed green because
+  `run-gate.sh` had no notion of pending migrations, and the
+  code-ahead-of-docs direction of drift was manual-only. Two fixes:
+  `run-gate.sh` now runs a `db:migrate` script (if present) before tests, so
+  an unapplied migration fails the gate instead of shipping silently.
+  `validate-docs-drift.sh` gained a third check — migration files changed
+  since `features-index.md`'s last update — warning to verify apply +
+  documentation. New `db:migrate` convention documented in
+  `tech-choices.md`; new triage row in `gate-failure-modes.md`.
+
+## 2026-07-23b
+
+- **KB drift detection:** `validate-docs-drift.sh` closes the gap between
+  "the KB describes reality" (stated in `doc-structure.md`) and actually
+  verifying it. Two checks: dangling path references in
+  architecture/domain-model/api-reference/features-index/BR-*.md (hard
+  fail — doc points at a file that no longer exists) and staleness vs git
+  history (soft warn — code changed under src/app/packages since a KB
+  file's last commit). Wired into build, adopt, upgrade, and ask's Drift
+  protocol; dogfooded against `fixtures/golden-todo` in `smoke-fixture.sh`;
+  checked for presence in `smoke-check.sh`.
+
+## 2026-07-23a
+
+- **LLM routing eval:** `eval-skill-routing-llm.sh` calls a real model
+  (`claude -p`, haiku by default) with the skill catalog + a paraphrased
+  `prompt` per case (added to `evals/routing-cases.yml`) that avoids the
+  literal trigger words — tests semantic routing, not substring matching.
+  Kept separate from the static eval: slower, costs a real call, run
+  pre-release rather than per-commit.
+
 ## 2026-07-22w
 
 - README: “Keeping an existing project current” (upgrade delta +

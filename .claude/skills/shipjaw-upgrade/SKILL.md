@@ -37,6 +37,7 @@ After upgrade → `/shipjaw-ask` for product work or converge-arch slices.
 - [ ] stamp-provenance.sh (refresh scaffolded-with to current VERSION)
 - [ ] Ensure handoff.md exists (template); don’t invent a fake next task
 - [ ] validate-docs.sh
+- [ ] validate-docs-drift.sh (dangling refs + staleness since last KB touch)
 - [ ] Update changelog + handoff; stop
 ```
 
@@ -74,6 +75,7 @@ convergence stays on the converge-arch phase via `shipjaw-ask`.
 # if adopted originally, also keep/refresh adopted-with via:
 # ../shipjaw-build/scripts/stamp-provenance.sh <project-root> --adopted
 ../shipjaw-build/scripts/validate-docs.sh <project-root>
+../shipjaw-build/scripts/validate-docs-drift.sh <project-root>
 ```
 
 If `handoff.md` missing, copy `../shipjaw-build/templates/handoff.md` and

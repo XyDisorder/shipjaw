@@ -90,6 +90,7 @@ From this skill directory:
 ./scripts/stamp-provenance.sh <project-root>
 ./scripts/init-docs-skeleton.sh <project-root>   # adopt / repair
 ./scripts/validate-docs.sh <project-root>        # feedback loop
+./scripts/validate-docs-drift.sh <project-root>  # dangling refs + staleness (value grows in shipjaw-ask)
 ./scripts/run-gate.sh <project-root> [--with-e2e]
 ```
 

@@ -57,6 +57,11 @@ run_script() {
 
 run_script typecheck
 run_script lint
+# Apply pending DB migrations before tests — a migration file committed but
+# never run locally is invisible to typecheck/lint and often to tests too
+# (e.g. in-memory repo, or a test DB that's freshly created with the latest
+# schema). Convention: expose a `db:migrate` script when the project has one.
+run_script db:migrate
 # prefer test over test:unit
 if has_script test; then
   run_script test

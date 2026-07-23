@@ -39,6 +39,7 @@ Prefer the skill scripts (idempotent) instead of hand-copying / reinventing:
 ./scripts/init-docs-skeleton.sh <project-root>          # adopt / repair
 ./scripts/survey-adopt-state.sh <project-root>          # adopt inventory (read-only)
 ./scripts/validate-docs.sh <project-root>               # feedback loop
+./scripts/validate-docs-drift.sh <project-root>          # dangling refs + staleness
 ./scripts/run-gate.sh <project-root> [--with-e2e]
 ```
 

@@ -67,6 +67,23 @@ if grep -q 'createTodo' "$FIX/src/server/composition.ts"; then
   ok "composition wires use-case"
 else bad "composition missing wiring"; fi
 
+echo "== golden fixture drift check =="
+# validate-docs-drift.sh is informational-only (see its header) and always
+# exits 0 on a valid project-root — this only checks it runs without
+# crashing and that our own controlled fixture reports zero unresolved
+# refs (a real regression would show up as an unexpected WARN here).
+drift_out="$(mktemp)"
+if ! "$ROOT/.claude/skills/shipjaw-build/scripts/validate-docs-drift.sh" "$FIX" > "$drift_out" 2>&1; then
+  bad "validate-docs-drift.sh crashed on golden fixture"
+  cat "$drift_out"
+elif grep -q 'unresolved path' "$drift_out"; then
+  bad "validate-docs-drift.sh found an unresolved path on the golden fixture (should be zero)"
+  cat "$drift_out"
+else
+  ok "validate-docs-drift.sh ran clean on golden fixture"
+fi
+rm -f "$drift_out"
+
 if [[ "$FAIL" -ne 0 ]]; then
   echo "smoke-fixture FAILED"
   exit 1

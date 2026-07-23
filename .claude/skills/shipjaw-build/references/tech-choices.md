@@ -47,6 +47,13 @@ Always put persistence behind a **port** in `application/` so the fallback
 does not leak into domain/UI. Prefer Drizzle when installs work; record
 the fallback ADR if you use `node:sqlite`.
 
+**Expose a `db:migrate` script whenever migrations exist** (Drizzle/Prisma
+or hand-rolled SQL). `run-gate.sh` runs it automatically before tests — a
+migration file committed but never applied locally is invisible to
+typecheck/lint and often to tests too (in-memory repo, or a test DB
+recreated fresh with the latest schema), so the gate must apply it, not
+just check the file exists.
+
 ## API surface (Next)
 
 | Signal | Choice |

@@ -89,6 +89,7 @@ Dependabot. Run (do not reinvent):
 ./scripts/copy-continuation-contract.sh <project-root>
 ./scripts/stamp-provenance.sh <project-root>
 ./scripts/validate-docs.sh <project-root>
+./scripts/validate-docs-drift.sh <project-root>
 ./scripts/run-gate.sh <project-root> [--with-e2e]
 ```
 

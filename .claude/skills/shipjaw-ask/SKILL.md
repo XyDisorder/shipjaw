@@ -86,6 +86,15 @@ Never preload `product/` or the full KB. Broad scope → new phase.
 
 ## Drift protocol (docs ↔ code)
 
+Run `../shipjaw-build/scripts/validate-docs-drift.sh <root>` first — it
+surfaces three signals automatically, all informational (never blocking,
+still needs a human/agent judgment call): unresolved path references, code
+changed since a KB file's last git update, and migrations changed since
+`features-index.md` was last touched. WARN lines can be false positives
+(abbreviated paths, dropped route-group folders) — read them, don't treat
+them as a gate. It cannot see one direction at all (code ahead of docs with
+no migration involved); eyeball the signals below for that.
+
 Before implementing, if anything below is inconsistent with the repo,
 **stop and choose explicitly** (ask once if unclear):
 
@@ -109,14 +118,14 @@ Never leave INDEX/features-index lying after you ship a path change.
 
 ```
 - [ ] Read / repair INDEX + handoff; stamp lag → nudge /shipjaw-upgrade
-- [ ] Drift check (table above) on touched area
+- [ ] Drift check: validate-docs-drift.sh, then table above, on touched area
 - [ ] Non-trivial work → built-in challenge (subagent preferred) before code
 - [ ] ≤1 clarifying Q; stop if core behavior still ambiguous
 - [ ] Implement (journey-first; domain tests; e2e edges if critical)
 - [ ] UI touch → design-constraints.md floor
 - [ ] ../shipjaw-build/scripts/run-gate.sh <root> [--with-e2e]
 - [ ] On 2nd fail → gate-failure-modes.md then one focused fix; else ask human
-- [ ] Surgical doc updates; optional validate-docs.sh
+- [ ] Surgical doc updates; optional validate-docs.sh / validate-docs-drift.sh
 - [ ] Overwrite documentation/handoff.md
 - [ ] Suggest /compact or fresh chat
 ```
@@ -154,6 +163,6 @@ Never leave INDEX/features-index lying after you ship a path change.
 6. Gate via `run-gate.sh`; on **second** failure open
    `../shipjaw-build/references/gate-failure-modes.md`, apply one matching
    fix; if still red → stop and ask human.
-7. Surgical KB / product updates; validate-docs optional.
+7. Surgical KB / product updates; validate-docs / validate-docs-drift optional.
 8. **Handoff (mandatory):** overwrite `documentation/handoff.md`.
 9. Suggest `/compact` or fresh chat; point at INDEX + handoff.

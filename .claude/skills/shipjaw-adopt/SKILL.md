@@ -44,7 +44,7 @@ re-adopt.
 - [ ] Propose converge-arch phase (plan only; no mass refactor)
 - [ ] copy-continuation-contract + stamp-provenance --adopted
 - [ ] Tooling gaps idempotent
-- [ ] validate-docs + run-gate (cheap)
+- [ ] validate-docs + validate-docs-drift + run-gate (cheap)
 - [ ] Write documentation/handoff.md (next /shipjaw-ask … + arch P0)
 - [ ] Status snapshot + improvement plan summary + /shipjaw-ask handoff
 ```
@@ -133,6 +133,7 @@ asked to start refactoring in the same message. Default handoff:
 ../shipjaw-build/scripts/copy-continuation-contract.sh <project-root>
 ../shipjaw-build/scripts/stamp-provenance.sh <project-root> --adopted
 ../shipjaw-build/scripts/validate-docs.sh <project-root>
+../shipjaw-build/scripts/validate-docs-drift.sh <project-root>
 ```
 
 ### 7. Tooling gaps (idempotent)

@@ -20,6 +20,7 @@
 | Playwright timeout waiting for UI | Race, missing await, wrong selector | Fix race; don't raise CI retries above 1 |
 | Axe critical/serious | Missing labels, contrast, roles | Fix a11y in the critical journey; don't disable axe |
 | `create-next-app` refuses non-empty dir | Docs already written | Scaffold into **temp dir**, merge into project (workflow.md) |
+| `relation "..." does not exist` at runtime, gate was green | Migration committed but never applied locally; tests didn't hit real DB | Add/run `db:migrate` script (`run-gate.sh` now runs it before tests); update features-index.md same session |
 | Turbopack / tracing wrong root | Nested workspace confusion | `turbopack.root` + `outputFileTracingRoot` pinned to app root |
 | Tests pass locally, fail in CI | Env, port, timing | Reproduce with CI-like Playwright config; pin Node version if needed |
 
