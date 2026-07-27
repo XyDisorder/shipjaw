@@ -57,7 +57,11 @@ re-adopt.
 ../shipjaw-build/scripts/survey-adopt-state.sh <project-root>
 ```
 
-Read **all** sections, including **architecture practice signals**.
+Read **all** sections, including **architecture practice signals** and the
+**gate baseline** (lint/typecheck). A pre-existing baseline failure isn't
+this adopt's fault — record it as an `architecture.md` gap (not a P0/P1
+architecture row, its own line) so nobody mistakes it for a regression
+later, and so a future `run-gate.sh` run isn't a surprise.
 
 | Survey hint | Action |
 |---|---|

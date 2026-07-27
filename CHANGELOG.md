@@ -1,5 +1,45 @@
 # skill-my-website changelog
 
+## 2026-07-27b
+
+- **Eighth and ninth real-dogfood catches, found by actually executing a
+  P0 converge-arch slice on `craftmyjob` (not just proposing one).**
+  1. Reading the real code before implementing caught the previous
+     entry's own audit error: `admin/add-credits` had matched the
+     `supabase.` grep because its business logic is entirely commented
+     out (dead code, 403-only) — not because it's live. A grep-based
+     audit can't tell commented code from live code; corrected in
+     `craftmyjob`'s docs, noted here so future audits stay skeptical of
+     their own grep hits.
+  2. `technical-plan-phase.md` has a `## Challenge` section template with
+     the exact `**Verdict:** proceed | revise-then-proceed | defer |
+     split-phase` line `validate-docs.sh` checks for —
+     `technical-plan-converge-arch.md` (the template actually used for
+     converge phases, which are P0-by-definition since they target
+     money/authz paths) had no such section at all. Freehanded the
+     Challenge section on `craftmyjob`'s phase file, got the format wrong
+     on the first attempt (no `**Verdict:**` line), and only found the
+     right shape by reading `validate-docs.sh`'s source — exactly the
+     "mechanism exists but isn't where you need it" pattern from
+     2026-07-23i. Fixed: added the same Challenge block to
+     `technical-plan-converge-arch.md`.
+  3. `run-gate.sh` stops at the first non-zero package.json script
+     (`set -euo pipefail`) with no way to distinguish "this session
+     introduced a lint error" from "the codebase already had 166."
+     Discovered only by actually running the gate on `craftmyjob` after
+     the P0 slice was done — `pnpm lint` failed with 166 pre-existing
+     errors unrelated to the change, `tsc --noEmit` was clean. Fixed:
+     `survey-adopt-state.sh` now runs `typecheck`/`lint` (if scripted) as
+     a **gate baseline** check during adopt itself — read-only in effect
+     (no `--fix`, no writes) but does execute project scripts, unlike the
+     rest of that survey. `shipjaw-adopt/SKILL.md` now instructs recording
+     a pre-existing baseline failure in `architecture.md` as its own line,
+     not a P0/P1 architecture row, so it's never mistaken for a
+     regression later.
+  Both template/script fixes covered by new `smoke-check.sh` assertions
+  (Challenge section present with a real Verdict line; gate-baseline
+  check wired and running clean against the golden fixture).
+
 ## 2026-07-27
 
 - **Seventh real-dogfood catch (on `craftmyjob`, a third real project, and
@@ -38,10 +78,11 @@
   `features-index.md` and 41/41 in `api-reference.md` resolved cleanly,
   no regression from the prior day's fix.
 - Full architecture-practice audit run (read-only) against a real,
-  production, revenue-bearing app for the first time: 35 of 50 API routes
-  call Supabase directly with no port/composition root, including the
-  4 Stripe/credits money-moving routes — the highest-stakes real-world
-  case this audit has hit so far. `documentation/` + a scoped
+  revenue-model app for the first time (dev-only so far, not yet in
+  production — corrected same day, see below): 35 of 50 API routes call
+  Supabase directly with no port/composition root, including the
+  Stripe/credits money-moving routes — the highest-stakes real-world case
+  this audit has hit so far. `documentation/` + a scoped
   `technical-plan/phase-01-converge-clean-arch.md` (plan only, not
   executed) were written into `craftmyjob`; no product code changed.
 

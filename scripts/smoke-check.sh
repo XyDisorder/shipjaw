@@ -382,10 +382,36 @@ if grep -qi 'Architecture practice audit\|practice gaps\|converge-arch\|improvem
 else
   bad "shipjaw-adopt must audit arch practices + converge-arch template"
 fi
+# Real-dogfood catch (craftmyjob, 2026-07-27): technical-plan-phase.md has
+# a ## Challenge section with the exact **Verdict:** line validate-docs.sh
+# checks for; technical-plan-converge-arch.md didn't, even though converge
+# phases are P0-by-definition (money/authz paths) and hit the same
+# in-progress Challenge gate. Missing template guidance meant freehanding
+# the section and getting the format wrong on the first attempt.
+if grep -q '^## Challenge' "$SKILL/templates/technical-plan-converge-arch.md" \
+  && grep -q '\*\*Verdict:\*\*.*proceed.*revise-then-proceed' "$SKILL/templates/technical-plan-converge-arch.md"; then
+  ok "converge-arch template has Challenge section with Verdict line"
+else
+  bad "technical-plan-converge-arch.md missing ## Challenge / **Verdict:** line (validate-docs.sh will reject in-progress phases written from this template)"
+fi
 if grep -q 'architecture practice signals' "$SKILL/scripts/survey-adopt-state.sh"; then
   ok "survey-adopt-state emits arch practice signals"
 else
   bad "survey-adopt-state.sh missing architecture practice signals"
+fi
+if grep -q 'gate baseline' "$SKILL/scripts/survey-adopt-state.sh" \
+  && grep -q 'has_script typecheck' "$SKILL/scripts/survey-adopt-state.sh" \
+  && grep -q 'has_script lint' "$SKILL/scripts/survey-adopt-state.sh"; then
+  ok "survey-adopt-state checks lint/typecheck baseline"
+else
+  bad "survey-adopt-state.sh missing gate baseline (lint/typecheck) check"
+fi
+survey_out="$(bash "$SKILL/scripts/survey-adopt-state.sh" "$ROOT/fixtures/golden-todo" 2>&1 || true)"
+if grep -q 'gate baseline' <<<"$survey_out" && grep -qE 'OK  typecheck clean|OK  lint clean' <<<"$survey_out"; then
+  ok "survey-adopt-state gate baseline runs clean on golden fixture"
+else
+  bad "survey-adopt-state gate baseline did not run on golden fixture"
+  echo "$survey_out"
 fi
 if grep -qi 'no rewrite\|Do not rewrite\|never rewrites\|no silent\|opt-in' "$ADOPT/SKILL.md" \
   && grep -q 'shipjaw-ask' "$ADOPT/SKILL.md"; then

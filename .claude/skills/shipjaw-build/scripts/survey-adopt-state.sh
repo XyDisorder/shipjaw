@@ -170,6 +170,31 @@ fi
 echo "  NOTE: signals inform the architecture gap plan; do not auto-refactor in adopt"
 
 echo
+echo "-- gate baseline (lint/typecheck) --"
+# Real-dogfood catch (craftmyjob, 2026-07-27): run-gate.sh stops on the
+# first non-zero package.json script (set -euo pipefail) with no way to
+# tell "you introduced this" from "the codebase already had 166 of
+# these." Finding that out only when someone finally runs the gate wastes
+# a whole cycle. Check it here instead, at adopt time, so it lands in
+# architecture.md's gaps table from day one. Non-mutating (no --fix, no
+# writes) but does execute project scripts, unlike the rest of this
+# survey — skip if that's ever a concern for a given repo.
+if [[ -f package.json ]] && command -v node >/dev/null 2>&1; then
+  has_script() {
+    node -e "const p=require('./package.json'); process.exit(p.scripts&&p.scripts['$1']?0:1)" 2>/dev/null
+  }
+  if has_script typecheck || [[ -f tsconfig.json ]] && command -v npx >/dev/null 2>&1; then
+    if has_script typecheck; then tc_cmd="npm run typecheck --silent"; else tc_cmd="npx tsc --noEmit"; fi
+    tc_out="$(eval "$tc_cmd" 2>&1)" && echo "  OK  typecheck clean" \
+      || { n=$(echo "$tc_out" | grep -c "error TS" || true); echo "  FAIL typecheck — ~$n error(s) (baseline, not necessarily caused by upcoming work)"; }
+  fi
+  if has_script lint && command -v npx >/dev/null 2>&1; then
+    lint_out="$(npm run lint --silent 2>&1)" && echo "  OK  lint clean" \
+      || { n=$(echo "$lint_out" | grep -cE '\berror\b' || true); echo "  FAIL lint — ~$n error line(s) (baseline — record in architecture.md so it isn't mistaken for a regression later; a full run-gate.sh will block on this until it's paid down)"; }
+  fi
+fi
+
+echo
 echo "-- adopt routing hint --"
 if [[ -f "$DOC/knowledge-base/architecture.md" ]] \
   && [[ -f "$DOC/INDEX.md" ]] \

@@ -5,6 +5,19 @@
 **Demonstrable to a non-dev?** no
 <!-- Tech convergence phase — still ship in thin vertical slices via ask. -->
 
+## Challenge (required for non-trivial phases)
+<!-- Built-in challenger pass (prefer subagent) before coding — not
+     slash-gated. Optional /shipjaw-challenge for a durable report.
+     Convergence phases almost always touch money/authz/shared-state
+     paths by definition (that's why they're P0) — treat as non-trivial
+     by default. Trivial follow-ups inside an already-challenged phase
+     may note "covered by challenge on phase-0N <date>". -->
+- **Report:** `built-in <date>` | `documentation/technical-plan/challenge-phase-0N-….md`
+- **Verdict:** proceed | revise-then-proceed | defer | split-phase
+- **Axis calls:** Product __ · Business __ · Tech __ · Pragmatism __ · Design __
+- **Plan changes applied after challenge:** <none | bullets>
+- **Strongest objection addressed how:** <one line>
+
 ## Goal
 Close the highest-ROI architecture gaps found during `shipjaw-adopt`
 without a big-bang rewrite. Converge toward ports, composition root, thin
