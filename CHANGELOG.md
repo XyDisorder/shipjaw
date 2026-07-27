@@ -1,5 +1,35 @@
 # skill-my-website changelog
 
+## 2026-07-26
+
+- **Sixth real-dogfood catch (on `timzio`, a second real project beyond
+  `mariage_les_bibous`): `validate-docs-drift.sh`'s path-reference check
+  never resolved paths relative to `documentation/` — only relative to the
+  repo root or `root/src/`.** The check's own `features-index.md` template
+  (`templates/knowledge-base/features-index.md`) instructs a "Product doc"
+  column with entries like `product/feature-<slug>.md` — paths that only
+  exist under `documentation/`. Running the script against `timzio`
+  produced 7 WARNs, one for every single row in its features-index.md,
+  none of them real drift: `product/design-brief.md`,
+  `product/features/freshness-dial.md`, etc. all existed on disk. This
+  wasn't the already-known abbreviation/route-group false-positive class —
+  it was a straight gap in the resolution logic that the golden fixture
+  never exercised, because its own `features-index.md` lacked a "Product
+  doc" column (unlike the real template). Fixed: added a third resolution
+  fallback, `$DOC/<path>`, after root and `root/src/`. Also brought the
+  golden fixture's `features-index.md` in line with its own template (adds
+  the "Product doc" column, referencing the already-present
+  `product/feature-create-todo.md` / `product/feature-list-todos.md`) so
+  `smoke-fixture.sh` now actually exercises this resolution path — it
+  would have caught this bug before it ever reached a real project.
+  Verified: `smoke-check.sh` still green, and a second run of
+  `validate-docs-drift.sh` against `timzio` shows all 14 path refs in its
+  `features-index.md` resolving cleanly, zero false positives. **How this
+  was found:** not a synthetic repro — asked to test against `timzio`
+  specifically, which is exactly the "run it against a real project on
+  disk" practice from the `mariage_les_bibous` triage; a second real
+  project surfaced a bug the first one's docs never happened to trigger.
+
 ## 2026-07-23k
 
 - **Proactive `/compact` reminder — not just at clean task end.** A real

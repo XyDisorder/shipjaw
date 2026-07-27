@@ -10,8 +10,10 @@
 #
 #   1. Dangling path references — a KB file points at a file/dir that
 #      doesn't resolve (checked at repo root, then under src/ — the
-#      canonical tree). Catches real drift (renamed/deleted files) but
-#      also flags legitimate shorthand the check can't resolve.
+#      canonical tree — then under documentation/ for doc-to-doc refs like
+#      the features-index.md "Product doc" column, e.g.
+#      `product/feature-<slug>.md`). Catches real drift (renamed/deleted
+#      files) but also flags legitimate shorthand the check can't resolve.
 #   2. Staleness heuristic — code under src/app/packages changed after a
 #      KB file's last git update. A human/agent still has to judge whether
 #      the change was KB-relevant.
@@ -103,6 +105,7 @@ for f in "${REALITY_FILES[@]}"; do
     checked=$((checked + 1))
     resolved="$ROOT/${path%/}"
     [[ -e "$resolved" ]] || resolved="$ROOT/src/${path%/}"  # canonical tree keeps code under src/
+    [[ -e "$resolved" ]] || resolved="$DOC/${path%/}"       # doc-to-doc refs (e.g. `product/feature-<slug>.md`) are relative to documentation/
     if [[ ! -e "$resolved" ]]; then
       warn "$rel references unresolved path: $path (may be legitimate shorthand — see Known limitations)"
       file_miss=1

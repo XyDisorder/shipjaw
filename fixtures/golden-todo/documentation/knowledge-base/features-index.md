@@ -1,6 +1,6 @@
-# Features index
+# Features index (live status)
 
-| Feature | Status | Key files |
-|---|---|---|
-| Create todo | shipped | `features/todos/actions.ts`, `src/server/application/create-todo.ts` |
-| List todos | shipped | composition + memory repo |
+| Feature | Status | Product doc | Key files |
+|---|---|---|---|
+| Create todo | shipped | `product/feature-create-todo.md` | `features/todos/actions.ts`, `src/server/application/create-todo.ts` |
+| List todos | shipped | `product/feature-list-todos.md` | composition + memory repo |
