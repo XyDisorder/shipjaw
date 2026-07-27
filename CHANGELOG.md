@@ -1,5 +1,50 @@
 # skill-my-website changelog
 
+## 2026-07-27
+
+- **Seventh real-dogfood catch (on `craftmyjob`, a third real project, and
+  the first full `shipjaw-adopt` run on a large pre-existing app — 50 API
+  routes, no prior Shipjaw KB): a target repo's own `.gitignore` can
+  blanket-ignore `.cursor/`, silently swallowing `.cursor/rules/shipjaw.mdc`
+  from git.** `copy-continuation-contract.sh` "wrote" the file
+  successfully, but it would never reach a clone or CI — exactly the
+  "gitignored docs → amnesiac clones" failure this project's README
+  claims to prevent, now reproduced on its own contract file. Found
+  because `craftmyjob`'s `.gitignore` has a plain `.cursor` entry under
+  an "ide" section (meant for local editor state, not the shared rule).
+  Fixed two ways:
+  1. `copy-continuation-contract.sh` now runs `git check-ignore` on
+     `AGENTS.md` and `.cursor/rules/shipjaw.mdc` after writing them and
+     prints a WARN with the exact unignore pattern needed
+     (`!.cursor/rules/` + `!.cursor/rules/shipjaw.mdc`) if either is
+     gitignored. Does **not** auto-edit the target's `.gitignore` — the
+     right exception is project-specific and a script has no basis to
+     guess it safely.
+  2. Fixed it for real in `craftmyjob`: `.gitignore`'s `.cursor` entry
+     became `.cursor/*` + explicit `!.cursor/rules/` +
+     `!.cursor/rules/shipjaw.mdc` — confirmed via `git check-ignore`
+     that the rule file is trackable while the rest of `.cursor/`
+     (local settings) stays ignored. Note for future adopts: a bare
+     `!nested/file` negation under an excluded parent does **not** work
+     in git (parent directories must be explicitly unignored too,
+     documented and tested the hard way here) — `.cursor/*` +
+     `!.cursor/rules/` + `!.cursor/rules/shipjaw.mdc` is the pattern
+     that actually works.
+  Regression test added to `smoke-check.sh`: a temp git repo with a
+  blanket `.cursor/*` ignore asserts the WARN fires, then asserts it goes
+  silent once the documented unignore pattern is added.
+- **Also on `craftmyjob`: `validate-docs-drift.sh`'s `$DOC/` fallback
+  (2026-07-26 fix) verified on a third real project** — 18/18 path refs in
+  `features-index.md` and 41/41 in `api-reference.md` resolved cleanly,
+  no regression from the prior day's fix.
+- Full architecture-practice audit run (read-only) against a real,
+  production, revenue-bearing app for the first time: 35 of 50 API routes
+  call Supabase directly with no port/composition root, including the
+  4 Stripe/credits money-moving routes — the highest-stakes real-world
+  case this audit has hit so far. `documentation/` + a scoped
+  `technical-plan/phase-01-converge-clean-arch.md` (plan only, not
+  executed) were written into `craftmyjob`; no product code changed.
+
 ## 2026-07-26
 
 - **Sixth real-dogfood catch (on `timzio`, a second real project beyond

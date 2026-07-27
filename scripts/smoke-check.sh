@@ -182,6 +182,32 @@ do
   fi
 done
 
+echo "== copy-continuation-contract warns on gitignored rule file =="
+# Real-dogfood catch (craftmyjob, 2026-07-27): a project's own .gitignore
+# blanket-ignored .cursor/, silently swallowing .cursor/rules/shipjaw.mdc
+# from git — the continuation contract "wrote" but would never reach a
+# clone/CI. Verify the warning fires, and that it stops firing once the
+# project's .gitignore carries the documented unignore pattern.
+TMP_GI="$(mktemp -d)"
+git -C "$TMP_GI" init -q
+printf '.cursor/*\n' > "$TMP_GI/.gitignore"
+gi_out="$("$SKILL/scripts/copy-continuation-contract.sh" "$TMP_GI" 2>&1 || true)"
+if grep -q 'WARN .*gitignored' <<<"$gi_out"; then
+  ok "warns when shipjaw.mdc is gitignored"
+else
+  bad "should warn when shipjaw.mdc is gitignored"
+  echo "$gi_out"
+fi
+printf '!.cursor/rules/\n!.cursor/rules/shipjaw.mdc\n' >> "$TMP_GI/.gitignore"
+gi_out2="$("$SKILL/scripts/copy-continuation-contract.sh" "$TMP_GI" 2>&1 || true)"
+if grep -q 'WARN .*gitignored' <<<"$gi_out2"; then
+  bad "should stay silent once the unignore pattern is in place"
+  echo "$gi_out2"
+else
+  ok "silent once the unignore pattern is in place"
+fi
+rm -rf "$TMP_GI"
+
 echo "== handoff wired =="
 if [[ -f "$SKILL/templates/handoff.md" ]] \
   && grep -q 'handoff.md' "$ASK/SKILL.md" \
