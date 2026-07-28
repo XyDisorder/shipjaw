@@ -104,6 +104,36 @@ features/todos/actions.ts
               → infrastructure/sqlite-todo-repository.ts
 ```
 
+## Infra client context (RLS-aware backends: Supabase, etc.)
+
+Real-dogfood catch (craftmyjob, 2026-07-28, found **twice** in one
+session): a Row-Level-Security-protected backend makes a repository/port
+implementation only as correct as the **client** it's given. The same
+query silently no-ops for a caller with no auth session (a webhook, a
+cron job, a queue worker) — it still returns `{ error: null }` and looks
+like success, while matching zero rows.
+
+- Before wiring a Supabase-backed (or similar RLS-backed) function into a
+  port/composition root, check **every real caller**, not just the one
+  you're extracting for right now: does each one have a genuine user
+  session, or none?
+- A session-less caller (webhook, cron, queue worker) needs an **admin /
+  service-role client** passed in explicitly — never assume the default
+  session client "probably" works there.
+- Don't fix this by switching the function to always use the admin
+  client — that silently bypasses RLS for callers that *do* have a real
+  session, removing a legitimate second line of defense for them.
+- Fix shape: an **optional trailing `client` parameter**, default
+  (session client) unchanged for existing authenticated callers; the
+  session-less caller passes the admin client explicitly — same as
+  injecting any other dependency.
+- **Don't assume a sibling function got this right and stop checking.**
+  In the real case this was found in, two files had the identical
+  shape (session client used unconditionally in a function also called
+  from a webhook); the second one was initially assumed fine by analogy
+  to the first fix, not re-verified — it had the same bug. Check each
+  Supabase-write function's real callers individually.
+
 ## Server Actions & Route Handlers = thin adapters
 
 Allowed in `features/<f>/actions.ts` / `app/api/...` :

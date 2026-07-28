@@ -528,6 +528,19 @@ if grep -qi 'Signal' "$SKILL/references/tech-choices.md"; then
 else
   bad "tech-choices.md missing signal tables"
 fi
+# Real-dogfood catch (craftmyjob, 2026-07-28, found twice in one session):
+# an RLS-protected write silently no-ops for a session-less caller
+# (webhook/cron) while still reporting success. project-structure.md's
+# Ports/Composition section needs to warn about this before an agent
+# wires a Supabase-backed function into a port without checking every
+# real caller's auth context.
+if grep -qi 'Infra client context' "$SKILL/references/project-structure.md" \
+  && grep -qi 'service-role client' "$SKILL/references/project-structure.md" \
+  && grep -qi "sibling function got this right" "$SKILL/references/project-structure.md"; then
+  ok "project-structure.md warns about RLS-aware infra client context"
+else
+  bad "project-structure.md missing the RLS/session-less-caller client-context lesson"
+fi
 
 if [[ "$FAIL" -ne 0 ]]; then
   echo

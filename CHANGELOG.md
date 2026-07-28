@@ -1,5 +1,35 @@
 # skill-my-website changelog
 
+## 2026-07-28
+
+- **Tenth real-dogfood catch: RLS-protected Supabase writes silently
+  no-op for session-less callers (webhooks, cron), and this bit the same
+  project twice in one session.** While extracting `checkout/webhook`'s
+  `packId` branch on `craftmyjob` (phase-01 slice 3), found
+  `updateLetterPackPaymentStatus` used the session-based Supabase client
+  unconditionally — `letter_packs`' RLS policy requires `auth.uid() =
+  user_id` for UPDATE, and a webhook has no session, so the write
+  silently matched zero rows while still reporting `{success: true}`.
+  Fixed with an optional trailing `client` param (default unchanged for
+  the function's other, genuinely-authenticated caller). Then, extracting
+  the `cv` branch (slice 4), the **identical bug** turned up in
+  `updateCvPaymentStatus` — same file family, same shape — initially
+  assumed fine by analogy to the first fix rather than re-verified.
+  `project-structure.md`'s Ports/Composition section had no guidance
+  about this at all. Added a new "Infra client context (RLS-aware
+  backends: Supabase, etc.)" section: check every real caller's auth
+  context before wiring a Supabase-backed function into a port, pass an
+  admin/service-role client explicitly for session-less callers (never
+  switch the function to always use it — that would bypass RLS for
+  callers that legitimately have a session), and — the second-instance
+  lesson — don't assume a sibling function with the same shape already
+  got this right; verify each one. `smoke-check.sh` now asserts this
+  section exists (and initially caught its own line-wrap bug: a markdown
+  line break split "admin / service-role client" across two lines,
+  breaking a naive single-line grep — the assertion was adjusted to match
+  a substring that survives the wrap, not the source reworded to avoid
+  the wrap).
+
 ## 2026-07-27b
 
 - **Eighth and ninth real-dogfood catches, found by actually executing a
