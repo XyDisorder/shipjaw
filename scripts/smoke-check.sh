@@ -541,6 +541,18 @@ if grep -qi 'Infra client context' "$SKILL/references/project-structure.md" \
 else
   bad "project-structure.md missing the RLS/session-less-caller client-context lesson"
 fi
+# Real-dogfood catch (craftmyjob, 2026-07-29, found twice in one audit
+# session): the mirror-image mistake — during an IDOR/authz audit, a route
+# with no app-level ownership check looks like a bug even when RLS
+# already enforces it for a real session client. Without this warning an
+# audit can false-positive-flag (or redundantly "fix") an already-safe
+# route.
+if grep -qi 'mirror-image mistake' "$SKILL/references/project-structure.md" \
+  && grep -qi 'verified non-finding' "$SKILL/references/project-structure.md"; then
+  ok "project-structure.md warns about the RLS audit-false-positive mirror case"
+else
+  bad "project-structure.md missing the RLS audit-false-positive (mirror-image) lesson"
+fi
 
 if [[ "$FAIL" -ne 0 ]]; then
   echo

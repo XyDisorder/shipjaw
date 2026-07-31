@@ -1,5 +1,29 @@
 # skill-my-website changelog
 
+## 2026-07-31
+
+- **Eleventh real-dogfood catch: the mirror-image of the RLS
+  client-context lesson — auditing can false-positive a route that's
+  already RLS-protected.** Continuing the `craftmyjob` `auth.getUser()`
+  route audit (the last ~20-route slice, 2026-07-29f), two routes
+  (`interview-notes/route.ts` GET, `interview-notes/[noteId]/route.ts`
+  PUT) looked exactly like the shape of already-fixed IDOR bugs from the
+  same audit theme: no app-level `user.id` comparison in the route code.
+  Reading the actual migration SQL first (per this repo's own
+  "verify, don't assume" discipline) found `interview_notes` has RLS
+  enabled with an equivalent ownership policy, and the route's Supabase
+  client is the real session client (not admin) — so a cross-account
+  request already 404s at the DB layer; there was nothing to fix.
+  `project-structure.md`'s "Infra client context" section only covered
+  the opposite direction (RLS silently no-oping for a session-*less*
+  caller, 2026-07-28) — it had no guidance for the audit-time mistake of
+  flagging an already-RLS-protected route as a bug. Added a new
+  "mirror-image mistake" block to the same section: before flagging a
+  missing app-level ownership check, verify the table's RLS policy and
+  the route's client, and document a verified non-finding explicitly so
+  a future audit pass doesn't re-derive the same investigation from
+  scratch. `smoke-check.sh` now asserts this block exists.
+
 ## 2026-07-28
 
 - **Tenth real-dogfood catch: RLS-protected Supabase writes silently

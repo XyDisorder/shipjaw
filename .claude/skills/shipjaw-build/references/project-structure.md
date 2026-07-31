@@ -134,6 +134,34 @@ like success, while matching zero rows.
   to the first fix, not re-verified — it had the same bug. Check each
   Supabase-write function's real callers individually.
 
+**Auditing for missing ownership checks? Check RLS before flagging a bug —
+the mirror-image mistake.** Real-dogfood catch (craftmyjob, 2026-07-29,
+found **twice** in one audit session): the lesson above is about a
+session-**less** caller silently losing RLS protection it needs. The
+opposite mistake happens during an authz/IDOR audit of a session-**ful**
+route: a route reads/writes a table with no app-level `user.id`/ownership
+check of its own, looks exactly like the shape of a real IDOR bug already
+found and fixed elsewhere in the same codebase — but if the table has an
+equivalent RLS policy *and* the route uses the real session client (not an
+admin/service-role client), the DB layer already enforces ownership. A
+cross-account request returns zero rows (a 404), not a leak.
+
+- Before concluding a missing app-level check is a real vulnerability,
+  check the table's actual RLS policies (migration SQL, or the dashboard)
+  for an equivalent ownership condition, **and** confirm the querying
+  client is the session client — same client-context check as above, just
+  read in the other direction (RLS *present and enforced* vs. *silently
+  bypassed*).
+- Don't skip this check by analogy either: two different routes in the
+  same file/family looking identical to an already-fixed bug is exactly
+  when it's tempting to pattern-match and flag both without re-verifying
+  — the same "don't assume a sibling got this right" discipline applies
+  to ruling a finding *out* as much as fixing one *in*.
+- Document a verified non-finding explicitly (which table, which policy,
+  which client) instead of silently dropping the investigation — a future
+  audit pass will hit the same grep signal and need to know it was
+  already checked, not re-derive it from scratch.
+
 ## Server Actions & Route Handlers = thin adapters
 
 Allowed in `features/<f>/actions.ts` / `app/api/...` :
