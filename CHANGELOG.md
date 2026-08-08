@@ -2,6 +2,17 @@
 
 ## 2026-08-08
 
+- **Added CI.** `smoke-check.sh` (which already chains `smoke-fixture.sh` and
+  `eval-skill-routing.sh`) ran manually before every commit but nothing
+  enforced it — a push could ship a broken skill undetected. Added
+  `.github/workflows/smoke.yml`: runs the existing suite on every push/PR to
+  `main`. No `npm install` step needed — the golden fixture's
+  typecheck/lint/test/e2e scripts are echo stubs (structural checks only),
+  and `rg` has a `grep` fallback already in `smoke-check.sh`, so the runner's
+  stock toolchain (bash/git/node) is enough. `eval-skill-routing-llm.sh`
+  deliberately stays out of CI — it costs a real `claude -p` API call and is
+  documented as a pre-release check, not a per-commit one.
+
 - **Reference-size self-audit: two `SKILL.md` files pointed at
   `skill-principles.md` without the "on conflict only" qualifier used
   everywhere else.** Following up on the token-cost investigation above, audited
