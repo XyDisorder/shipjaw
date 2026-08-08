@@ -269,6 +269,8 @@ spec rather than diverge from it.
 ./scripts/eval-skill-routing-llm.sh   # real model call — run pre-release, not per-commit
 ```
 
+- CI: `.github/workflows/smoke.yml` runs `smoke-check.sh` (which chains
+  `smoke-fixture.sh` + `eval-skill-routing.sh`) on every push/PR to `main`.
 - Golden output shape: [`fixtures/golden-todo/`](fixtures/golden-todo/)
 - Routing discovery cases: [`evals/routing-cases.yml`](evals/routing-cases.yml) — static (substring) +
   LLM (paraphrased `prompt` per case, semantic) coverage
@@ -293,3 +295,7 @@ spec rather than diverge from it.
   build/ask so KB updates happen **before** the gate runs.
 
 Version: `.claude/skills/shipjaw-build/VERSION` · changelog: [`CHANGELOG.md`](CHANGELOG.md) · principles: [`skill-principles.md`](.claude/skills/shipjaw-build/references/skill-principles.md) · prompt craft: [`prompt-craft.md`](.claude/skills/shipjaw-prompt/references/prompt-craft.md) · regression: [`regression-and-business-rules.md`](.claude/skills/shipjaw-build/references/regression-and-business-rules.md)
+
+## License
+
+[MIT](LICENSE)

@@ -2,6 +2,16 @@
 
 ## 2026-08-08
 
+- **Added LICENSE (MIT).** The README already reads as public-distribution
+  material (install-via-`git clone` instructions, a positioning table vs
+  Cursor Rules/`AGENTS.md`/Copilot instructions) but the repo had no license
+  file — legally "all rights reserved" by default despite the public
+  install instructions. Added MIT (permissive default, matches the "layers
+  on top, doesn't replace your files" positioning already in the README)
+  and linked it from a new `## License` section. Not dogfooded — a legal
+  default, not a behavior change; open to revisiting if a different license
+  is actually wanted.
+
 - **Added CI.** `smoke-check.sh` (which already chains `smoke-fixture.sh` and
   `eval-skill-routing.sh`) ran manually before every commit but nothing
   enforced it — a push could ship a broken skill undetected. Added
