@@ -1,11 +1,20 @@
 #!/usr/bin/env bash
-# Idempotent: copy Shipjaw continuation contract into a target app.
-# Usage: copy-continuation-contract.sh <project-root>
+# Idempotent by default: copy Shipjaw continuation contract into a target
+# app, skipping files that already exist. Pass --refresh (used by
+# shipjaw-upgrade) to force-overwrite with the current templates instead —
+# without it, an existing AGENTS.md/shipjaw.mdc never picks up contract
+# changes shipped in newer shipjaw-build VERSIONs, even via /shipjaw-upgrade,
+# because plain copy silently no-ops once the files exist.
+# Usage: copy-continuation-contract.sh <project-root> [--refresh]
 set -euo pipefail
 
 ROOT="${1:-}"
+REFRESH=0
+for arg in "$@"; do
+  [[ "$arg" == "--refresh" ]] && REFRESH=1
+done
 if [[ -z "$ROOT" || ! -d "$ROOT" ]]; then
-  echo "usage: $0 <project-root>" >&2
+  echo "usage: $0 <project-root> [--refresh]" >&2
   exit 2
 fi
 
@@ -17,15 +26,21 @@ mkdir -p "$ROOT/.cursor/rules"
 if [[ ! -f "$ROOT/AGENTS.md" ]]; then
   cp "$KIT/AGENTS.md" "$ROOT/AGENTS.md"
   echo "wrote AGENTS.md"
+elif [[ "$REFRESH" -eq 1 ]]; then
+  cp "$KIT/AGENTS.md" "$ROOT/AGENTS.md"
+  echo "refreshed AGENTS.md"
 else
-  echo "skip AGENTS.md (exists)"
+  echo "skip AGENTS.md (exists — pass --refresh to update)"
 fi
 
 if [[ ! -f "$ROOT/.cursor/rules/shipjaw.mdc" ]]; then
   cp "$KIT/shipjaw.cursor-rule.mdc" "$ROOT/.cursor/rules/shipjaw.mdc"
   echo "wrote .cursor/rules/shipjaw.mdc"
+elif [[ "$REFRESH" -eq 1 ]]; then
+  cp "$KIT/shipjaw.cursor-rule.mdc" "$ROOT/.cursor/rules/shipjaw.mdc"
+  echo "refreshed .cursor/rules/shipjaw.mdc"
 else
-  echo "skip .cursor/rules/shipjaw.mdc (exists)"
+  echo "skip .cursor/rules/shipjaw.mdc (exists — pass --refresh to update)"
 fi
 
 # A file that exists on disk but is gitignored by the target repo's own

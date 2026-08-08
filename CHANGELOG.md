@@ -1,5 +1,34 @@
 # skill-my-website changelog
 
+## 2026-08-08
+
+- **Twelfth real-dogfood catch: the session-size `/compact` budget never
+  reached real projects, and a real `/usage` report proved it.** A pasted
+  session report for a `shipjaw-build` run on `mariage_les_bibous` ($4.26,
+  108.2k output tokens, 5.3M cache read vs only 199.7k cache write — a ~26x
+  resend ratio) showed the session never checkpointed. Root cause, found by
+  tracing where the "session-size budget" instruction (added in a prior
+  session) actually lives: only in `shipjaw-ask/SKILL.md` /
+  `skill-principles.md`, loaded solely when Claude Code explicitly invokes
+  `shipjaw-ask`. The **portable continuation contract** actually shipped
+  into every real project — `AGENTS.md` + `.cursor/rules/shipjaw.mdc`, the
+  only thing Cursor ever reads and Claude Code's own fallback — never
+  mentioned it. Compounding bug: `copy-continuation-contract.sh` was
+  skip-if-exists only, so `/shipjaw-upgrade`'s own checklist promise
+  ("refresh AGENTS/rule if missing/stale") silently no-op'd on every
+  already-scaffolded project — the reminder could never have propagated even
+  via upgrade. Fixed: added the session-budget line to both
+  `templates/scaffold/AGENTS.md` and `shipjaw.cursor-rule.mdc`; added a
+  `--refresh` flag to `copy-continuation-contract.sh` (force-overwrite,
+  opt-in) and wired `shipjaw-upgrade` to pass it — verified with a new
+  `smoke-check.sh` assertion and a real `--refresh` run against
+  `mariage_les_bibous` (clean, minimal diff, only the intended lines added).
+  Separately, `shipjaw-build` itself only ever suggested `/compact` at the
+  very end of a build — never mid-build before the phase-implementation gate
+  loop, the most context-heavy part and the likely direct cause of the
+  measured session. Added a checkpoint in `workflow.md` (after scaffold+kit,
+  before phase-01) and mirrored it in `shipjaw-build/SKILL.md`'s checklist.
+
 ## 2026-07-31
 
 - **Eleventh real-dogfood catch: the mirror-image of the RLS

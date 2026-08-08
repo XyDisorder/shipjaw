@@ -70,13 +70,18 @@ convergence stays on the converge-arch phase via `shipjaw-ask`.
 ### 3. Refresh contract + stamp
 
 ```bash
-../shipjaw-build/scripts/copy-continuation-contract.sh <project-root>
+../shipjaw-build/scripts/copy-continuation-contract.sh <project-root> --refresh
 ../shipjaw-build/scripts/stamp-provenance.sh <project-root>
 # if adopted originally, also keep/refresh adopted-with via:
 # ../shipjaw-build/scripts/stamp-provenance.sh <project-root> --adopted
 ../shipjaw-build/scripts/validate-docs.sh <project-root>
 ../shipjaw-build/scripts/validate-docs-drift.sh <project-root>
 ```
+
+`--refresh` force-overwrites `AGENTS.md`/`shipjaw.mdc` with the current
+templates — plain `copy-continuation-contract.sh` (used by build/adopt) only
+writes when the file is missing, so without this flag an upgrade would never
+actually pick up contract changes from newer shipjaw-build VERSIONs.
 
 If `handoff.md` missing, copy `../shipjaw-build/templates/handoff.md` and
 fill next command from INDEX current phase (or ask once).

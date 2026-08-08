@@ -31,6 +31,9 @@ run a **built-in challenger pass** (prefer a separate Task/subagent). Optional
 9. Update `documentation/` surgically before ending (changelog, features-index,
    touched KB, phase status). **Overwrite `documentation/handoff.md`** with
    the next slash command. State lives in the repo, not the chat.
+10. No agent can trigger `/compact` itself. Past ~6 investigation reads
+    without root cause, or after finishing one phase of a multi-part
+    feature, say so and suggest `/compact`/fresh chat before continuing.
 
 ## Don't
 

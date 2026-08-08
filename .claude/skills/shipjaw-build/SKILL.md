@@ -64,6 +64,7 @@ runs.
 - [ ] ./scripts/copy-continuation-contract.sh <project-root>
 - [ ] ./scripts/stamp-provenance.sh <project-root>
 - [ ] ./scripts/validate-docs.sh <project-root>
+- [ ] Suggest /compact — scaffold done, before phase-01 gate loop starts
 - [ ] Implement core *User can…* + tests (types/consts/helpers placed per
       project-structure — no utils grab-bag)
 - [ ] Flip features-index.md row + write product/feature-<slug>.md
@@ -79,7 +80,8 @@ runs.
 ## Workflow (summary — `references/workflow.md`)
 
 1. Intake → 2. Clarify → 3. Stack → 4. Docs → 5. Scaffold + kit +
-   continuation scripts → 6. Implement + gate → 7. KB + compact.
+   continuation scripts → **compact checkpoint** → 6. Implement + gate →
+   7. KB + compact.
 
 If the repo looks like an older Shipjaw / skill-my-app project, read
 `references/migration.md` instead of re-bootstrapping.

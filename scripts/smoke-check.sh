@@ -208,6 +208,34 @@ else
 fi
 rm -rf "$TMP_GI"
 
+echo "== copy-continuation-contract --refresh actually overwrites =="
+# Real-dogfood catch (2026-08-08): plain copy-continuation-contract.sh only
+# writes AGENTS.md/shipjaw.mdc when absent, so shipjaw-upgrade's promised
+# "refresh AGENTS/rule if missing/stale" silently no-op'd on every existing
+# project. Verify both the no-flag skip and the --refresh overwrite.
+TMP_REF="$(mktemp -d)"
+printf 'stale custom content\n' > "$TMP_REF/AGENTS.md"
+mkdir -p "$TMP_REF/.cursor/rules"
+printf 'stale custom content\n' > "$TMP_REF/.cursor/rules/shipjaw.mdc"
+"$SKILL/scripts/copy-continuation-contract.sh" "$TMP_REF" >/dev/null 2>&1 || true
+if grep -q 'stale custom content' "$TMP_REF/AGENTS.md"; then
+  ok "no-flag run leaves an existing AGENTS.md untouched"
+else
+  bad "no-flag run should not overwrite an existing AGENTS.md"
+fi
+"$SKILL/scripts/copy-continuation-contract.sh" "$TMP_REF" --refresh >/dev/null 2>&1 || true
+if grep -q 'stale custom content' "$TMP_REF/AGENTS.md"; then
+  bad "--refresh should overwrite an existing AGENTS.md"
+else
+  ok "--refresh overwrites an existing AGENTS.md"
+fi
+if grep -q 'stale custom content' "$TMP_REF/.cursor/rules/shipjaw.mdc"; then
+  bad "--refresh should overwrite an existing shipjaw.mdc"
+else
+  ok "--refresh overwrites an existing shipjaw.mdc"
+fi
+rm -rf "$TMP_REF"
+
 echo "== handoff wired =="
 if [[ -f "$SKILL/templates/handoff.md" ]] \
   && grep -q 'handoff.md' "$ASK/SKILL.md" \

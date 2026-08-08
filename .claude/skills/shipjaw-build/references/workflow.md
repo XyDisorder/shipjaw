@@ -108,6 +108,13 @@ Still "docs only" → not done.
 
 **Narration:** don't paste reference contents; keep status short.
 
+**Checkpoint — suggest `/compact` here.** Scaffold + tooling is mechanical
+and now done; phase implementation below is where gate fix-loops (the
+biggest context-inflation risk in a build session) happen. No agent can
+trigger `/compact` itself — say the scaffold is done and suggest
+`/compact`/fresh chat before starting phase-01, rather than only at the very
+end of the whole build.
+
 ## 6. Implement phase by phase
 
 **Before coding a non-trivial phase:** run a **built-in** challenger pass

@@ -10,6 +10,10 @@ This repository was scaffolded with **Shipjaw**.
 - **Do not** re-bootstrap with `/shipjaw-build` while `documentation/knowledge-base/`
   exists.
 - **New product idea (separate app):** `/shipjaw` in a new folder.
+- **Session budget:** no agent can trigger `/compact` itself — past ~6
+  investigation reads without root cause, or after finishing one phase of a
+  multi-part feature, say so and suggest `/compact`/fresh chat before
+  continuing.
 
 Gate before done: typecheck, lint, unit, e2e as relevant. Keep docs in sync
 with what shipped. Always overwrite `documentation/handoff.md` before ending.
