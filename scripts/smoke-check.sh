@@ -371,6 +371,30 @@ if [[ -x "$SKILL/scripts/changelog-since-stamp.sh" ]]; then
 else
   bad "changelog-since-stamp.sh not executable"
 fi
+# Real-dogfood catch (2026-08-08): a project with knowledge-base/ but no
+# scaffolded-with line yet got told "Recommend: /shipjaw-upgrade" by a
+# script that is only ever invoked *from inside* /shipjaw-upgrade itself —
+# circular and confusing. Should describe the pre-version-stamp state
+# instead, not recommend re-running the very skill already running.
+TMP_NOSTAMP="$(mktemp -d)"
+mkdir -p "$TMP_NOSTAMP/documentation/knowledge-base"
+printf '# Architecture\n\nNo stamp line yet.\n' > "$TMP_NOSTAMP/documentation/knowledge-base/architecture.md"
+nostamp_out="$("$SKILL/scripts/changelog-since-stamp.sh" "$TMP_NOSTAMP" 2>&1 || true)"
+# Scope to the script's own message, not the trailing "last 5 CHANGELOG
+# sections" dump it prints for context — that dump legitimately contains
+# this catch's own CHANGELOG entry, which quotes the old buggy phrase.
+nostamp_header="$(head -n 7 <<<"$nostamp_out")"
+if grep -q 'Recommend: /shipjaw-upgrade' <<<"$nostamp_header"; then
+  bad "changelog-since-stamp.sh still tells an in-progress /shipjaw-upgrade run to recommend itself"
+else
+  ok "changelog-since-stamp.sh no-stamp message isn't self-referential"
+fi
+if grep -qi 'pre-version-stamp' <<<"$nostamp_header"; then
+  ok "changelog-since-stamp.sh explains the pre-version-stamp state"
+else
+  bad "changelog-since-stamp.sh no-stamp message should explain pre-version-stamp era"
+fi
+rm -rf "$TMP_NOSTAMP"
 if grep -qi 'Stamp lag\|changelog-since-stamp\|nudge.*shipjaw-upgrade' "$ASK/SKILL.md"; then
   ok "shipjaw-ask nudges upgrade on stamp lag"
 else

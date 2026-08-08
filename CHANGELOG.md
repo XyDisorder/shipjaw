@@ -2,6 +2,25 @@
 
 ## 2026-08-08
 
+- **Thirteenth real-dogfood-style catch: `changelog-since-stamp.sh` told an
+  in-progress `/shipjaw-upgrade` run to recommend itself.** Prompted by the
+  user asking "shouldn't upgrade just add the stamp if there's no doc yet,"
+  reproduced with a project that has `documentation/knowledge-base/` but no
+  `scaffolded-with` line yet (legacy/partial docs): the script printed "No
+  scaffolded-with stamp found... Recommend: /shipjaw-upgrade then re-run
+  this script" — but this script is only ever invoked from *inside*
+  `/shipjaw-upgrade` itself (`shipjaw-upgrade/SKILL.md` step 1), so the
+  message told the agent to run the very skill already running. The
+  underlying mechanism was already correct — `stamp-provenance.sh` (step 3
+  of the same workflow) already knows how to add a missing `scaffolded-with`
+  line — only the step-1 diagnostic message was wrong. Fixed by replacing
+  the circular recommendation with a description of the pre-version-stamp
+  state (`migration.md` era table already covers it), which reads correctly
+  both from `/shipjaw-upgrade` and from `shipjaw-ask`'s stamp-lag nudge (the
+  script's other call site). New `smoke-check.sh` regression test: a project
+  with `knowledge-base/` but no stamp must not get the old self-referential
+  message.
+
 - **Added LICENSE (MIT).** The README already reads as public-distribution
   material (install-via-`git clone` instructions, a positioning table vs
   Cursor Rules/`AGENTS.md`/Copilot instructions) but the repo had no license

@@ -45,8 +45,9 @@ echo "installed skill: shipjaw-build@${SKILL_VER}"
 
 if [[ -z "$STAMP_RAW" ]]; then
   echo ""
-  echo "No scaffolded-with stamp found — showing recent changelog (last 5 sections)."
-  echo "Recommend: /shipjaw-upgrade then re-run this script."
+  echo "No scaffolded-with stamp found — treating as pre-version-stamp era"
+  echo "(see migration.md); a completed /shipjaw-upgrade run adds one."
+  echo "Recent changelog (last 5 sections) for context:"
   echo ""
   awk '
     /^## / {
