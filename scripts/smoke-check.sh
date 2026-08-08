@@ -301,6 +301,20 @@ if grep -qi 'ruthless\|exactly one\|Out of v1' "$PROMPT/references/prompt-craft.
 else
   bad "prompt-craft.md missing MVP / one core action rules"
 fi
+# Real-dogfood catch (2026-08-09): two real source-prompt.md outputs
+# (morse-app, poker-coach-ai) both had v1 scope stuffed with features
+# beyond the one core action (gamification/lesson-path/cheat-sheet;
+# onboarding quiz/adaptive lesson engine/dashboard/knowledge-base system) —
+# the Quality bar stated the ruthless-MVP rule but nothing enforced it
+# before persisting. poker-coach-ai's prompt even self-flagged this with an
+# ad-hoc "Suggested v1 scope note" hedge instead of trimming. Added a
+# mandatory trim gate; assert it's actually present, not just the rule.
+if grep -qi 'v1 scope trim gate' "$PROMPT/references/prompt-craft.md" \
+  && grep -qi 'trim v1 scope gate' "$PROMPT/SKILL.md"; then
+  ok "prompt-craft v1 scope trim gate wired (reference + checklist)"
+else
+  bad "prompt-craft.md / shipjaw-prompt SKILL.md missing the v1 scope trim gate"
+fi
 if grep -qi 'Edge cases' "$SKILL/references/testing-and-ci.md" \
   && grep -qi 'Golden path' "$SKILL/references/testing-and-ci.md" \
   && grep -qi 'Validation' "$SKILL/references/testing-and-ci.md"; then

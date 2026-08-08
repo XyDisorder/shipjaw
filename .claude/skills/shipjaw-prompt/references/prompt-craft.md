@@ -39,6 +39,28 @@ Write a single markdown document with these headings:
 - No UI pixel specs; design direction only.
 - Short enough to re-read cheaply (~40–80 lines). Dense > literary.
 
+## v1 scope trim gate (mandatory, before persisting)
+
+Before writing `source-prompt.md`, re-read every bullet under **v1 scope**
+and ask: does the **core action** literally not work without it? If the
+honest answer is "no, but it'd be nice" — cut it to **Out of v1**, however
+small it looks. This is the step that actually produces a ruthless MVP;
+the Quality bar above states the rule, this gate is what enforces it.
+
+Signs a bullet needs cutting: it's a growth/retention layer (streaks,
+badges, XP, gamification), a second workflow orbiting the core action
+(a dashboard, a reference/cheat-sheet page, an admin view), or a system
+whose payoff only lands once several *other* things also ship (an
+adaptive/recommendation engine, a content pipeline, a skill-placement
+quiz gating the "real" feature). Cut it and write one clause on what
+breaks without it if genuinely load-bearing — not "would be nicer with
+it."
+
+If you find yourself wanting to add a note like "if this feels large, you
+could trim X, Y, Z" at the end of the prompt — stop, and do that trim now,
+inside v1 scope itself. A hedge appended after persisting means the gate
+was skipped, not that the scope was fine.
+
 ## Anti-patterns
 
 - Leaving auth/data/locale unspecified when they change the scaffold.

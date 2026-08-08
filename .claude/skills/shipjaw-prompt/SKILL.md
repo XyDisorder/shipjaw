@@ -23,6 +23,8 @@ almost no rediscovery. Does **not** scaffold an app, does **not** create
 - [ ] Intake raw idea
 - [ ] Clarify gaps only (≤2 rounds / ~8 Q); default the rest
 - [ ] Craft dense prompt (references/prompt-craft.md)
+- [ ] Trim v1 scope gate: every bullet must break the core action if cut
+      (references/prompt-craft.md) — trim now, don't hedge in a note
 - [ ] Write documentation/product/source-prompt.md (never KB)
 - [ ] Write documentation/handoff.md → next /shipjaw-build
 - [ ] Hand off: /shipjaw-build
@@ -36,8 +38,10 @@ almost no rediscovery. Does **not** scaffold an app, does **not** create
    numbered chat. Use `../shipjaw-build/references/discovery-questions.md`
    as the question bank; skip anything already answered. Then **default**
    and record defaults inside the prompt.
-3. **Craft** the prompt — follow `references/prompt-craft.md`. Output must
-   be dense, unambiguous, and sufficient for `shipjaw-build` step 1–3.
+3. **Craft** the prompt — follow `references/prompt-craft.md`, including
+   its mandatory v1 scope trim gate (every bullet must break the core
+   action if removed). Output must be dense, unambiguous, and sufficient
+   for `shipjaw-build` step 1–3.
 4. **Persist** — write `documentation/product/source-prompt.md` from
    `templates/source-prompt.md` (create `documentation/product/` only —
    **never** create `knowledge-base/` here). Overwrite only if the user

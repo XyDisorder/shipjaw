@@ -1,6 +1,35 @@
 # skill-my-website changelog
 
-## 2026-08-08
+## 2026-08-09
+
+- **Fourteenth real-dogfood catch: `shipjaw-prompt` states the ruthless-MVP
+  rule but never enforced it, and two real outputs prove it.** User feedback
+  ("the prompt skill doesn't create good prompts") led to reading the actual
+  `source-prompt.md` outputs on two real projects. Both violate
+  `prompt-craft.md`'s own anti-pattern list ("'v1 scope' that is really a
+  roadmap"): `morse-app`'s v1 bundles a lesson path, two exercise types,
+  gamification (badges/streaks/XP), a cheat-sheet page, and a landing page
+  around one core exercise-and-feedback loop; `poker-coach-ai`'s v1 is worse
+  — six separate systems (skill-placement quiz, hand-submission form, the AI
+  review itself, an adaptive lesson-recommendation engine, a gamified
+  dashboard, and a full poker knowledge-base content system) stacked as
+  "v1". Strongest evidence it's a process gap, not a one-off: the
+  poker-coach-ai prompt contains an ad-hoc "Suggested v1 scope note" section
+  — not one of `prompt-craft.md`'s 10 required headings — where the
+  generating agent admits the true MVP is much smaller, but appends it as a
+  hedge instead of actually trimming before persisting. Root cause:
+  `discovery-questions.md` offers "a smaller MVP subset" as one of three
+  scope options with nothing forcing it, and no step in the workflow ever
+  re-checks a drafted v1 scope against the one core action before writing
+  the file. Fixed: added a mandatory "v1 scope trim gate" to
+  `prompt-craft.md` (for every v1 bullet: does the core action literally
+  break without it? if not, cut to Out of v1) and wired it into
+  `shipjaw-prompt/SKILL.md`'s checklist and workflow step 3. Dry-run
+  verification: applying the new gate to `poker-coach-ai`'s existing bullets
+  by hand converges on almost exactly what its own hedge note already called
+  the "true MVP" — the gate now produces that result directly instead of
+  leaving it as an afterthought. `smoke-check.sh` asserts the gate is wired
+  in both files, not just that the ruthless-MVP rule is stated somewhere.
 
 - **Thirteenth real-dogfood-style catch: `changelog-since-stamp.sh` told an
   in-progress `/shipjaw-upgrade` run to recommend itself.** Prompted by the
