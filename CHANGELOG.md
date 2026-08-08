@@ -2,6 +2,21 @@
 
 ## 2026-08-08
 
+- **Reference-size self-audit: two `SKILL.md` files pointed at
+  `skill-principles.md` without the "on conflict only" qualifier used
+  everywhere else.** Following up on the token-cost investigation above, audited
+  every skill's reference-file pointers for anything that reads as
+  unconditional. `shipjaw-build`, `shipjaw-ask`, and `shipjaw-prompt` all
+  explicitly gate `skill-principles.md` (149 lines) behind "open only on
+  conflict"; `shipjaw-upgrade/SKILL.md` and `shipjaw/SKILL.md` stated the same
+  pointer bare, with `shipjaw-upgrade` additionally listing it right next to
+  `migration.md`/`VERSION`, both of which genuinely are read unconditionally
+  in that workflow — making the unqualified phrasing read as a same-tier
+  mandatory load. Fixed by adding "(on conflict only)" to both, matching the
+  established pattern. No behavior change confirmed needed beyond wording;
+  `smoke-check.sh` and `smoke-fixture.sh` stay green since neither script
+  parses this prose.
+
 - **Twelfth real-dogfood catch: the session-size `/compact` budget never
   reached real projects, and a real `/usage` report proved it.** A pasted
   session report for a `shipjaw-build` run on `mariage_les_bibous` ($4.26,

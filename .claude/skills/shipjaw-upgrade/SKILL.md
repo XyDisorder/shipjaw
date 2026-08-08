@@ -12,7 +12,8 @@ current Shipjaw skill VERSION. Does **not** re-scaffold the app and does
 
 After upgrade → `/shipjaw-ask` for product work or converge-arch slices.
 
-**Principles:** `../shipjaw-build/references/skill-principles.md`.
+**Principles:** `../shipjaw-build/references/skill-principles.md` (on
+conflict only).
 **Migration table:** `../shipjaw-build/references/migration.md`.
 **VERSION:** `../shipjaw-build/VERSION`.
 **Delta script:** `../shipjaw-build/scripts/changelog-since-stamp.sh`.

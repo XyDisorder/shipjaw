@@ -125,4 +125,5 @@ cleanly.
 ## Related skills
 
 - `shipjaw-prompt` · `shipjaw-build` · `shipjaw-adopt` · `shipjaw-upgrade` · `shipjaw-challenge` · `shipjaw-ask`
-- Principles: `../shipjaw-build/references/skill-principles.md`
+- Principles: `../shipjaw-build/references/skill-principles.md` (on
+  conflict only)
