@@ -1,6 +1,29 @@
 # skill-my-website changelog
 
-## 2026-08-09
+## 2026-08-11
+
+- **Fifteenth real-dogfood catch: the v1 scope trim gate (2026-08-09) wasn't
+  enough on its own — Core action and Success criteria can re-lock the exact
+  scope it cuts.** Auditing `poker-coach-ai`'s real `decisions.md` for why
+  `shipjaw-build`'s built-in challenger (`challenge-built-in.md`, which
+  explicitly must challenge "phase scope / *User can…* / Out of v1") didn't
+  catch the bloated v1 found in the prior catch: it actually **did** —
+  the phase-1 challenger proposed deferring the onboarding/skill-placement
+  quiz out of v1 — but was **overridden**, because the source prompt's own
+  Success criteria #1 had already chained "sign up → onboarding quiz →
+  submit → review" into one end-to-end bullet, and Core action already said
+  the review was "tailored to skill level." The trim gate only checks v1
+  scope bullets; it had no way to touch scope smuggled in one layer up.
+  Fixed: `prompt-craft.md`'s Core action rule now forbids
+  personalization/adaptation qualifiers (describe the mechanical action
+  only), Success criteria now forbids chaining more than one feature into a
+  single end-to-end checkbox, and the trim gate (renamed "Scope trim gate")
+  now checks all three — Core action, v1 scope, Success criteria — in that
+  order, since each can re-lock what the next one tries to cut. Dry-run
+  verification: applying the new gate to poker-coach-ai's original wording
+  strips exactly the clauses that let the challenger's already-correct
+  proposal get overridden. `smoke-check.sh` asserts both new guards are
+  present, not just the original v1-scope gate.
 
 - **Fourteenth real-dogfood catch: `shipjaw-prompt` states the ruthless-MVP
   rule but never enforced it, and two real outputs prove it.** User feedback

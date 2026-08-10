@@ -9,7 +9,11 @@ Write a single markdown document with these headings:
 
 1. **Product one-liner** — what it is + for whom (1–2 sentences).
 2. **Core action** — **exactly one** thing a user must complete in v1.
-   Write it as *User can …*. If you have two, one is Out of v1.
+   Write it as *User can …*, describing only the mechanical action. No
+   "personalized / adaptive / tailored to X" qualifiers — those imply a
+   whole second system (skill tracking, recommendation logic) is
+   load-bearing for v1 when it usually isn't. If you have two, one is Out
+   of v1.
 3. **Users & roles** — who acts; auth model (none / email / roles) and
    ownership (single-user / org / marketplace) if auth.
 4. **v1 scope** — only what is required to complete the **core action**
@@ -25,7 +29,11 @@ Write a single markdown document with these headings:
 8. **Design** — style direction, light/dark, brand assets if any, locales
    (default language + extras).
 9. **Success criteria** — 3–5 checkable outcomes; **#1 must be the core
-   action e2e-able**.
+   action e2e-able** and test exactly **one** capability — never chain
+   several features into one "end-to-end" bullet (not "sign up, complete
+   onboarding, do X, get Y" as a single checkbox). A criterion may depend
+   on auth existing; it must not require every adjacent feature to also
+   fire inside the same checkbox.
 10. **Open defaults** — every assumption marked `(default)` so build can
     record them in overview/design-brief.
 
@@ -39,15 +47,29 @@ Write a single markdown document with these headings:
 - No UI pixel specs; design direction only.
 - Short enough to re-read cheaply (~40–80 lines). Dense > literary.
 
-## v1 scope trim gate (mandatory, before persisting)
+## Scope trim gate (mandatory, before persisting)
 
-Before writing `source-prompt.md`, re-read every bullet under **v1 scope**
-and ask: does the **core action** literally not work without it? If the
-honest answer is "no, but it'd be nice" — cut it to **Out of v1**, however
-small it looks. This is the step that actually produces a ruthless MVP;
-the Quality bar above states the rule, this gate is what enforces it.
+Real catch: on a real project, `shipjaw-build`'s own built-in challenger
+proposed deferring an onboarding quiz out of v1 — and was **overridden**,
+because the prompt's own Success criteria #1 had already chained "sign up
+→ onboarding quiz → submit → review" into one end-to-end bullet, and Core
+action already said the review was "tailored to skill level." Trimming
+**v1 scope** alone isn't enough if Core action or Success criteria
+quietly re-lock what it cuts — check all three, in this order:
 
-Signs a bullet needs cutting: it's a growth/retention layer (streaks,
+1. **Core action** — read it back: does it name anything beyond the one
+   mechanical action (a personalization/adaptation clause, a second
+   actor, a scoring/tracking system)? Strip it to the action alone; move
+   anything else down to v1 scope, where it can then get cut.
+2. **v1 scope** — for every bullet, does the core action literally not
+   work without it? If the honest answer is "no, but it'd be nice" — cut
+   it to **Out of v1**, however small it looks.
+3. **Success criteria** — does any bullet chain more than one feature
+   into a single "end-to-end" outcome? Split it, or drop the extra step —
+   a criterion may depend on auth existing, it must not require every
+   adjacent feature to also fire inside the same checkbox.
+
+Signs a v1-scope bullet needs cutting: a growth/retention layer (streaks,
 badges, XP, gamification), a second workflow orbiting the core action
 (a dashboard, a reference/cheat-sheet page, an admin view), or a system
 whose payoff only lands once several *other* things also ship (an

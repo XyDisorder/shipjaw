@@ -23,8 +23,11 @@ almost no rediscovery. Does **not** scaffold an app, does **not** create
 - [ ] Intake raw idea
 - [ ] Clarify gaps only (≤2 rounds / ~8 Q); default the rest
 - [ ] Craft dense prompt (references/prompt-craft.md)
-- [ ] Trim v1 scope gate: every bullet must break the core action if cut
-      (references/prompt-craft.md) — trim now, don't hedge in a note
+- [ ] Scope trim gate (references/prompt-craft.md): Core action has no
+      personalization/adaptation clause; every v1 scope bullet must break
+      the core action if cut; no Success criterion chains multiple
+      features into one end-to-end checkbox — trim now, don't hedge in a
+      note
 - [ ] Write documentation/product/source-prompt.md (never KB)
 - [ ] Write documentation/handoff.md → next /shipjaw-build
 - [ ] Hand off: /shipjaw-build
@@ -39,9 +42,9 @@ almost no rediscovery. Does **not** scaffold an app, does **not** create
    as the question bank; skip anything already answered. Then **default**
    and record defaults inside the prompt.
 3. **Craft** the prompt — follow `references/prompt-craft.md`, including
-   its mandatory v1 scope trim gate (every bullet must break the core
-   action if removed). Output must be dense, unambiguous, and sufficient
-   for `shipjaw-build` step 1–3.
+   its mandatory scope trim gate (Core action, v1 scope, and Success
+   criteria all checked for smuggled-in scope). Output must be dense,
+   unambiguous, and sufficient for `shipjaw-build` step 1–3.
 4. **Persist** — write `documentation/product/source-prompt.md` from
    `templates/source-prompt.md` (create `documentation/product/` only —
    **never** create `knowledge-base/` here). Overwrite only if the user

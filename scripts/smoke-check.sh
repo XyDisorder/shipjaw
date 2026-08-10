@@ -309,11 +309,28 @@ fi
 # before persisting. poker-coach-ai's prompt even self-flagged this with an
 # ad-hoc "Suggested v1 scope note" hedge instead of trimming. Added a
 # mandatory trim gate; assert it's actually present, not just the rule.
-if grep -qi 'v1 scope trim gate' "$PROMPT/references/prompt-craft.md" \
-  && grep -qi 'trim v1 scope gate' "$PROMPT/SKILL.md"; then
-  ok "prompt-craft v1 scope trim gate wired (reference + checklist)"
+if grep -qi 'scope trim gate' "$PROMPT/references/prompt-craft.md" \
+  && grep -qi 'scope trim gate' "$PROMPT/SKILL.md"; then
+  ok "prompt-craft scope trim gate wired (reference + checklist)"
 else
-  bad "prompt-craft.md / shipjaw-prompt SKILL.md missing the v1 scope trim gate"
+  bad "prompt-craft.md / shipjaw-prompt SKILL.md missing the scope trim gate"
+fi
+# Real-dogfood catch (2026-08-11): the v1-scope trim gate alone wasn't
+# enough — on a real project, shipjaw-build's own built-in challenger
+# proposed deferring an onboarding quiz out of v1 and was overridden
+# because the prompt's Success criteria #1 already chained sign-up +
+# onboarding + submit + review into one end-to-end bullet, and Core action
+# already said the review was "tailored to skill level." Assert both
+# upstream leaks are now guarded, not just v1 scope itself.
+if grep -qi 'personalization/adaptation clause\|No "personalized / adaptive' "$PROMPT/references/prompt-craft.md"; then
+  ok "prompt-craft Core action rejects smuggled personalization/adaptation"
+else
+  bad "prompt-craft.md Core action missing the personalization/adaptation guard"
+fi
+if grep -qi 'never chain\|chain more than one feature' "$PROMPT/references/prompt-craft.md"; then
+  ok "prompt-craft Success criteria rejects chained multi-feature checkboxes"
+else
+  bad "prompt-craft.md Success criteria missing the chained-checkbox guard"
 fi
 if grep -qi 'Edge cases' "$SKILL/references/testing-and-ci.md" \
   && grep -qi 'Golden path' "$SKILL/references/testing-and-ci.md" \
