@@ -1,5 +1,23 @@
 # skill-my-website changelog
 
+## 2026-08-11b
+
+- **Automated tagging/releases — the manual process didn't survive one
+  session.** The `v2026.08.08` tag/release (added earlier this cycle) was
+  already 3 commits and 2 VERSION bumps stale by the time this was
+  checked — same "mechanism exists, nothing keeps it current" pattern as
+  every other catch this cycle. Added a `release` job to
+  `.github/workflows/smoke.yml`: runs after `smoke-check` passes on every
+  push to `main`, and if `.claude/skills/shipjaw-build/VERSION` names a tag
+  that doesn't exist yet, creates it (annotated) and publishes a GitHub
+  release via `gh release create --generate-notes`. Gated on the same
+  green build as everything else — never tags a broken state. Needs the
+  repo's default `GITHUB_TOKEN` to have `contents: write` for this job,
+  which the explicit `permissions:` block in the workflow requests
+  regardless of the repo-wide default (currently "read") — flagging this
+  in case the first automated release run needs that confirmed on the
+  GitHub side.
+
 ## 2026-08-11
 
 - **Fifteenth real-dogfood catch: the v1 scope trim gate (2026-08-09) wasn't

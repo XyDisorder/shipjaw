@@ -12,3 +12,29 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: ./scripts/smoke-check.sh
+
+  release:
+    needs: smoke-check
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Tag + release if VERSION changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VER="$(tr -d '[:space:]' < .claude/skills/shipjaw-build/VERSION)"
+          TAG="v${VER}"
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            echo "tag $TAG already exists, skipping"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "$TAG" -m "Shipjaw $TAG"
+          git push origin "$TAG"
+          gh release create "$TAG" --title "$TAG" --generate-notes
