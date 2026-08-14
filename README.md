@@ -247,6 +247,7 @@ spec rather than diverge from it.
 | “No `any`” as forgettable prose | Encoded in tsconfig / eslint / CI |
 | Gitignored docs → amnesiac clones | **Committed** docs |
 | Fixes that quietly regress | Bug ⇒ failing-then-passing test |
+| "v1 scope" that's really a roadmap | Mandatory **scope trim gate** — Core action, v1 scope, Success criteria all checked for smuggled-in scope before the prompt is persisted |
 
 ## Anti-triggers (don’t use the wrong skill)
 
@@ -270,7 +271,10 @@ spec rather than diverge from it.
 ```
 
 - CI: `.github/workflows/smoke.yml` runs `smoke-check.sh` (which chains
-  `smoke-fixture.sh` + `eval-skill-routing.sh`) on every push/PR to `main`.
+  `smoke-fixture.sh` + `eval-skill-routing.sh`) on every push/PR to `main`,
+  then — on `main` only, gated on that same green run — a `release` job
+  tags and publishes a GitHub release whenever
+  `.claude/skills/shipjaw-build/VERSION` names a tag that doesn't exist yet.
 - Golden output shape: [`fixtures/golden-todo/`](fixtures/golden-todo/)
 - Routing discovery cases: [`evals/routing-cases.yml`](evals/routing-cases.yml) — static (substring) +
   LLM (paraphrased `prompt` per case, semantic) coverage
