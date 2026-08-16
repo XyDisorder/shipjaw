@@ -1,6 +1,12 @@
 # Shipjaw
 
 <p align="center">
+  <a href="https://github.com/XyDisorder/shipjaw/actions/workflows/smoke.yml"><img src="https://github.com/XyDisorder/shipjaw/actions/workflows/smoke.yml/badge.svg" alt="smoke" /></a>
+  <a href="https://github.com/XyDisorder/shipjaw/releases/latest"><img src="https://img.shields.io/github/v/release/XyDisorder/shipjaw" alt="latest release" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/XyDisorder/shipjaw" alt="license" /></a>
+</p>
+
+<p align="center">
   <img src="assets/logo-dark-wordmark.png" alt="Shipjaw — Ship the product. Not the prompt engineering." width="720" />
 </p>
 
