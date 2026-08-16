@@ -1,5 +1,26 @@
 # skill-my-website changelog
 
+## 2026-08-16
+
+- **Public-launch prep: anonymized real-project references throughout this
+  file.** Every entry naming a real dogfooded project (one of which is a
+  real wedding site) now uses a neutral label (`project-a`…`project-d`,
+  consistently per project) instead of its real name — the lesson/evidence
+  stays, the identifying name doesn't. Checked first that no secrets,
+  emails, or `.env` files were ever committed anywhere in history (clean);
+  this was the one real privacy gap found before considering the repo for
+  public visibility.
+- **Added a real demo GIF** (`assets/demo.gif`, generated from
+  `assets/demo.tape` via `vhs` — regenerate with `vhs assets/demo.tape`
+  from repo root): a terminal walkthrough of `fixtures/golden-todo/` (the
+  structural test fixture, kept honest by `smoke-fixture.sh`, not staged
+  content) — file tree, `documentation/INDEX.md`, then the fixture's own
+  gate passing. Embedded at the top of the README, above "The problem."
+- **Added `CONTRIBUTING.md`**, and set the GitHub repo's description +
+  topics (`claude-code`, `cursor`, `ai-agents`, `developer-tools`,
+  `agents-md`, `nextjs`, `typescript`) + enabled Discussions — all ahead of
+  making the repo public.
+
 ## 2026-08-11b
 
 - **Automated tagging/releases — the manual process didn't survive one
@@ -22,7 +43,7 @@
 
 - **Fifteenth real-dogfood catch: the v1 scope trim gate (2026-08-09) wasn't
   enough on its own — Core action and Success criteria can re-lock the exact
-  scope it cuts.** Auditing `poker-coach-ai`'s real `decisions.md` for why
+  scope it cuts.** Auditing `project-d`'s real `decisions.md` for why
   `shipjaw-build`'s built-in challenger (`challenge-built-in.md`, which
   explicitly must challenge "phase scope / *User can…* / Out of v1") didn't
   catch the bloated v1 found in the prior catch: it actually **did** —
@@ -38,7 +59,7 @@
   single end-to-end checkbox, and the trim gate (renamed "Scope trim gate")
   now checks all three — Core action, v1 scope, Success criteria — in that
   order, since each can re-lock what the next one tries to cut. Dry-run
-  verification: applying the new gate to poker-coach-ai's original wording
+  verification: applying the new gate to project-d's original wording
   strips exactly the clauses that let the challenger's already-correct
   proposal get overridden. `smoke-check.sh` asserts both new guards are
   present, not just the original v1-scope gate.
@@ -48,14 +69,14 @@
   ("the prompt skill doesn't create good prompts") led to reading the actual
   `source-prompt.md` outputs on two real projects. Both violate
   `prompt-craft.md`'s own anti-pattern list ("'v1 scope' that is really a
-  roadmap"): `morse-app`'s v1 bundles a lesson path, two exercise types,
+  roadmap"): `project-c`'s v1 bundles a lesson path, two exercise types,
   gamification (badges/streaks/XP), a cheat-sheet page, and a landing page
-  around one core exercise-and-feedback loop; `poker-coach-ai`'s v1 is worse
+  around one core exercise-and-feedback loop; `project-d`'s v1 is worse
   — six separate systems (skill-placement quiz, hand-submission form, the AI
   review itself, an adaptive lesson-recommendation engine, a gamified
   dashboard, and a full poker knowledge-base content system) stacked as
   "v1". Strongest evidence it's a process gap, not a one-off: the
-  poker-coach-ai prompt contains an ad-hoc "Suggested v1 scope note" section
+  project-d prompt contains an ad-hoc "Suggested v1 scope note" section
   — not one of `prompt-craft.md`'s 10 required headings — where the
   generating agent admits the true MVP is much smaller, but appends it as a
   hedge instead of actually trimming before persisting. Root cause:
@@ -66,7 +87,7 @@
   `prompt-craft.md` (for every v1 bullet: does the core action literally
   break without it? if not, cut to Out of v1) and wired it into
   `shipjaw-prompt/SKILL.md`'s checklist and workflow step 3. Dry-run
-  verification: applying the new gate to `poker-coach-ai`'s existing bullets
+  verification: applying the new gate to `project-d`'s existing bullets
   by hand converges on almost exactly what its own hedge note already called
   the "true MVP" — the gate now produces that result directly instead of
   leaving it as an afterthought. `smoke-check.sh` asserts the gate is wired
@@ -129,7 +150,7 @@
 
 - **Twelfth real-dogfood catch: the session-size `/compact` budget never
   reached real projects, and a real `/usage` report proved it.** A pasted
-  session report for a `shipjaw-build` run on `mariage_les_bibous` ($4.26,
+  session report for a `shipjaw-build` run on `project-a` ($4.26,
   108.2k output tokens, 5.3M cache read vs only 199.7k cache write — a ~26x
   resend ratio) showed the session never checkpointed. Root cause, found by
   tracing where the "session-size budget" instruction (added in a prior
@@ -147,7 +168,7 @@
   `--refresh` flag to `copy-continuation-contract.sh` (force-overwrite,
   opt-in) and wired `shipjaw-upgrade` to pass it — verified with a new
   `smoke-check.sh` assertion and a real `--refresh` run against
-  `mariage_les_bibous` (clean, minimal diff, only the intended lines added).
+  `project-a` (clean, minimal diff, only the intended lines added).
   Separately, `shipjaw-build` itself only ever suggested `/compact` at the
   very end of a build — never mid-build before the phase-implementation gate
   loop, the most context-heavy part and the likely direct cause of the
@@ -158,7 +179,7 @@
 
 - **Eleventh real-dogfood catch: the mirror-image of the RLS
   client-context lesson — auditing can false-positive a route that's
-  already RLS-protected.** Continuing the `craftmyjob` `auth.getUser()`
+  already RLS-protected.** Continuing the `project-b` `auth.getUser()`
   route audit (the last ~20-route slice, 2026-07-29f), two routes
   (`interview-notes/route.ts` GET, `interview-notes/[noteId]/route.ts`
   PUT) looked exactly like the shape of already-fixed IDOR bugs from the
@@ -183,7 +204,7 @@
 - **Tenth real-dogfood catch: RLS-protected Supabase writes silently
   no-op for session-less callers (webhooks, cron), and this bit the same
   project twice in one session.** While extracting `checkout/webhook`'s
-  `packId` branch on `craftmyjob` (phase-01 slice 3), found
+  `packId` branch on `project-b` (phase-01 slice 3), found
   `updateLetterPackPaymentStatus` used the session-based Supabase client
   unconditionally — `letter_packs`' RLS policy requires `auth.uid() =
   user_id` for UPDATE, and a webhook has no session, so the write
@@ -211,13 +232,13 @@
 ## 2026-07-27b
 
 - **Eighth and ninth real-dogfood catches, found by actually executing a
-  P0 converge-arch slice on `craftmyjob` (not just proposing one).**
+  P0 converge-arch slice on `project-b` (not just proposing one).**
   1. Reading the real code before implementing caught the previous
      entry's own audit error: `admin/add-credits` had matched the
      `supabase.` grep because its business logic is entirely commented
      out (dead code, 403-only) — not because it's live. A grep-based
      audit can't tell commented code from live code; corrected in
-     `craftmyjob`'s docs, noted here so future audits stay skeptical of
+     `project-b`'s docs, noted here so future audits stay skeptical of
      their own grep hits.
   2. `technical-plan-phase.md` has a `## Challenge` section template with
      the exact `**Verdict:** proceed | revise-then-proceed | defer |
@@ -225,7 +246,7 @@
      `technical-plan-converge-arch.md` (the template actually used for
      converge phases, which are P0-by-definition since they target
      money/authz paths) had no such section at all. Freehanded the
-     Challenge section on `craftmyjob`'s phase file, got the format wrong
+     Challenge section on `project-b`'s phase file, got the format wrong
      on the first attempt (no `**Verdict:**` line), and only found the
      right shape by reading `validate-docs.sh`'s source — exactly the
      "mechanism exists but isn't where you need it" pattern from
@@ -234,7 +255,7 @@
   3. `run-gate.sh` stops at the first non-zero package.json script
      (`set -euo pipefail`) with no way to distinguish "this session
      introduced a lint error" from "the codebase already had 166."
-     Discovered only by actually running the gate on `craftmyjob` after
+     Discovered only by actually running the gate on `project-b` after
      the P0 slice was done — `pnpm lint` failed with 166 pre-existing
      errors unrelated to the change, `tsc --noEmit` was clean. Fixed:
      `survey-adopt-state.sh` now runs `typecheck`/`lint` (if scripted) as
@@ -250,7 +271,7 @@
 
 ## 2026-07-27
 
-- **Seventh real-dogfood catch (on `craftmyjob`, a third real project, and
+- **Seventh real-dogfood catch (on `project-b`, a third real project, and
   the first full `shipjaw-adopt` run on a large pre-existing app — 50 API
   routes, no prior Shipjaw KB): a target repo's own `.gitignore` can
   blanket-ignore `.cursor/`, silently swallowing `.cursor/rules/shipjaw.mdc`
@@ -258,7 +279,7 @@
   successfully, but it would never reach a clone or CI — exactly the
   "gitignored docs → amnesiac clones" failure this project's README
   claims to prevent, now reproduced on its own contract file. Found
-  because `craftmyjob`'s `.gitignore` has a plain `.cursor` entry under
+  because `project-b`'s `.gitignore` has a plain `.cursor` entry under
   an "ide" section (meant for local editor state, not the shared rule).
   Fixed two ways:
   1. `copy-continuation-contract.sh` now runs `git check-ignore` on
@@ -268,7 +289,7 @@
      gitignored. Does **not** auto-edit the target's `.gitignore` — the
      right exception is project-specific and a script has no basis to
      guess it safely.
-  2. Fixed it for real in `craftmyjob`: `.gitignore`'s `.cursor` entry
+  2. Fixed it for real in `project-b`: `.gitignore`'s `.cursor` entry
      became `.cursor/*` + explicit `!.cursor/rules/` +
      `!.cursor/rules/shipjaw.mdc` — confirmed via `git check-ignore`
      that the rule file is trackable while the rest of `.cursor/`
@@ -281,7 +302,7 @@
   Regression test added to `smoke-check.sh`: a temp git repo with a
   blanket `.cursor/*` ignore asserts the WARN fires, then asserts it goes
   silent once the documented unignore pattern is added.
-- **Also on `craftmyjob`: `validate-docs-drift.sh`'s `$DOC/` fallback
+- **Also on `project-b`: `validate-docs-drift.sh`'s `$DOC/` fallback
   (2026-07-26 fix) verified on a third real project** — 18/18 path refs in
   `features-index.md` and 41/41 in `api-reference.md` resolved cleanly,
   no regression from the prior day's fix.
@@ -292,12 +313,12 @@
   Stripe/credits money-moving routes — the highest-stakes real-world case
   this audit has hit so far. `documentation/` + a scoped
   `technical-plan/phase-01-converge-clean-arch.md` (plan only, not
-  executed) were written into `craftmyjob`; no product code changed.
+  executed) were written into `project-b`; no product code changed.
 
 ## 2026-07-26
 
 - **Sixth real-dogfood catch (on `timzio`, a second real project beyond
-  `mariage_les_bibous`): `validate-docs-drift.sh`'s path-reference check
+  `project-a`): `validate-docs-drift.sh`'s path-reference check
   never resolved paths relative to `documentation/` — only relative to the
   repo root or `root/src/`.** The check's own `features-index.md` template
   (`templates/knowledge-base/features-index.md`) instructs a "Product doc"
@@ -321,13 +342,13 @@
   `features-index.md` resolving cleanly, zero false positives. **How this
   was found:** not a synthetic repro — asked to test against `timzio`
   specifically, which is exactly the "run it against a real project on
-  disk" practice from the `mariage_les_bibous` triage; a second real
+  disk" practice from the `project-a` triage; a second real
   project surfaced a bug the first one's docs never happened to trigger.
 
 ## 2026-07-23k
 
 - **Proactive `/compact` reminder — not just at clean task end.** A real
-  session (`mariage_les_bibous`) burned most of its usage at >150k
+  session (`project-a`) burned most of its usage at >150k
   context; the only existing reminder was step 9's "suggest /compact",
   reached only at a clean end that an exploratory debugging session may
   never hit. Added a session-size budget (`skill-principles.md` 7,
@@ -351,7 +372,7 @@
   told the agent to create one. Proof: the golden fixture had zero
   product/features files despite 2 shipped features. Initially kept the
   subfolder convention for consistency with `product/business-rules/` — but
-  while implementing, the real `mariage_les_bibous` project's own agent
+  while implementing, the real `project-a`'s own agent
   independently converged on a **flat** naming
   (`product/feature-<slug>.md`, no subfolder) and committed to it as an
   ongoing practice, unprompted. Live evidence beats the abstract
@@ -409,7 +430,7 @@
   under `src/modules/`, `src/features/`, or `features/` is a short,
   distinctive word — far less prone to the abbreviation/route-group issues
   that forced the path check to stay informational. Tested against
-  `mariage_les_bibous` (the real project from the incident, now fixed on
+  `project-a` (the real project from the incident, now fixed on
   its own): 0 false positives across all 8 real feature modules. Tested
   against a synthetic new module folder: correctly fails. This is the
   check that would have actually caught the original incident (a shipped

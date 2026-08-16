@@ -29,6 +29,16 @@
 
 ---
 
+<p align="center">
+  <img src="assets/demo.gif" alt="Terminal demo: the golden-todo fixture's file tree, its documentation/INDEX.md, then ./scripts/smoke-fixture.sh passing." width="900" />
+</p>
+
+<p align="center">
+  <sub>What <code>shipjaw-build</code> actually produces — <code>fixtures/golden-todo/</code>, the repo's own structural test fixture, kept honest by the same suite in the GIF (regenerate: <code>vhs assets/demo.tape</code>).</sub>
+</p>
+
+---
+
 ## The problem
 
 You ask an agent to “build my site.” You get:
