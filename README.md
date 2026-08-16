@@ -198,25 +198,29 @@ report) before coding.
 ```sh
 git clone https://github.com/XyDisorder/shipjaw.git
 cd shipjaw
+./install.sh
+```
 
+Symlinks all 7 skills into `~/.claude/skills/` and `~/.cursor/skills/`,
+pointing at this clone. Idempotent — re-run anytime after `git pull` to
+pick up new skills; never overwrites something that isn't already one of
+its own symlinks. Read the script before running it, as always with
+anything you `git clone` — it's ~50 lines, no network calls, no `curl |
+bash`.
+
+<details>
+<summary>Manual install (no script)</summary>
+
+```sh
 mkdir -p ~/.claude/skills ~/.cursor/skills
 
-ln -s "$(pwd)/.claude/skills/shipjaw"         ~/.claude/skills/shipjaw
-ln -s "$(pwd)/.claude/skills/shipjaw-prompt"  ~/.claude/skills/shipjaw-prompt
-ln -s "$(pwd)/.claude/skills/shipjaw-build"   ~/.claude/skills/shipjaw-build
-ln -s "$(pwd)/.claude/skills/shipjaw-adopt"   ~/.claude/skills/shipjaw-adopt
-ln -s "$(pwd)/.claude/skills/shipjaw-upgrade" ~/.claude/skills/shipjaw-upgrade
-ln -s "$(pwd)/.claude/skills/shipjaw-challenge" ~/.claude/skills/shipjaw-challenge
-ln -s "$(pwd)/.claude/skills/shipjaw-ask"     ~/.claude/skills/shipjaw-ask
-
-ln -s "$(pwd)/.claude/skills/shipjaw"         ~/.cursor/skills/shipjaw
-ln -s "$(pwd)/.claude/skills/shipjaw-prompt"  ~/.cursor/skills/shipjaw-prompt
-ln -s "$(pwd)/.claude/skills/shipjaw-build"   ~/.cursor/skills/shipjaw-build
-ln -s "$(pwd)/.claude/skills/shipjaw-adopt"   ~/.cursor/skills/shipjaw-adopt
-ln -s "$(pwd)/.claude/skills/shipjaw-upgrade" ~/.cursor/skills/shipjaw-upgrade
-ln -s "$(pwd)/.claude/skills/shipjaw-challenge" ~/.cursor/skills/shipjaw-challenge
-ln -s "$(pwd)/.claude/skills/shipjaw-ask"     ~/.cursor/skills/shipjaw-ask
+for s in shipjaw shipjaw-prompt shipjaw-build shipjaw-adopt shipjaw-upgrade shipjaw-challenge shipjaw-ask; do
+  ln -s "$(pwd)/.claude/skills/$s" ~/.claude/skills/$s
+  ln -s "$(pwd)/.claude/skills/$s" ~/.cursor/skills/$s
+done
 ```
+
+</details>
 
 Keep the skills as **siblings** so relative `../shipjaw-build/references/` paths resolve.
 

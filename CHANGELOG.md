@@ -1,5 +1,24 @@
 # skill-my-website changelog
 
+## 2026-08-17
+
+- **Added `install.sh`** — a one-command install (`git clone ... && cd
+  shipjaw && ./install.sh`) replacing the 20-line copy-paste symlink block
+  as the primary path in the README (kept as a `<details>` fallback).
+  Idempotent, non-destructive: verified with three real runs in an
+  isolated fake `$HOME` — fresh install (14/14 linked), re-run
+  (0 linked / 14 already up to date, no errors), and a pre-existing
+  non-symlink file at a target path (left untouched, warned instead of
+  overwritten). Motivated by launch-prep: a 20-line block to copy before
+  even trying the tool is real friction for a first-time reader coming
+  from a Reddit/HN link.
+- **Disabled the `Co-Authored-By: Claude` commit trailer for this repo**
+  (`.claude/settings.json`, `attribution.commit`/`pr` set to `""`) — it was
+  showing up as a second GitHub-recognized author on every commit now that
+  the repo is public. Applies to future commits only; existing history is
+  unchanged (rewriting it would mean a force-push on an already-public
+  repo, not done without a separate explicit decision).
+
 ## 2026-08-16
 
 - **Public-launch prep: anonymized real-project references throughout this
