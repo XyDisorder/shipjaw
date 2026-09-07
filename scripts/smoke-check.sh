@@ -31,16 +31,16 @@ for f in \
   "$SKILL/VERSION" \
   "$SKILL/references/skill-principles.md" \
   "$SKILL/references/migration.md" \
-  "$SKILL/references/tech-choices.md" \
+  "$SKILL/profiles/typescript-next/tech-choices.md" \
   "$SKILL/references/regression-and-business-rules.md" \
   "$SKILL/references/gate-failure-modes.md" \
   "$SKILL/references/design-constraints.md" \
   "$SKILL/references/challenge-built-in.md" \
   "$SKILL/references/workflow.md" \
   "$SKILL/references/doc-structure.md" \
-  "$SKILL/references/project-structure.md" \
+  "$SKILL/profiles/typescript-next/project-structure.md" \
   "$SKILL/references/security.md" \
-  "$SKILL/references/modern-extras.md" \
+  "$SKILL/profiles/typescript-next/modern-extras.md" \
   "$SKILL/templates/scaffold/README.md" \
   "$SKILL/templates/scaffold/tsconfig.base.json" \
   "$SKILL/templates/scaffold/eslint.config.mjs" \
@@ -332,9 +332,9 @@ if grep -qi 'never chain\|chain more than one feature' "$PROMPT/references/promp
 else
   bad "prompt-craft.md Success criteria missing the chained-checkbox guard"
 fi
-if grep -qi 'Edge cases' "$SKILL/references/testing-and-ci.md" \
-  && grep -qi 'Golden path' "$SKILL/references/testing-and-ci.md" \
-  && grep -qi 'Validation' "$SKILL/references/testing-and-ci.md"; then
+if grep -qi 'Edge cases' "$SKILL/profiles/typescript-next/testing-and-ci.md" \
+  && grep -qi 'Golden path' "$SKILL/profiles/typescript-next/testing-and-ci.md" \
+  && grep -qi 'Validation' "$SKILL/profiles/typescript-next/testing-and-ci.md"; then
   ok "testing-and-ci edge-case matrices"
 else
   bad "testing-and-ci.md missing TU/e2e edge-case tables"
@@ -588,25 +588,25 @@ else
 fi
 
 echo "== types/helpers placement =="
-if grep -qi 'Types, constants, helpers' "$SKILL/references/project-structure.md" \
-  && grep -qi 'grab-bag\|utils.ts' "$SKILL/references/project-structure.md" \
-  && grep -qi 'dedicated\|constants.ts\|grab-bag\|utils.ts' "$SKILL/references/code-standards.md"; then
+if grep -qi 'Types, constants, helpers' "$SKILL/profiles/typescript-next/project-structure.md" \
+  && grep -qi 'grab-bag\|utils.ts' "$SKILL/profiles/typescript-next/project-structure.md" \
+  && grep -qi 'dedicated\|constants.ts\|grab-bag\|utils.ts' "$SKILL/profiles/typescript-next/code-standards.md"; then
   ok "placement rules for types/consts/helpers"
 else
   bad "project-structure/code-standards missing types-consts-helpers placement"
 fi
 
 echo "== ports + composition + thin adapters =="
-if grep -qi 'Composition root' "$SKILL/references/project-structure.md" \
-  && grep -qi 'Ports (naming' "$SKILL/references/project-structure.md" \
-  && grep -qi 'thin adapters' "$SKILL/references/project-structure.md" \
-  && grep -qi 'Error → HTTP' "$SKILL/references/project-structure.md" \
-  && grep -qi 'Anti-barrel' "$SKILL/references/project-structure.md"; then
+if grep -qi 'Composition root' "$SKILL/profiles/typescript-next/project-structure.md" \
+  && grep -qi 'Ports (naming' "$SKILL/profiles/typescript-next/project-structure.md" \
+  && grep -qi 'thin adapters' "$SKILL/profiles/typescript-next/project-structure.md" \
+  && grep -qi 'Error → HTTP' "$SKILL/profiles/typescript-next/project-structure.md" \
+  && grep -qi 'Anti-barrel' "$SKILL/profiles/typescript-next/project-structure.md"; then
   ok "ports, composition, thin adapters, error map, anti-barrel"
 else
   bad "project-structure.md missing ports/composition/thin adapters/error map"
 fi
-if grep -qi 'Signal' "$SKILL/references/tech-choices.md"; then
+if grep -qi 'Signal' "$SKILL/profiles/typescript-next/tech-choices.md"; then
   ok "tech-choices.md signal tables"
 else
   bad "tech-choices.md missing signal tables"
@@ -617,9 +617,9 @@ fi
 # Ports/Composition section needs to warn about this before an agent
 # wires a Supabase-backed function into a port without checking every
 # real caller's auth context.
-if grep -qi 'Infra client context' "$SKILL/references/project-structure.md" \
-  && grep -qi 'service-role client' "$SKILL/references/project-structure.md" \
-  && grep -qi "sibling function got this right" "$SKILL/references/project-structure.md"; then
+if grep -qi 'Infra client context' "$SKILL/profiles/typescript-next/project-structure.md" \
+  && grep -qi 'service-role client' "$SKILL/profiles/typescript-next/project-structure.md" \
+  && grep -qi "sibling function got this right" "$SKILL/profiles/typescript-next/project-structure.md"; then
   ok "project-structure.md warns about RLS-aware infra client context"
 else
   bad "project-structure.md missing the RLS/session-less-caller client-context lesson"
@@ -630,8 +630,8 @@ fi
 # already enforces it for a real session client. Without this warning an
 # audit can false-positive-flag (or redundantly "fix") an already-safe
 # route.
-if grep -qi 'mirror-image mistake' "$SKILL/references/project-structure.md" \
-  && grep -qi 'verified non-finding' "$SKILL/references/project-structure.md"; then
+if grep -qi 'mirror-image mistake' "$SKILL/profiles/typescript-next/project-structure.md" \
+  && grep -qi 'verified non-finding' "$SKILL/profiles/typescript-next/project-structure.md"; then
   ok "project-structure.md warns about the RLS audit-false-positive mirror case"
 else
   bad "project-structure.md missing the RLS audit-false-positive (mirror-image) lesson"

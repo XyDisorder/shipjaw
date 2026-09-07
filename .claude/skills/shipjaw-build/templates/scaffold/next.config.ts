@@ -33,10 +33,14 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   outputFileTracingRoot: configDir,
+  // Playwright's dedicated e2e port (playwright.config.ts) hits the dev
+  // server over 127.0.0.1; Next blocks cross-origin dev resources (HMR,
+  // client chunks) from an origin not in this list by default.
+  allowedDevOrigins: ["127.0.0.1", "localhost"],
   turbopack: {
     root: configDir,
   },
-  async headers() {
+  headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
 };

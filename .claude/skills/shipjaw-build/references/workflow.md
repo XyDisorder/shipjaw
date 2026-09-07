@@ -28,7 +28,7 @@ Reply in the user's language.
 
 ## 3. Decide the stack shape
 
-Read `references/stack-shape.md` + `references/tech-choices.md`. Map
+Read `profiles/typescript-next/stack-shape.md` + `profiles/typescript-next/tech-choices.md`. Map
 prompt/discovery signals → Nest or not, data layer, API surface, auth,
 i18n/deploy extras. **Announce the stack in one line** (with the "because")
 before scaffolding. Nest → also plan to read `monorepo-and-nestjs.md` at

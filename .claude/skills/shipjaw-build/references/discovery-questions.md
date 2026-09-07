@@ -45,7 +45,7 @@ tables already decide from their product answers.
 ## 4. Content & locale
 
 - Single language or multiple? If multiple, which ones, and which is the
-  default? (Multiple → load `references/modern-extras.md` i18n section
+  default? (Multiple → load `profiles/typescript-next/modern-extras.md` i18n section
   at scaffold.)
 
 ## 5. Constraints & deploy

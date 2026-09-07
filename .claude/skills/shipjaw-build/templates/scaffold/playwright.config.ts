@@ -10,7 +10,9 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  // exactOptionalPropertyTypes forbids `workers: undefined` — omit the key
+  // entirely locally instead of assigning undefined to it.
+  ...(process.env.CI ? { workers: 1 } : {}),
   reporter: "list",
   use: {
     baseURL,
@@ -18,9 +20,12 @@ export default defineConfig({
   },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
   webServer: {
+    // `pnpm exec next ...` directly — `pnpm <script> -- --port N` double
+    // dashes can make a framework CLI treat --port as a positional arg
+    // instead of a flag (seen with Next 16's dev/start CLI).
     command: process.env.CI
-      ? `pnpm start -- --port ${e2ePort}`
-      : `pnpm dev -- --port ${e2ePort}`,
+      ? `pnpm exec next start --port ${e2ePort}`
+      : `pnpm exec next dev --port ${e2ePort}`,
     url: baseURL,
     // Locally reuse; in CI never attach to a random process on the port.
     reuseExistingServer: !process.env.CI,

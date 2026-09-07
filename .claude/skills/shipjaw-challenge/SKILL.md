@@ -22,8 +22,8 @@ escalates that into a repo artifact. Does **not** scaffold or implement.
 **References (on demand):**
 `../shipjaw-build/references/challenge-built-in.md` ·
 `../shipjaw-build/references/design-constraints.md` ·
-`../shipjaw-build/references/tech-choices.md` ·
-`../shipjaw-build/references/project-structure.md` ·
+`../shipjaw-build/profiles/typescript-next/tech-choices.md` ·
+`../shipjaw-build/profiles/typescript-next/project-structure.md` ·
 `../shipjaw-build/templates/challenge-report.md`
 
 ## Anti-triggers

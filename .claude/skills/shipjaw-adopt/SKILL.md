@@ -89,7 +89,7 @@ Fill as-is; absorb foreign plans (same rules as before).
 
 Using survey signals + targeted Grep (do **not** rewrite code here),
 score the repo against Shipjaw practices
-(`../shipjaw-build/references/project-structure.md` ·
+(`../shipjaw-build/profiles/typescript-next/project-structure.md` ·
 `code-standards.md`):
 
 | Practice | Look for | Gap if… |

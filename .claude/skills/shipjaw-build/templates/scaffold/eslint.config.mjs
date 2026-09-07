@@ -9,7 +9,12 @@ export default tseslint.config(
   {
     languageOptions: {
       parserOptions: {
-        projectService: true,
+        projectService: {
+          // This file itself (and any plain-JS config like postcss.config.mjs)
+          // isn't in tsconfig's `include` — let type-checked rules lint it
+          // without a real project instead of erroring on every run.
+          allowDefaultProject: ["eslint.config.mjs"],
+        },
         tsconfigRootDir: import.meta.dirname,
       },
     },

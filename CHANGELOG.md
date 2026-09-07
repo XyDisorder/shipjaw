@@ -1,5 +1,54 @@
 # skill-my-website changelog
 
+## 2026-09-07
+
+- **New Core principle 19 — don't trust cached API shape past the exact
+  installed version — plus 3 real version-drift fixes to the
+  TypeScript/Next scaffold templates that motivated it**, found across
+  earlier sessions but left undocumented until now: ESLint 9 flat-config
+  `projectService` needing `{ allowDefaultProject: [...] }` instead of
+  `true` once a plain-JS config file needs type-aware linting;
+  `next.config.ts` needing `allowedDevOrigins: ["127.0.0.1", "localhost"]`
+  once the dedicated Playwright e2e port hits the dev server
+  cross-origin; `exactOptionalPropertyTypes` rejecting an explicit
+  `workers: undefined` in `playwright.config.ts` (omit the key instead)
+  and a `pnpm <script> -- --port N` double-dash sometimes reaching Next's
+  CLI as a positional arg instead of a flag (call `pnpm exec next
+  dev/start --port N` directly). All three are the same failure shape —
+  a framework's actual current-version behavior differs from what a
+  chat model would recall by default — so `skill-principles.md` now
+  states the discipline explicitly instead of leaving each catch as a
+  one-off template patch with no durable rule behind it.
+- **Phase 1 of the agnostic-core roadmap: split `shipjaw-build`'s
+  TypeScript/Next-specific rules into a technology profile.** Classified
+  every `shipjaw-build` reference file as either stack-agnostic Core
+  (`skill-principles.md`, `discovery-questions.md`, `security.md`,
+  `gate-failure-modes.md`, `design-constraints.md`, `doc-structure.md`,
+  `workflow.md`, `migration.md`, `regression-and-business-rules.md`) or
+  fully TypeScript/Next/Nest-specific implementation, and moved the
+  latter — `tech-choices.md`, `stack-shape.md`, `code-standards.md`,
+  `testing-and-ci.md`, `monorepo-and-nestjs.md`, `project-structure.md`,
+  `modern-extras.md` — into a new `profiles/typescript-next/` folder
+  (see its `README.md`), Shipjaw's first (and so far only) technology
+  profile. Content unchanged — this is a structural move, not a rewrite,
+  so it carries no behavior risk on its own.
+  Updated every cross-reference across `shipjaw-adopt`, `shipjaw-ask`,
+  `shipjaw-challenge`, `shipjaw-build`'s own `SKILL.md`/`workflow.md`/
+  `discovery-questions.md`, and `scripts/smoke-check.sh`'s file-existence
+  assertions (~10 files) to the new paths; verified with a repo-wide grep
+  that zero stale `references/<moved-file>.md` mentions remain outside
+  this changelog's own history, then a full green
+  `./scripts/smoke-check.sh` (fixture + routing eval).
+  This is Phase 1 of 9 from a roadmap sketch evaluating whether Shipjaw
+  should generalize beyond TS/Next (see `profiles/README.md` "Adding a
+  second profile") — deliberately stopping here: the later phases
+  (technology discovery, a documentation-JIT-retrieval resolver, a
+  stack-agnostic regression engine) need a real second dogfooded
+  ecosystem to validate against, which doesn't exist yet. Doing them
+  without one would mean generalizing Core from a single data point
+  (Next.js) — exactly the premature-abstraction risk the roadmap itself
+  flags for its own Phase 9.
+
 ## 2026-08-17
 
 - **Added `install.sh`** — a one-command install (`git clone ... && cd

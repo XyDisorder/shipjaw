@@ -107,14 +107,23 @@ From this skill directory:
 
 ## References (on demand)
 
+Core (stack-agnostic — apply regardless of which profile is active):
+
 - `skill-principles.md` · `migration.md` ·
   `regression-and-business-rules.md`
-- `discovery-questions.md` · `stack-shape.md` · `tech-choices.md`
-- `project-structure.md` · `code-standards.md` · `testing-and-ci.md` ·
-  `security.md` · `gate-failure-modes.md` (2nd gate fail) ·
-  `design-constraints.md` (UI)
+- `discovery-questions.md` · `security.md` ·
+  `gate-failure-modes.md` (2nd gate fail) · `design-constraints.md` (UI)
+- `doc-structure.md` · `workflow.md`
+
+Technology profile — TypeScript/Next.js, Shipjaw's only profile today
+(`profiles/typescript-next/`; see `profiles/README.md`):
+
+- `stack-shape.md` · `tech-choices.md`
+- `project-structure.md` · `code-standards.md` · `testing-and-ci.md`
 - `monorepo-and-nestjs.md` — Nest only
 - `modern-extras.md` — only if discovery activated
-- `doc-structure.md` · `workflow.md`
+
+Templates & tooling:
+
 - `templates/` · `templates/scaffold/` · `templates/business-rule.md` ·
   `templates/handoff.md` · `VERSION` · `scripts/`

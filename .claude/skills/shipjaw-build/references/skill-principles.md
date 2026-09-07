@@ -147,3 +147,31 @@ rules. Agents must follow them; do not re-litigate mid-task.
     rule. Phases should be demonstrable to a non-dev when possible.
     → phase template `User can…` · `prompt-craft.md` · product-feature
     journey section.
+
+19. **Don't trust cached API shape past the exact installed version.**
+    Frameworks/libraries change their API between minor/major releases
+    (a config option changes shape, a CLI flag's parsing changes, a
+    stricter compiler flag rejects a pattern that used to compile) —
+    model memory reflects whatever version was common at training time,
+    not necessarily what's installed in this project. Before writing
+    code against an API you are not certain is unchanged in the
+    project's **actual installed version** (check `package.json`/lockfile),
+    prefer: installed types/source → the tool's own error message →
+    official versioned docs/changelog — over recalling the shape from
+    memory. Real-dogfood catches already found this way, undocumented
+    until now, then folded into `profiles/typescript-next/`'s scaffold
+    templates: ESLint 9 flat-config `projectService` needing an object
+    (`allowDefaultProject`) instead of `true` once a plain-JS config file
+    needs type-aware linting; Next.js blocking cross-origin dev requests
+    by default (`allowedDevOrigins`) once a Playwright e2e server hits it
+    over a non-default host; `exactOptionalPropertyTypes` rejecting
+    `workers: undefined` (omit the key, don't assign `undefined`); a
+    package-manager's `run <script> -- --flag` double-dash sometimes
+    reaching the underlying framework CLI as a positional arg instead of
+    a flag (call the CLI directly instead of through the script
+    passthrough). Each is a version-shape drift, not a one-off typo —
+    fix the **profile template**, not just the affected project, so the
+    next scaffold doesn't repeat it. This is how the tech-agnostic Core
+    stays evolutif as tech evolves, without needing a live doc-fetch
+    system: cheap, reactive, dogfood-driven correction beats trying to
+    pre-empt every future API change.

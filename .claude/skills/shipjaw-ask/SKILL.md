@@ -163,7 +163,7 @@ Never leave INDEX/features-index lying after you ship a path change.
    - prefer the active phase's *User can…* / journey over drive-by polish
    - do not implement Out-of-v1 / out-of-phase scope "while we're here"
    - place new types/constants/helpers per
-     `../shipjaw-build/references/project-structure.md` (no utils grab-bag)
+     `../shipjaw-build/profiles/typescript-next/project-structure.md` (no utils grab-bag)
    - new outside deps → port file + infra impl + wire in composition;
      Server Actions stay thin (no SQL / no domain rules in adapters)
    - map domain errors to UI/HTTP per project-structure table
