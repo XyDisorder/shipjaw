@@ -13,7 +13,11 @@ rules. Agents must follow them; do not re-litigate mid-task.
    `shipjaw-upgrade` = refresh docs/contract/stamps to current VERSION
    (migration table; **no** product rewrite). **Built-in challenge** =
    every work skill adversarially pushes plans/choices (prefer a second
-   agent/subagent; see `challenge-built-in.md`) — not slash-gated.
+   agent/subagent; see `challenge-built-in.md`) — not slash-gated, but
+   **scaled to actual stakes** (full 5-axis pass vs. a one-paragraph
+   self-check — see `challenge-built-in.md` "Scale the pass to actual
+   stakes"): a decorative, reversible, single-user change doesn't earn
+   the same ritual as auth/money/shared-data/multi-user work.
    `/shipjaw-challenge` = optional **full** ritual + durable report when
    locking a meaty phase/ADR. `shipjaw-ask` = every later product session.
    Continuation never reloads bootstrap discovery/architecture docs or

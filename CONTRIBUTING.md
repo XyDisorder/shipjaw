@@ -7,6 +7,11 @@ handful of bash scripts. The bar for a change isn't "sounds right," it's
 
 ## Before you open a PR
 
+0. **Check `DECISIONS.md` first.** Several ideas that look like obvious
+   next steps (a hosted product, a fully agnostic Core, an always-on full
+   challenge ritual) were already considered and explicitly parked or
+   scoped down, with the reasoning recorded there — re-litigate with new
+   evidence, don't reopen from scratch.
 1. **Ground it in a real symptom.** The best fixes in this repo's
    `CHANGELOG.md` all start the same way: a real project did something
    wrong, or an agent misread an instruction on real work — not a

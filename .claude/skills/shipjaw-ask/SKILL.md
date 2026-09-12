@@ -18,13 +18,21 @@ Before coding a **new phase**, new auth/persistence, primary UI, money/
 authz, or any ADR/stack fork not forced by `tech-choices.md`:
 
 1. Ensure the phase (or ADR) exists.
-2. **Built-in pass:** Proposer ≤8 bullets → Challenger attacks (5 axes:
+2. **Pick the tier first** — full pass vs. light self-check, per
+   `../shipjaw-build/references/challenge-built-in.md` "Scale the pass to
+   actual stakes" (full pass for auth/money/shared data/multi-user/
+   irreversible/contradicts an existing decision; light self-check for
+   single-user, purely additive, reversible, presentation-only changes).
+   Unsure which → full pass once.
+3. **Full pass:** Proposer ≤8 bullets → Challenger attacks (5 axes:
    product / business / tech / pragmatism / design). Prefer subagent;
    else same-session hard role flip. ≥1 Change/Defer **or** “no
    alternative + why”. No rubber-stamp.
-3. Apply plan edits; note pass in the phase **Challenge** section
-   (`built-in <date>` is enough unless escalating).
-4. Only then implement.
+   **Light self-check:** one short paragraph — biggest real risk + how
+   it's handled — no subagent, no axis table.
+4. Apply plan edits; note the pass (and tier) in the phase **Challenge**
+   section (`built-in <date>` is enough unless escalating).
+5. Only then implement.
 
 **Escalate** to `/shipjaw-challenge` when the user asks, the plan stays
 unstable, or you want a durable `challenge-report.md`. Detail:

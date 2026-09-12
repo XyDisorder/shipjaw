@@ -1,5 +1,45 @@
 # skill-my-website changelog
 
+## 2026-09-12
+
+- **Added `DECISIONS.md`** — a short-form ADR log for this repo itself,
+  in the same Context/Decision/Alternatives/Challenge/Status shape as
+  the `decisions.md` template Shipjaw hands to every scaffolded app, one
+  level up (decisions about Shipjaw, not about an app built with it).
+  Real gap found: Shipjaw enforces ADR discipline on every project it
+  scaffolds but had never practiced it on itself — several standing
+  decisions (RFC 0001 treated as backlog not spec, no hosted product for
+  non-devs, the 2026-09-07 profile split stopping at Phase 1, the
+  Documentation Resolver gated on a real trigger, the 2026-09-09
+  challenge-tiering fix, the "agentic OS" idea parked) existed only in
+  session memory outside the repo — invisible to a fresh session or a
+  contributor reading `CONTRIBUTING.md`, which directly contradicts
+  Shipjaw's own principle 2 ("state lives in the repo, not the
+  transcript"). Backfilled all of the above into `DECISIONS.md` from
+  that memory, linked it from `README.md`'s doc-links line and added it
+  as `CONTRIBUTING.md`'s new first checklist item (check it before
+  re-litigating something already decided).
+
+## 2026-09-09
+
+- **Scaled the built-in challenge ritual to actual stakes** —
+  `references/challenge-built-in.md`, `shipjaw-ask/SKILL.md`, and
+  `skill-principles.md` principle 1. Real-dogfood catch (tcg-collection,
+  same day): proposing a purely decorative 3D addition to a single-user
+  personal tool (no auth, no persisted data, no other users) triggered
+  the full 5-axis subagent challenge pass and a wall of output before any
+  code existed — the same ceremony a production auth/payment change would
+  get. The trigger list (`ADR or stack fork`, `primary UI`) fires on
+  shape, not on actual risk. Added a second, lighter tier: a one-paragraph
+  self-check (biggest real risk + how it's handled, no subagent, no axis
+  table) for changes that are single-user, purely additive, reversible,
+  and presentation-only; kept the full pass mandatory for anything
+  touching auth, money, persisted/shared data, multi-user/authz, an
+  irreversible action, or that removes/contradicts an existing documented
+  decision. When unsure which tier applies, the full pass stays the
+  default — this adds a faster path for clear-cut low-stakes work, it
+  doesn't lower the bar for everything else.
+
 ## 2026-09-07
 
 - **New Core principle 19 — don't trust cached API shape past the exact
