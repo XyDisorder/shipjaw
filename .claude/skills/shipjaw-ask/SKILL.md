@@ -92,6 +92,8 @@ Skip only for tiny fixes inside an already-challenged phase (cite prior).
    `skill-principles.md` here by default.
    - 2nd gate failure → `gate-failure-modes.md`
    - UI/landing touch → `design-constraints.md`
+   - Deploy/launch touch, or user asks "is this ready for prod/to launch"
+     → `../shipjaw-build/profiles/typescript-next/prod-readiness.md`
 
 Never preload `product/` or the full KB. Broad scope → new phase.
 

@@ -1,5 +1,56 @@
 # skill-my-website changelog
 
+## 2026-10-07
+
+- **Added `profiles/typescript-next/prod-readiness.md`** — an on-demand,
+  stakes-tiered "is this app actually ready" checklist, triggered by
+  real conference feedback the user brought back and asked to capitalize
+  on. Real gap: prod concerns already existed scattered across
+  `security.md`, `modern-extras.md`'s Deploy/Observability sections, and
+  per-phase Acceptance criteria, but nothing answered "is this app ready"
+  holistically once a project moves past its first phase into real
+  deployed use — both current real Shipjaw projects (`tcg-collection`,
+  `mtg-deck-optimizer`) already are. Three tiers (every deployed app /
+  auth+data app / real-users-or-money app), each item checkable without
+  ambiguity (no "feels solid" criteria); Tier 3 deliberately left as
+  candidates only — not yet dogfooded on a real project, written when one
+  actually needs it rather than speculatively. Explicitly **not** a
+  mandatory gate — opt-in on deploy/launch intent, scaled to real stakes,
+  same spirit as the 2026-09-09 challenge-tiering fix. Wired as an
+  on-demand reference from `shipjaw-build/SKILL.md`, `shipjaw-ask/SKILL.md`'s
+  context budget, and `modern-extras.md`'s Deploy section.
+  Triaged the rest of the conference notes the same way RFC 0001 and the
+  agnostic-profile roadmap were triaged: several points were already
+  covered by existing Shipjaw mechanisms (progressive disclosure already
+  answers the "pointers not copies" / context-bloat concern; `shipjaw-prompt`
+  already answers "reformulate before designing"; `DECISIONS.md` already
+  answers "legacy docs aren't the real doc, ADRs are"; the 2026-09-09
+  challenge-tiering fix was independently corroborated by a talk calling
+  out multi-agent review teams as slow) — recorded as validation, not
+  rebuilt. A multi-team "golden source" architecture point was judged out
+  of scope (Shipjaw targets solo/small personal projects, not
+  multi-team orgs, same reasoning as the parked hosted-product idea).
+
+## 2026-09-16
+
+- **Real-dogfood catch (mtg-deck-optimizer, first real page load in a
+  browser): the scaffold's CSP blocks `eval()`, which Turbopack/React need
+  in dev mode.** `templates/scaffold/next.config.ts`'s `script-src 'self'
+  'unsafe-inline'` (no `'unsafe-eval'`) throws a blocking console error —
+  "eval() is not supported in this environment" — on every page in dev,
+  even though `smoke-check.sh`, `run-gate.sh`'s e2e run, and even manually
+  reading the e2e logs of a previous project (tcg-collection) all missed
+  it: Playwright's own log line for this ("[browser] eval() is not
+  supported...") reads like a harmless warning, not a page-blocking error,
+  until actually opened in a real browser. Fixed: `script-src` now
+  conditionally includes `'unsafe-eval'` only when
+  `process.env.NODE_ENV === "development"` — production keeps the
+  stricter policy unchanged. Applied to the shared scaffold template and
+  backported to `tcg-collection` (both had the identical bug, unnoticed
+  until now). **How to apply:** a dev-server log line and a real browser
+  console error are not the same signal — this one hid in the former for
+  two real projects until someone actually looked at the page.
+
 ## 2026-09-12
 
 - **Added `DECISIONS.md`** — a short-form ADR log for this repo itself,

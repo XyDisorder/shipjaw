@@ -5,6 +5,14 @@ import { fileURLToPath } from "node:url";
 /** Pin tracing/turbopack to this app when a parent lockfile exists. */
 const configDir = path.dirname(fileURLToPath(import.meta.url));
 
+// Turbopack/React dev tooling calls eval() for HMR and stack-trace
+// reconstruction — a strict `script-src` with no 'unsafe-eval' throws a
+// blocking console error in the browser in dev mode (never needed, and
+// never added, in production).
+const scriptSrc = process.env.NODE_ENV === "development"
+  ? "script-src 'self' 'unsafe-inline' 'unsafe-eval'"
+  : "script-src 'self' 'unsafe-inline'";
+
 const securityHeaders = [
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
@@ -21,7 +29,7 @@ const securityHeaders = [
       "frame-ancestors 'none'",
       "object-src 'none'",
       "img-src 'self' data: blob:",
-      "script-src 'self' 'unsafe-inline'",
+      scriptSrc,
       "style-src 'self' 'unsafe-inline'",
       "connect-src 'self'",
     ].join("; "),

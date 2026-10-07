@@ -36,6 +36,9 @@
 | Docker | Copy `templates/scaffold/Dockerfile`; expose a `/api/health` (or Nest health) endpoint |
 | Undecided | Scripts only; defer Dockerfile to a later phase and note it in the roadmap |
 
+Actually deploying/launching publicly → `prod-readiness.md` (not a
+mandatory gate, scaled to the project's real stakes).
+
 ## Deferred by default
 
 Feature flags, cron/jobs, email templates, analytics privacy — add as

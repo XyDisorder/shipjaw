@@ -103,6 +103,27 @@ process is itself a Shipjaw defect, not a safe default.
 **Challenge:** n/a — process decision about the challenge mechanism itself.
 **Status:** active
 
+## 2026-10-07 — Prod-readiness checklist: on-demand and stakes-tiered, not a gate
+**Context:** user brought back real conference feedback to triage.
+Several points were already covered (progressive disclosure, `shipjaw-prompt`,
+`DECISIONS.md`, the Sept 9 challenge-tiering fix independently corroborated
+by an external talk). One real gap: no single place answered "is this app
+actually ready" once a project moves past its first phase into real
+deployed use, despite scattered pieces (`security.md`, `modern-extras.md`,
+per-phase Acceptance criteria) — both real current projects
+(`tcg-collection`, `mtg-deck-optimizer`) are already deployed.
+**Decision:** added `profiles/typescript-next/prod-readiness.md`, three
+stakes tiers (every deployed app / auth+data / real-users-or-money),
+every item checkable without ambiguity. Opt-in on deploy/launch intent —
+explicitly not part of the mandatory per-phase gate.
+**Alternatives:** make it a mandatory gate step for every phase — rejected,
+disproportionate for a solo personal tool, same reasoning as the
+challenge-tiering fix; write Tier 3 (real users/money) content now —
+rejected, not yet dogfooded on any real project, would be speculative.
+**Challenge:** n/a — additive on-demand reference, no behavior change to
+existing gates.
+**Status:** active
+
 ## 2026-09-12 — "Agentic OS" idea parked
 **Context:** A much larger, unrelated infra idea (an operating system /
 environment layer designed for AI agents as first-class users) came up

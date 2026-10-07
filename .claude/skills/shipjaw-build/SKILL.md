@@ -122,6 +122,8 @@ Technology profile — TypeScript/Next.js, Shipjaw's only profile today
 - `project-structure.md` · `code-standards.md` · `testing-and-ci.md`
 - `monorepo-and-nestjs.md` — Nest only
 - `modern-extras.md` — only if discovery activated
+- `prod-readiness.md` — only when deploying/launching publicly, not a
+  mandatory gate
 
 Templates & tooling:
 

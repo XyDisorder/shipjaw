@@ -173,7 +173,10 @@ rules. Agents must follow them; do not re-litigate mid-task.
     package-manager's `run <script> -- --flag` double-dash sometimes
     reaching the underlying framework CLI as a positional arg instead of
     a flag (call the CLI directly instead of through the script
-    passthrough). Each is a version-shape drift, not a one-off typo —
+    passthrough); a strict CSP's `script-src` with no `'unsafe-eval'`
+    blocking every page in dev mode because Turbopack/React need `eval()`
+    for HMR/stack traces there (dev-only relaxation, production stays
+    strict). Each is a version-shape drift, not a one-off typo —
     fix the **profile template**, not just the affected project, so the
     next scaffold doesn't repeat it. This is how the tech-agnostic Core
     stays evolutif as tech evolves, without needing a live doc-fetch
